@@ -2,34 +2,52 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <title>Cesi offres</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plateforme de recherche de stage pour les étudiants du CESI. Trouvez votre offre parmi nos entreprises partenaires.">
+    <link rel="stylesheet" href="style.css"> 
+    <title>Accueil - Cesi Offres</title>
 </head>
 <body>
-    <header class="header-banner">
-        <h1>Bienvenue sur Cesi offres</h1>
+    <header class="main-header">
+        <div class="logo">
+            <a href="index.html">Cesi Offres</a>
+        </div>
+        
+        <div class="burger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html" class="active">Accueil</a></li>
+                <li><a href="offres.html">Offres</a></li>
+                <li><a href="entreprises.html">Entreprises</a></li>
+                <li><a href="login.html" class="btn-login">Connexion</a></li>
+            </ul>
+        </nav>
     </header>
+
     <main>
         <section class="hero">
             <div class="hero-content">
-                    <h1>Votre avenir professionnel commence ici.</h1>
-                    <p>
-                        Web4All connecte les étudiants aux meilleures entreprises. 
-                        Accédez à des centaines d'offres de stage, postulez en un clic 
-                        et lancez votre carrière dès aujourd'hui.
-                    </p>
-                    
-                    <!-- Tu peux ajouter tes boutons d'action ici -->
-                    <div class="hero-buttons">
-                        <a href="offres.html" class="btn btn-primary">Voir les offres</a>
-                        <a href="inscription.html" class="btn btn-secondary">S'inscrire</a>
-                    </div>
+                <h1>Votre avenir professionnel commence ici.</h1>
+                <p>
+                    <strong>Web4All</strong> connecte les étudiants aux meilleures entreprises. 
+                    Accédez à des centaines d'offres de stage et lancez votre carrière.
+                </p>
+                
+                <form action="search.php" method="GET" class="search-bar">
+                    <input type="text" name="q" placeholder="Compétence (ex: Java, React...)">
+                    <input type="text" name="city" placeholder="Ville (ex: Paris)">
+                    <button type="submit">Rechercher</button>
+                </form>
+
+                <div class="hero-buttons">
+                    <a href="offres.html" class="btn btn-primary">Voir toutes les offres</a>
                 </div>
-            <form action="search.php" method="GET" class="search-bar">
-                <input type="text" placeholder="Compétence (ex: Java, c++, Python...)">
-                <button type="submit">Rechercher</button>
-            </form>
+            </div>
         </section>
 
         <section class="stats">
@@ -41,24 +59,61 @@
                 <span class="number">80</span>
                 <span class="label">Entreprises</span>
             </div>
+            <div class="stat-item">
+                <span class="number">500+</span>
+                <span class="label">Étudiants</span>
+            </div>
         </section>
 
         <section class="latest-offers">
-            <h2>À la une</h2>
+            <div class="section-header">
+                <h2>À la une</h2>
+                <a href="offres.html">Voir tout &rarr;</a>
+            </div>
+            
             <div class="cards-container">
                 <article class="card">
-                    <h3>Développeur Web</h3>
+                    <div class="card-header">
+                        <h3>Développeur Web</h3>
+                        <span class="tag">Stage</span>
+                    </div>
                     <p class="company">TechCorp - Paris</p>
-                    <a href="#" class="btn-details">Voir</a>
+                    <p class="desc">Développement d'une application React...</p>
+                    <a href="#" class="btn-details">Voir l'offre</a>
+                </article>
+
+                <article class="card">
+                    <div class="card-header">
+                        <h3>Admin Système</h3>
+                        <span class="tag">Alternance</span>
+                    </div>
+                    <p class="company">DataSecure - Lyon</p>
+                    <p class="desc">Gestion de parc informatique et sécurité...</p>
+                    <a href="#" class="btn-details">Voir l'offre</a>
                 </article>
             </div>
         </section>
     </main>
     
-    <footer class="footer-banner">
-        <p>Copyright 2026 Cesi offres</p>
-        <p>Tous droits réservés</p>
-
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>Cesi Offres</h3>
+                <p>La plateforme de stage par Web4All.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Liens utiles</h4>
+                <ul>
+                    <li><a href="mentions.html">Mentions Légales</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="plan.html">Plan du site</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Web4All - Tous droits réservés</p>
+        </div>
     </footer>
+
 </body>
 </html>
