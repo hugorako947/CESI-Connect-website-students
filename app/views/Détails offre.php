@@ -1,33 +1,9 @@
+<?php include 'header.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Plateforme de recherche de stage pour les étudiants de CESI. Trouvez votre offre parmi nos entreprises partenaires.">
-    <link rel="stylesheet" href="style.css"> 
-    <title>CESI Connect</title>
-</head>
-<body>
-    <header class="main-header">
-        <div class="logo">
-            <a href="index.html">Cesi Offres</a>
-        </div>
-        
-        <div class="burger-menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
 
-        <nav class="main-nav">
-            <ul>
-                <li><a href="index.html" class="active">Accueil</a></li>
-                <li><a href="offres.html">Offres</a></li>
-                <li><a href="entreprises.html">Entreprises</a></li>
-                <li><a href="login.html" class="btn-login">Connexion</a></li>
-            </ul>
-        </nav>
-    </header>
+<body>
+    
 
     <main>
         <div class="offer-layout">
@@ -122,25 +98,8 @@
         
         </div>
     </main>
-    <footer>
-        <div class="footer-content">
-            <div class="footer-col">
-                <h3>Cesi Offres</h3>
-                <p>La plateforme de stage par Web4All.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Liens utiles</h4>
-                <ul>
-                    <li><a href="mentions.html">Mentions Légales</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="plan.html">Plan du site</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Web4All - Tous droits réservés</p>
-        </div>
-    </footer>
+
 
 </body>
 </html>
+<?php include 'footer.php'; ?>
