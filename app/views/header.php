@@ -14,9 +14,9 @@
         </div>
         <nav class="main-nav">
             <ul>
-                <li><a href="index.php?route=home">Accueil</a></li>
-                <li><a href="index.php?route=offres">Offres</a></li>
-                <li><a href="index.php?route=login" class="btn-login">Connexion</a></li>
+            <li><a href="index.php?route=home">Accueil</a></li>
+            <li><a href="index.php?route=offres">Offres</a></li>
+            <li><a href="index.php?route=connexion" class="btn-login">Connexion</a></li>
             </ul>
         </nav>
     </header>
