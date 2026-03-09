@@ -12,8 +12,6 @@
     --border: #e5e7eb;          /* Gris clair (Bordures) */
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --radius: 12px;             /* Arrondi standard */
-    --rouge: #ef4444;
-    --rouge-dark: #dc2626;
 }
 
 /* =========================================
@@ -66,7 +64,7 @@ main {
 
 .logo a {
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--primary);
 }
 
@@ -81,7 +79,7 @@ main {
     color: var(--text-main);
 }
 
-.main-nav a:hover {
+.main-nav a:hover, .main-nav a.active {
     color: var(--primary);
 }
 
@@ -629,20 +627,4 @@ footer {
         width: 100%;
         position: static;
     }
-}
-
-.btn-deconnexion {
-    display: inline-block;
-    margin-top: 2rem;
-    padding: 0.8rem 1.5rem;
-    background-color: var(--rouge);
-    color: white;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.btn-deconnexion:hover {
-    background-color: var(--rouge-dark);
 }
