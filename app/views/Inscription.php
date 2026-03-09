@@ -1,25 +1,8 @@
+<?php include 'header.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Permet de créer son espace personnel CESI Connect.">
-    <link rel="stylesheet" href="style.css">
-    <title>CESI Connect</title>
-</head>
+
 <body>
-    <header class="main-header">
-        <div class="logo">
-            <a href="Accueil.html">CESI Connect</a>
-        </div>
-        <nav class="main-nav">
-            <ul>
-                <li><a href="Accueil.html" class="active">Accueil</a></li>
-                <li><a href="Inscription.html">Inscription</a></li>
-                <li><a href="Connexion.html" class="btn-login">Connexion</a></li>
-            </ul>
-        </nav>
-    </header>
 
     <main>
         <section class="auth-container">
@@ -48,3 +31,4 @@
     </footer>
 </body>
 </html>
+<?php include 'footer.php'; ?>
