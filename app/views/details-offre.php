@@ -1,11 +1,4 @@
 <?php include 'header.php'; ?>
-<!DOCTYPE html>
-<html lang="fr">
-
-<body>
-    
-
-    <main>
         <div class="offer-layout">
     
             <!-- COLONNE GAUCHE : CONTENU DÉTAILLÉ -->
@@ -97,9 +90,4 @@
             </aside>
         
         </div>
-    </main>
-
-
-</body>
-</html>
 <?php include 'footer.php'; ?>

@@ -1,11 +1,4 @@
 <?php include 'header.php'; ?>
-<!DOCTYPE html>
-<html lang="fr">
-
-<body>
-
-
-    <main class="search-layout">
         <aside class="filters-sidebar">
             <h2>Filtres</h2>
             <form action="#" method="GET" class="filters-form">
@@ -91,9 +84,4 @@
                 <a href="#" class="page-btn next">&raquo;</a>
             </nav>
         </section>
-    </main>
-
-
-</body>
-</html>
 <?php include 'footer.php'; ?>

@@ -2,53 +2,61 @@
    1. VARIABLES & CONFIGURATION
    ========================================= */
    :root {
-    --bg: #f3f4f6;              /* Gris très clair pour le fond global */
-    --bg-alt: #ffffff;          /* Blanc pour header/cards */
-    --primary: #2563eb;         /* Bleu roi (Action principale) */
-    --primary-dark: #1d4ed8;    /* Bleu foncé (Hover) */
-    --primary-light: #dbeafe;   /* Bleu très pâle (Badges) */
-    --text-main: #111827;       /* Noir/Gris très foncé (Titres) */
-    --text-muted: #6b7280;      /* Gris moyen (Textes secondaires) */
-    --border: #e5e7eb;          /* Gris clair (Bordures) */
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --radius: 12px;             /* Arrondi standard */
+    --bg: #f3f4f6;
+    --bg-alt: #ffffff;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #dbeafe;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --radius: 12px;
 }
 
-/* =========================================
-   2. RESET & BASES
-   ========================================= */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
     background-color: var(--bg);
     color: var(--text-main);
     line-height: 1.6;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.2s ease;
-}
-
-ul {
-    list-style: none;
-}
+a { text-decoration: none; color: inherit; transition: 0.2s; }
+ul { list-style: none; }
 
 main {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
-    min-height: 80vh; /* S'assure que le footer ne remonte pas trop haut */
+    min-height: 80vh;
 }
 
 /* =========================================
-   3. HEADER & NAVIGATION
+   2. ÉLÉMENTS COMMUNS (Composants)
+   ========================================= */
+.card, .auth-card, .sidebar-card, .filters-sidebar, .offer-content {
+    background: var(--bg-alt);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.btn-primary:hover { background: var(--primary-dark); }
+
+/* =========================================
+   3. HEADER
    ========================================= */
 .main-header {
     background: var(--bg-alt);
@@ -57,148 +65,46 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky; /* Le menu reste collé en haut */
-    top: 0;
-    z-index: 1000;
+    position: sticky; top: 0; z-index: 1000;
 }
 
-.logo a {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--primary);
-}
+.logo a { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
 
-.main-nav ul {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-}
+.main-nav ul { display: flex; gap: 2rem; align-items: center; }
 
-.main-nav a {
-    font-weight: 500;
-    color: var(--text-main);
-}
-
-.main-nav a:hover, .main-nav a.active {
-    color: var(--primary);
-}
-
-/* Bouton spécial "Connexion" */
 .btn-login {
-    background-color: var(--primary);
+    background: var(--primary);
     color: white !important;
     padding: 0.5rem 1.2rem;
     border-radius: 50px;
 }
 
-.btn-login:hover {
-    background-color: var(--primary-dark);
-    transform: translateY(-1px);
-}
-
-.burger-menu {
-    display: none;
-    cursor: pointer;
-    font-size: 1.5rem;
-}
-
 /* =========================================
-   4. PAGE D'ACCUEIL (Hero, Stats, Recherche)
+   4. PAGE D'ACCUEIL & RECHERCHE
    ========================================= */
 .hero {
-    background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
-    border-radius: var(--radius);
+    background: linear-gradient(135deg, #ffffff, #eff6ff);
     padding: 4rem 2rem;
     text-align: center;
-    margin-bottom: 3rem;
-    box-shadow: var(--shadow);
+    border-radius: var(--radius);
     border: 1px solid var(--border);
+    margin-bottom: 3rem;
 }
 
-.hero h1 {
-    font-size: clamp(2rem, 5vw, 2.5rem); /* Taille adaptative */
-    margin-bottom: 1rem;
-    color: var(--text-main);
-}
-
-.hero p {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    max-width: 600px;
-    margin: 0 auto 2rem auto;
-}
-
-.hero-buttons {
-    margin-top: 1.5rem;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-}
-
-/* Barre de recherche "Pilule" */
 .search-bar {
     background: white;
     padding: 0.5rem;
     border-radius: 50px;
-    display: inline-flex;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    max-width: 700px;
-    width: 100%;
-    gap: 10px;
-}
-
-.search-bar input {
-    border: none;
-    padding: 0.8rem 1.5rem;
-    flex: 1;
-    outline: none;
-    border-radius: 50px;
-    font-size: 1rem;
-}
-
-.search-bar button {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 0.8rem 2rem;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.2s;
-}
-
-.search-bar button:hover {
-    background: var(--primary-dark);
-}
-
-/* Section Statistiques */
-.stats {
     display: flex;
-    justify-content: center;
-    gap: 4rem;
-    margin-bottom: 4rem;
-    flex-wrap: wrap;
+    box-shadow: var(--shadow);
+    max-width: 700px;
+    margin: 2rem auto;
 }
 
-.stat-item {
-    text-align: center;
-}
-
-.stat-item .number {
-    display: block;
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--primary);
-}
-
-.stat-item .label {
-    color: var(--text-muted);
-    font-weight: 500;
-}
+.search-bar input { flex: 1; border: none; padding: 0.8rem 1.5rem; outline: none; }
 
 /* =========================================
-   5. COMPOSANT : CARTES OFFRES (Liste)
+   5. CARTES & LAYOUTS
    ========================================= */
 .cards-container {
     display: grid;
@@ -206,425 +112,58 @@ main {
     gap: 2rem;
 }
 
-.card {
-    background: var(--bg-alt);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    transition: transform 0.2s;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
+.card:hover { transform: translateY(-5px); }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    margin-bottom: 1rem;
-}
-
-.card h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-}
-
-/* C'est ici que c'était coupé avant */
-.card .tag {
+.tag {
     background: var(--primary-light);
     color: var(--primary);
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     font-size: 0.8rem;
     font-weight: 600;
-    white-space: nowrap; /* Empêche le texte de passer à la ligne */
 }
 
-.card .company {
-    font-weight: 600;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-}
-
-.card .desc {
-    margin: 1rem 0;
-    font-size: 0.95rem;
-    color: #4b5563;
-    display: -webkit-box;
-    -webkit-line-clamp: 3; /* Limite à 3 lignes */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.btn-details {
-    display: block;
-    text-align: center;
-    background: white;
-    border: 1px solid var(--primary);
-    color: var(--primary);
-    padding: 0.6rem;
-    border-radius: 8px;
-    font-weight: 600;
-}
-
-.btn-details:hover {
-    background: var(--primary);
-    color: white;
-}
-
-/* =========================================
-   6. PAGE DÉTAIL OFFRE (Sidebar Layout)
-   ========================================= */
-.offer-layout {
+/* Layout Offre / Liste */
+.offer-layout, .search-layout {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* 2/3 pour contenu, 1/3 pour sidebar */
+    grid-template-columns: 1fr 350px;
     gap: 2rem;
-    align-items: start;
-}
-
-/* Colonne Gauche */
-.offer-content {
-    background: white;
-    padding: 2.5rem;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-}
-
-.offer-header {
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.offer-header h1 {
-    font-size: 2rem;
-    margin: 0.5rem 0;
-}
-
-.badge {
-    background: var(--primary-light);
-    color: var(--primary);
-    padding: 0.3rem 0.8rem;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 0.85rem;
-}
-
-.company-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 1rem;
-}
-
-.company-logo-placeholder {
-    width: 40px;
-    height: 40px;
-    background: var(--primary);
-    color: white;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-/* Corps du texte */
-.offer-body h2 { margin-top: 0; font-size: 1.5rem; }
-.offer-body h3 { margin-top: 2rem; font-size: 1.2rem; }
-.offer-body ul { margin-left: 1.5rem; margin-bottom: 1.5rem; }
-.offer-body li { margin-bottom: 0.5rem; list-style-type: disc; }
-
-.skills-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-}
-
-.skill-tag {
-    background: #f3f4f6;
-    padding: 0.4rem 1rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    border: 1px solid var(--border);
-}
-
-/* Colonne Droite (Sidebar) */
-.offer-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    position: sticky;
-    top: 100px; /* Colle au scroll */
-}
-
-.sidebar-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-}
-
-.btn-apply {
-    display: block;
-    width: 100%;
-    background: var(--primary);
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-}
-
-.btn-apply:hover { background: var(--primary-dark); }
-
-.info-list li {
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #f3f4f6;
-    padding-bottom: 0.5rem;
 }
 
 /* =========================================
-   7. PAGE CONNEXION / INSCRIPTION
+   6. FORMULAIRES & AUTH
    ========================================= */
-.auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 60vh;
-}
+.auth-container { display: flex; justify-content: center; padding: 3rem 0; }
 
-.auth-card {
-    background: white;
-    padding: 2.5rem;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-}
+.auth-card { width: 100%; max-width: 450px; }
 
-.form-group {
-    margin-bottom: 1.5rem;
-    text-align: left;
-}
+.form-group { margin-bottom: 1rem; }
 
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-.form-group input {
+.form-group input, .form-group select, .form-group textarea {
     width: 100%;
     padding: 0.8rem;
     border: 1px solid var(--border);
     border-radius: 8px;
-    font-size: 1rem;
-    background-color: #f9fafb;
-}
-
-.form-group input:focus {
-    outline: none;
-    border-color: var(--primary);
-    background-color: white;
-}
-
-.btn-submit {
-    width: 100%;
-    background: var(--primary);
-    color: white;
-    padding: 0.9rem;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
+    background: #f9fafb;
 }
 
 /* =========================================
-   8. FOOTER
+   7. FOOTER
    ========================================= */
 footer {
     background: white;
     border-top: 1px solid var(--border);
-    padding: 3rem 2rem 1rem 2rem;
+    padding: 2rem;
+    text-align: center;
     margin-top: 4rem;
 }
 
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-}
-
-.footer-bottom {
-    text-align: center;
-    border-top: 1px solid var(--border);
-    padding-top: 1.5rem;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-}
-
 /* =========================================
-   9. RESPONSIVE (MOBILE)
+   8. RESPONSIVE
    ========================================= */
-@media (max-width: 768px) {
-    /* Header & Menu */
-    .main-header { padding: 1rem; }
-    .burger-menu { display: block; }
-    
-    .main-nav {
-        display: none; /* JS requis pour l'afficher */
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: white;
-        padding: 1rem;
-        border-bottom: 1px solid var(--border);
-    }
-    
-    .main-nav ul { flex-direction: column; gap: 1rem; }
-    
-    /* Hero & Search */
-    .search-bar { flex-direction: column; border-radius: 20px; }
-    .search-bar input, .search-bar button { width: 100%; border-radius: 20px; }
-    
-    /* Layouts */
-    .offer-layout { grid-template-columns: 1fr; }
-    .offer-sidebar { position: static; order: -1; }
-    .footer-content { flex-direction: column; gap: 2rem; text-align: center; }
-}
-/* --- LAYOUT RECHERCHE --- */
-.search-layout {
-    display: flex;
-    gap: 2rem;
-    align-items: flex-start;
-}
-
-/* Sidebar des filtres */
-.filters-sidebar {
-    flex: 0 0 280px;
-    background: var(--bg-alt);
-    padding: 1.5rem;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    position: sticky;
-    top: 5rem; /* Reste visible au scroll */
-}
-
-.filters-sidebar h2 {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-}
-
-.filter-group {
-    margin-bottom: 1.2rem;
-}
-
-.filter-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.filter-group input[type="text"],
-.filter-group input[type="number"] {
-    width: 100%;
-    padding: 0.6rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    outline: none;
-}
-
-.checkbox-group label {
-    font-weight: 400;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 0.3rem;
-}
-
-/* Résultats */
-.offers-results {
-    flex: 1;
-}
-
-.results-header {
-    margin-bottom: 1.5rem;
-}
-
-.cards-container.vertical {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-}
-
-.date {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-}
-
-/* --- PAGINATION --- */
-.pagination {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 2.5rem;
-}
-
-.page-btn {
-    padding: 0.5rem 1rem;
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-weight: 600;
-}
-
-.page-btn.active {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-}
-
-.page-btn.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* --- RESPONSIVE --- */
 @media (max-width: 992px) {
-    .search-layout {
-        flex-direction: column;
-    }
-    
-    .filters-sidebar {
-        flex: none;
-        width: 100%;
-        position: static;
-    }
+    .offer-layout, .search-layout { grid-template-columns: 1fr; }
+    .filters-sidebar { position: static; }
+    .search-bar { flex-direction: column; border-radius: 20px; }
+    .search-bar input { border-radius: 20px; }
 }
