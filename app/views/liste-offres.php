@@ -1,5 +1,8 @@
 <?php include 'header.php'; ?>
-        <aside class="filters-sidebar">
+
+        <button type="button" class="btn-toggle-filters" id="toggleFilters">Afficher les filtres</button>
+
+        <aside class="filters-sidebar" id="filterSidebar">
             <h2>Filtres</h2>
             <form action="#" method="GET" class="filters-form">
                 <div class="filter-group">
