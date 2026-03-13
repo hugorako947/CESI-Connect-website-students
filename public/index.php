@@ -99,11 +99,10 @@ switch ($route) {
         $controller->offreForm();
         break;
     
-    case 'suivi-pilote':
+    case 'suivi-etudiants-pilote':
         $controller = new ManagementController();
         $controller->suiviPilote();
         break;
-    
 
     // --- Cas par défaut : la route n'existe pas ---
     default:
