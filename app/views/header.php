@@ -16,7 +16,6 @@
                 <li><a href="index.php?route=accueil">Accueil</a></li>
                 <li><a href="index.php?route=offres">Offres</a></li>
                 <li><a href="index.php?route=gestion-entreprises">Entreprises</a></li>
-                <li><a href="index.php?route=inscription">Inscription</a></li>
                 
                 <!-- GESTION DYNAMIQUE DU MENU -->
                 <?php if(isset($_SESSION['user_id'])): ?>
