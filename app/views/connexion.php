@@ -22,10 +22,14 @@
 
                     <div class="form-group">
                         <label for="captcha">Captcha Anti-Bot</label>
-                        <input type="captcha" id="captcha" name="captcha" placeholder="Réponse" required>
+                        <input type="captcha" id="captcha" name="captcha" placeholder="1+1=?" required>
                     </div>
 
-                    <a href="Accueil utilisateur.html" class="btn-submit">Se connecter</a>
+                    <a href="index.php?route=suivi-etudiants-pilote" class="btn-submit">Se connecter</a>
+
+                    <div class="form-footer">
+                        <p>Pas encore de compte ?<a href="index.php?route=inscription">S'inscrire</a></p>
+                    </div>
 
                 </form>
             </div>
