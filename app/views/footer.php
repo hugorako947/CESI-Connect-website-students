@@ -16,5 +16,6 @@
             <p>&copy; 2026 CESI Connect - Tous droits réservés</p>
         </div>
     </footer>
+<script src="assets/js/filters.js"></script>
 </body>
 </html>
