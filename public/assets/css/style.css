@@ -646,3 +646,37 @@ footer {
 .btn-deconnexion:hover {
     background-color: var(--rouge-dark);
 }
+
+/* Style du bouton d'ouverture */
+.btn-toggle-filters {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Masquer la sidebar par défaut */
+.filters-sidebar {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, opacity 0.3s ease;
+    opacity: 0;
+    background: var(--bg-alt);
+    padding: 0 1rem; /* On enlève le padding vertical quand c'est fermé */
+    border-radius: var(--radius);
+}
+
+/* Classe activée par JavaScript */
+.filters-sidebar.active {
+    max-height: 1000px; /* Une valeur assez grande pour tout contenir */
+    opacity: 1;
+    padding: 1.5rem 1rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+}
