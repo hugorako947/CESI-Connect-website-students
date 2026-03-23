@@ -1,11 +1,19 @@
 <?php
 // app/controller/OfferController.php
 
+require_once '../app/model/OfferManager.php';
+
 class OfferController {
 
     // Affiche la liste de toutes les offres
     public function list() {
-        // TODO: Plus tard, récupérer toutes les offres de la BDD ici
+        // 1. On appelle le modèle
+        $manager = new OfferManager();
+        
+        // 2. On récupère les données
+        $offres = $manager->getAllOffers(); 
+        
+        // 3. On charge la vue (la variable $offres sera disponible dans la vue !)
         require_once '../app/views/liste-offres.php';
     }
 
