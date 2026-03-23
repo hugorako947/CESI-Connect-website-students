@@ -28,7 +28,7 @@
                     <a href="index.php?route=suivi-etudiants-pilote" class="btn-submit">Se connecter</a>
 
                     <div class="form-footer">
-                        <p>Pas encore de compte ?<a href="index.php?route=inscription">S'inscrire</a></p>
+                        <p>Pas encore de compte ? <a href="index.php?route=inscription">S'inscrire</a></p>
                     </div>
 
                 </form>
