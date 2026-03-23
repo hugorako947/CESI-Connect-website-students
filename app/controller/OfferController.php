@@ -1,7 +1,7 @@
 <?php
 // app/controller/OfferController.php
 
-require_once '../app/model/OfferManager.php';
+require_once '../app/models/OfferManager.php';
 
 class OfferController {
 
