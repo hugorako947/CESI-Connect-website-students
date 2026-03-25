@@ -17,7 +17,7 @@
                     </div>
 
                     <div class="form-footer">
-                        <a href="#">Mot de passe oublié ?</a>
+                        <a href="index.php?route=password-forgotten">Mot de passe oublié ?</a>
                     </div>
 
                     <div class="form-group">
