@@ -104,6 +104,15 @@ switch ($route) {
         $controller->suiviPilote();
         break;
 
+    case 'password-forgotten':
+        $controller = new AuthController();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $controller->handleForgotPassword();
+        } else {
+            $controller->showForgotPasswordForm();
+        }
+        break;
+
     // --- Cas par défaut : la route n'existe pas ---
     default:
         http_response_code(404); // Informe le navigateur que la page n'existe pas
