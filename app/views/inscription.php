@@ -15,6 +15,8 @@
                         <input type="Prenom" id="Prenom" name="Prenom" placeholder="Votre prénom" required>
                     </div>
                     
+
+
                     <div class="form-group">
                         <label for="email">Adresse Email</label>
                         <input type="email" id="email" name="email" placeholder="exemple@viacesi.fr" required>
@@ -30,7 +32,8 @@
                         <input type="captcha" id="captcha" name="captcha" placeholder="1+1=?" required>
                     </div>
 
+                    <a href="index.php?route=suivi-etudiants-pilote" class="btn-submit">Finaliser l'inscription</a>
+
             </div>
         </section>
 <?php include 'footer.php'; ?>
-
