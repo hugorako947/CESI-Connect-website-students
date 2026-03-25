@@ -1,0 +1,93 @@
+-- Création de la base de données
+CREATE DATABASE IF NOT EXISTS `web4all` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `web4all`;
+ 
+-- 1. Table des Rôles
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+ 
+-- Insertion des 3 rôles de base
+INSERT INTO `roles` (`nom`) VALUES ('Admin'), ('Pilote'), ('Etudiant');
+ 
+-- 2. Table des Utilisateurs
+CREATE TABLE `utilisateurs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(100) NOT NULL,
+  `prenom` varchar(100) NOT NULL,
+  `email` varchar(150) NOT NULL UNIQUE,
+  `mot_de_passe` varchar(255) NOT NULL,
+  `id_role` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`id_role`) REFERENCES `roles`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+ 
+-- 3. Table des Entreprises
+CREATE TABLE `entreprises` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(150) NOT NULL,
+  `description` text,
+  `email_contact` varchar(150),
+  `telephone` varchar(20),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+ 
+-- 4. Table des Offres
+CREATE TABLE `offres` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `titre` varchar(200) NOT NULL,
+  `description` text NOT NULL,
+  `remuneration` decimal(10,2),
+  `date_publication` date NOT NULL,
+  `id_entreprise` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`id_entreprise`) REFERENCES `entreprises`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+ 
+-- 5. Table de la Wishlist (Favoris)
+CREATE TABLE `wishlist` (
+  `id_utilisateur` int(11) NOT NULL,
+  `id_offre` int(11) NOT NULL,
+  PRIMARY KEY (`id_utilisateur`, `id_offre`),
+  FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateurs`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`id_offre`) REFERENCES `offres`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+ 
+-- 6. Table des Candidatures
+CREATE TABLE `candidatures` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_utilisateur` int(11) NOT NULL,
+  `id_offre` int(11) NOT NULL,
+  `cv_path` varchar(255) NOT NULL,
+  `lettre_motivation` text,
+  `statut` varchar(50) DEFAULT 'En attente',
+  `date_candidature` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateurs`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`id_offre`) REFERENCES `offres`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+ 
+-- --------------------------------------------------------
+-- PEUPLEMENT DES ENTREPRISES
+-- --------------------------------------------------------
+INSERT INTO `entreprises` (`nom`, `description`, `email_contact`, `telephone`) VALUES
+('Capgemini', 'Leader mondial du conseil, des services informatiques et de la transformation numérique.', 'recrutement@capgemini.fr', '0123456789'),
+('Sopra Steria', 'L\'un des leaders européens du conseil, des services numériques et de l\'édition de logiciels.', 'rh@soprasteria.com', '0198765432'),
+('Orange Cyberdefense', 'Expert en cybersécurité pour les entreprises.', 'contact@orangecyberdefense.fr', '0155667788'),
+('EcoGreen Tech', 'Startup nantaise spécialisée dans l\'optimisation énergétique par l\'IA.', 'hello@ecogreen.tech', '0244556677'),
+('HealthData Systems', 'Développement de solutions logicielles sécurisées pour le milieu médical.', 'jobs@healthdata.fr', '0477889900');
+
+-- --------------------------------------------------------
+-- PEUPLEMENT DES OFFRES (Associées aux entreprises ci-dessus)
+-- --------------------------------------------------------
+-- Note : id_entreprise correspond aux ID générés (de 1 à 7 en comptant celles qu'on avait déjà créées)
+INSERT INTO `offres` (`titre`, `description`, `remuneration`, `date_publication`, `id_entreprise`) VALUES
+('Développeur Fullstack JS (React/Node)', 'Rejoignez notre équipe agile pour développer de nouvelles features sur notre SaaS. Stack: React, Node.js, MongoDB.', 1000.00, '2026-03-10', 3),
+('Ingénieur Cloud DevOps', 'Mise en place de pipelines CI/CD et gestion de l\'infrastructure AWS via Terraform.', 1200.00, '2026-03-15', 4),
+('Data Analyst Junior', 'Analyse des données clients et création de dashboards sur PowerBI.', 900.00, '2026-03-18', 5),
+('Stage Cybersécurité (Pentest)', 'Réalisation de tests d\'intrusion sur nos applications web et rédaction de rapports d\'audit.', 1100.00, '2026-03-20', 5),
+('Développeur Mobile iOS/Android', 'Création d\'une application de suivi énergétique en Flutter.', 850.00, '2026-03-22', 6),
+('Chef de Projet IT', 'Accompagnement des clients dans leur transformation digitale, gestion des plannings et des ressources.', 1000.00, '2026-03-24', 4),
+('Administrateur Base de Données', 'Optimisation des requêtes SQL et migration vers PostgreSQL.', 950.00, '2026-03-25', 7);
