@@ -1,93 +1,135 @@
-<?php include 'header.php'; ?>
-        <div class="offer-layout">
-    
-            <!-- COLONNE GAUCHE : CONTENU DÉTAILLÉ -->
-            <section class="offer-content">
-                
-                <!-- En-tête de l'offre -->
-                <header class="offer-header">
-                    <div class="offer-meta">
-                        <span class="badge">Stage</span>
-                        <span class="date">Publié il y a 2 jours</span>
-                    </div>
-                    <h1>Développeur Fullstack React / Node.js</h1>
-                    <div class="company-info">
-                        <div class="company-logo-placeholder">T</div>
-                        <p><strong>TechCorp</strong> • Paris (75013)</p>
-                    </div>
-                </header>
+<!-- Vue de détails d'une offre de stage/alternance -->
+<section class="details-offre-section">
+    <div class="container">
         
-                <!-- Description -->
-                <article class="offer-body">
-                    <h2>À propos de l'offre</h2>
-                    <p>
-                        Nous recherchons un stagiaire passionné pour rejoindre notre équipe technique. 
-                        Vous participerez au développement de notre plateforme SaaS utilisée par plus de 10 000 clients.
-                    </p>
-        
-                    <h3>Vos missions</h3>
-                    <ul>
-                        <li>Développer de nouvelles fonctionnalités en React.js.</li>
-                        <li>Participer à la conception de l'API REST en Node.js.</li>
-                        <li>Écrire des tests unitaires et d'intégration.</li>
-                        <li>Collaborer avec l'équipe design pour l'intégration des maquettes.</li>
-                    </ul>
-        
-                    <h3>Profil recherché</h3>
-                    <ul>
-                        <li>Étudiant(e) en école d'ingénieur ou informatique (Bac+4/5).</li>
-                        <li>Curieux, autonome et force de proposition.</li>
-                        <li>Une première expérience (stage ou projet perso) avec React est un plus.</li>
-                    </ul>
-        
-                    <h3>Compétences requises</h3>
-                    <div class="skills-container">
-                        <span class="skill-tag">JavaScript</span>
-                        <span class="skill-tag">React.js</span>
-                        <span class="skill-tag">Node.js</span>
-                        <span class="skill-tag">Git</span>
-                        <span class="skill-tag">SQL</span>
-                    </div>
-                </article>
-            </section>
-        
-        
-            <!-- COLONNE DROITE : BARRE LATÉRALE (INFOS & ACTION) -->
-            <aside class="offer-sidebar">
-                
-                <!-- Carte d'action (Postuler) -->
-                <div class="sidebar-card action-card">
-                    <a href="postuler.html" class="btn-apply">Postuler à cette offre</a>
-                    <button class="btn-wishlist"> Ajouter à ma liste</button>
+        <!-- Messages d'erreur ou de succès -->
+        <?php if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])): ?>
+            <div class="alert alert-error">
+                <ul>
+                    <?php foreach ($_SESSION['errors'] as $error): ?>
+                        <li><?= htmlspecialchars($error) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+            <?php unset($_SESSION['errors']); ?>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success">
+                <?= htmlspecialchars($_SESSION['success']) ?>
+            </div>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+
+        <!-- En-tête de l'offre -->
+        <div class="offre-header">
+            <div class="offre-header-content">
+                <h1><?= htmlspecialchars($offer['titre']) ?></h1>
+                <p class="entreprise-nom">
+                    <strong>🏢 <?= htmlspecialchars($offer['entreprise_nom']) ?></strong>
+                </p>
+                <div class="offre-meta">
+                    <span class="meta-item">
+                        📅 Publié le <?= date('d/m/Y', strtotime($offer['date_publication'])) ?>
+                    </span>
+                    <?php if ($candidaturesCount > 0): ?>
+                        <span class="meta-item">
+                            👥 <?= $candidaturesCount ?> candidature(s)
+                        </span>
+                    <?php endif; ?>
                 </div>
-        
-                <!-- Carte d'informations -->
-                <div class="sidebar-card info-card">
-                    <h3>Détails du stage</h3>
-                    <ul class="info-list">
-                        <li>
-                            <strong>Durée :</strong> 6 mois
-                        </li>
-                        <li>
-                            <strong>Début :</strong> Septembre 2026
-                        </li>
-                        <li>
-                            <strong>Rémunération :</strong> 800€ / mois
-                        </li>
-                        <li>
-                            <strong>Candidats :</strong> 12 étudiants ont postulé
-                        </li>
-                    </ul>
+            </div>
+
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <div class="offre-actions">
+                    <?php if ($hasApplied): ?>
+                        <span class="badge badge-success">
+                            ✓ Vous avez déjà candidaté
+                        </span>
+                    <?php else: ?>
+                        <a href="index.php?route=candidater&offre=<?= htmlspecialchars($offer['id']) ?>" 
+                           class="btn btn-primary btn-large">
+                            📄 Candidater maintenant
+                        </a>
+                    <?php endif; ?>
                 </div>
-        
-                <!-- Carte Entreprise -->
-                <div class="sidebar-card company-card">
-                    <h3>L'entreprise</h3>
-                    <p>TechCorp est leader dans la tech verte...</p>
-                    <a href="entreprise-detail.html" class="link-arrow">Voir la page entreprise &rarr;</a>
+            <?php else: ?>
+                <div class="offre-actions">
+                    <a href="index.php?route=login" class="btn btn-outline btn-large">
+                        🔒 Connectez-vous pour candidater
+                    </a>
                 </div>
-        
-            </aside>
-        
+            <?php endif; ?>
         </div>
-<?php include 'footer.php'; ?>
+
+        <!-- Contenu principal -->
+        <div class="offre-body">
+            
+            <!-- Description de l'offre -->
+            <div class="offre-card">
+                <h2>📋 Description de l'offre</h2>
+                <div class="offre-description">
+                    <?= nl2br(htmlspecialchars($offer['description'])) ?>
+                </div>
+            </div>
+
+            <!-- Rémunération -->
+            <?php if (!empty($offer['remuneration'])): ?>
+                <div class="offre-card">
+                    <h2>💰 Rémunération</h2>
+                    <p class="remuneration-value">
+                        <?= htmlspecialchars($offer['remuneration']) ?>
+                    </p>
+                </div>
+            <?php endif; ?>
+
+            <!-- Informations sur l'entreprise -->
+            <div class="entreprise-card">
+                <h2>🏢 À propos de l'entreprise</h2>
+                <h3><?= htmlspecialchars($offer['entreprise_nom']) ?></h3>
+                
+                <?php if (!empty($offer['entreprise_description'])): ?>
+                    <p class="entreprise-description">
+                        <?= nl2br(htmlspecialchars($offer['entreprise_description'])) ?>
+                    </p>
+                <?php endif; ?>
+
+                <div class="entreprise-contact">
+                    <?php if (!empty($offer['entreprise_email'])): ?>
+                        <p>
+                            <strong>📧 Email :</strong> 
+                            <a href="mailto:<?= htmlspecialchars($offer['entreprise_email']) ?>">
+                                <?= htmlspecialchars($offer['entreprise_email']) ?>
+                            </a>
+                        </p>
+                    <?php endif; ?>
+
+                    <?php if (!empty($offer['entreprise_telephone'])): ?>
+                        <p>
+                            <strong>📞 Téléphone :</strong> 
+                            <?= htmlspecialchars($offer['entreprise_telephone']) ?>
+                        </p>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Bouton de candidature en bas (mobile) -->
+            <?php if (isset($_SESSION['user_id']) && !$hasApplied): ?>
+                <div class="candidature-footer">
+                    <a href="index.php?route=candidater&offre=<?= htmlspecialchars($offer['id']) ?>" 
+                       class="btn btn-primary btn-block btn-large">
+                        📄 Postuler à cette offre
+                    </a>
+                </div>
+            <?php endif; ?>
+
+            <!-- Bouton retour -->
+            <div class="navigation-footer">
+                <a href="index.php?route=offres" class="btn btn-secondary">
+                    ← Retour aux offres
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
