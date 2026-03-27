@@ -8,6 +8,8 @@ require_once '../app/controller/EnterpriseController.php';
 require_once '../app/controller/AuthController.php';
 require_once '../app/controller/StudentController.php';
 require_once '../app/controller/ManagementController.php';
+require_once '../app/controller/OfferController.php';
+require_once '../app/controller/CandidatureController.php';
 
 $route = $_GET['route'] ?? 'accueil';
 
@@ -112,7 +114,44 @@ switch ($route) {
             $controller->showForgotPasswordForm();
         }
         break;
+    
+    case 'connexion':
+        $controller = new AuthController();
+        $controller->login();
+        break;
 
+    case 'inscription':
+        $controller = new AuthController();
+        $controller->register();
+        break;
+
+    case 'deconnexion':
+        $controller = new AuthController();
+        $controller->logout();
+        break;
+    case 'offres':
+        $controller = new OfferController();
+        // Note: L'autre IA a peut-être renommé cette méthode en index() au lieu de list()
+        // Si ça fait une erreur, remplace list() par index()
+        $controller->list(); 
+        break;
+
+    case 'offre-details': // Route spécifiée par l'autre IA
+        $controller = new OfferController();
+        $controller->details();
+        break;
+    case 'candidater':
+        $controller = new CandidatureController();
+        // Gère l'affichage du formulaire ET l'upload (selon la méthode de l'autre IA)
+        // Vérifie juste dans son CandidatureController.php si la méthode s'appelle bien create() ou candidater()
+        $controller->create(); 
+        break;
+
+    case 'mes-candidatures':
+        $controller = new CandidatureController();
+        // Affiche l'historique de l'étudiant
+        $controller->index(); 
+        break;
     // --- Cas par défaut : la route n'existe pas ---
     default:
         http_response_code(404); // Informe le navigateur que la page n'existe pas
