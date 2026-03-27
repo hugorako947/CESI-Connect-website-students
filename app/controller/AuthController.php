@@ -1,129 +1,112 @@
 <?php
 // app/controller/AuthController.php
 
+require_once '../app/model/UserManager.php';
+
 class AuthController {
+    
+    /**
+     * Gère l'affichage de la page de connexion ET le traitement du formulaire
+     */
+    public function login() {
+        // 1. Si l'utilisateur valide le formulaire (POST)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            // Nettoyage des champs
+            $email = trim($_POST['email'] ?? '');
+            $password = $_POST['password'] ?? '';
 
-// Affiche le formulaire de connexion
-public function showLoginForm() {
-require_once '../app/views/connexion.php';
-}
+            if (!empty($email) && !empty($password)) {
+                
+                $userManager = new UserManager();
+                $user = $userManager->getUserByEmail($email);
 
-// Affiche le formulaire d'inscription
-public function showRegisterForm() {
-require_once '../app/views/inscription.php';
-}
+                // Vérification du mot de passe haché (Sécurité STx 11)
+                if ($user && password_verify($password, $user['mot_de_passe'])) {
+                    
+                    // Succès : Création de la session utilisateur
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['user_nom'] = $user['nom'];
+                    $_SESSION['user_prenom'] = $user['prenom'];
+                    $_SESSION['user_role'] = $user['id_role']; // 1=Admin, 2=Pilote, 3=Etudiant
 
-// Gère la déconnexion
-public function logout() {
-// On détruit la session
-session_destroy();
-// On redirige vers l'accueil
-header('Location: index.php?route=accueil');
-exit();
-}
-
-// Affiche le formulaire mot de passe oublié
-public function showForgotPasswordForm() {
-    require_once '../app/views/password-forgotten.php';
-}
-
-// Traite la demande de mot de passe oublié
-public function handleForgotPassword() {
-    // On récupère l'email soumis par le formulaire
-    $email = trim($_POST['email'] ?? '');
-
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Veuillez entrer une adresse email valide.";
-        require_once '../app/views/password-forgotten.php';
-        return;
+                    // Redirection vers l'accueil
+                    header('Location: index.php?route=accueil');
+                    exit();
+                    
+                } else {
+                    $erreur = "Email ou mot de passe incorrect.";
+                }
+            } else {
+                $erreur = "Veuillez remplir tous les champs.";
+            }
+        }
+        
+        // 2. Affichage de la vue de connexion (avec les erreurs s'il y en a)
+        require_once '../app/views/connexion.php';
     }
 
-    // On se connecte à la BDD
-    require_once '../app/models/database.php';
-    $database = new Database();
-    $conn = $database->getConnection();
+    /**
+     * Gère l'affichage de la page d'inscription ET la création du compte
+     */
+    public function register() {
+        // 1. Si l'utilisateur valide le formulaire (POST)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            // Nettoyage des champs
+            $nom = trim($_POST['nom'] ?? '');
+            $prenom = trim($_POST['prenom'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $password = $_POST['password'] ?? '';
+            $password_confirm = $_POST['password_confirm'] ?? '';
 
-    // On vérifie si l'email existe dans la table utilisateurs
-    $stmt = $conn->prepare("SELECT id, nom, prenom FROM utilisateurs WHERE email = :email");
-    $stmt->execute([':email' => $email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            // Vérifier que tout est rempli
+            if (!empty($nom) && !empty($prenom) && !empty($email) && !empty($password)) {
+                
+                // Vérifier que les mots de passe correspondent
+                if ($password === $password_confirm) {
+                    
+                    $userManager = new UserManager();
 
-    if (!$user) {
-        // On affiche un message neutre pour ne pas révéler si l'email existe
-        $success = "Si cette adresse est associée à un compte, un mot de passe temporaire a été envoyé.";
-        require_once '../app/views/password-forgotten.php';
-        return;
+                    // Vérifier si l'email n'existe pas déjà en base
+                    if (!$userManager->getUserByEmail($email)) {
+                        
+                        // Hachage BCRYPT du mot de passe (Sécurité STx 11)
+                        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+                        // Insertion dans la base de données
+                        if ($userManager->createUser($nom, $prenom, $email, $hashed_password)) {
+                            // Succès : on redirige vers la connexion avec un message de succès
+                            header('Location: index.php?route=connexion&success=inscription');
+                            exit();
+                        } else {
+                            $erreur = "Une erreur est survenue lors de l'inscription.";
+                        }
+                    } else {
+                        $erreur = "Cette adresse email est déjà utilisée.";
+                    }
+                } else {
+                    $erreur = "Les mots de passe ne correspondent pas.";
+                }
+            } else {
+                $erreur = "Veuillez remplir tous les champs obligatoires.";
+            }
+        }
+
+        // 2. Affichage de la vue d'inscription (avec les erreurs s'il y en a)
+        require_once '../app/views/inscription.php';
     }
 
-    // On génère un mot de passe temporaire aléatoire de 10 caractères
-    $nouveauMotDePasse = $this->genererMotDePasseAleatoire(10);
-
-    // On le hache avant de le stocker en BDD
-    $motDePasseHache = password_hash($nouveauMotDePasse, PASSWORD_DEFAULT);
-
-    // On met à jour le mot de passe en BDD
-    $stmtUpdate = $conn->prepare("UPDATE utilisateurs SET mot_de_passe = :mdp WHERE id = :id");
-    $stmtUpdate->execute([
-        ':mdp' => $motDePasseHache,
-        ':id'  => $user['id']
-    ]);
-
-    // On envoie l'email avec le mot de passe temporaire
-    $envoiReussi = $this->envoyerEmailMotDePasse(
-        $email,
-        $user['prenom'] . ' ' . $user['nom'],
-        $nouveauMotDePasse
-    );
-
-    if ($envoiReussi) {
-        $success = "Un mot de passe temporaire a été envoyé à l'adresse " . htmlspecialchars($email) . ". Pensez à le changer après connexion.";
-    } else {
-        $error = "Une erreur est survenue lors de l'envoi de l'email. Veuillez réessayer.";
+    /**
+     * Gère la déconnexion de l'utilisateur
+     */
+    public function logout() {
+        // On détruit toutes les données de session
+        session_unset();
+        session_destroy();
+        
+        // On redirige vers l'accueil
+        header('Location: index.php?route=accueil');
+        exit();
     }
-
-    require_once '../app/views/password-forgrotten.php';
-}
-
-// Génère un mot de passe aléatoire sécurisé
-private function genererMotDePasseAleatoire($longueur = 10) {
-    $caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%';
-    $motDePasse = '';
-    $max = strlen($caracteres) - 1;
-    for ($i = 0; $i < $longueur; $i++) {
-        $motDePasse .= $caracteres[random_int(0, $max)];
-    }
-    return $motDePasse;
-}
-
-// Envoie l'email avec le mot de passe temporaire
-private function envoyerEmailMotDePasse($destinataire, $nomComplet, $motDePasseTemporaire) {
-    $sujet = "CESI Connect - Votre mot de passe temporaire";
-
-    $message = "
-    <html>
-    <head><meta charset='UTF-8'></head>
-    <body style='font-family: sans-serif; color: #111827;'>
-        <h2 style='color: #2563eb;'>CESI Connect</h2>
-        <p>Bonjour <strong>" . htmlspecialchars($nomComplet) . "</strong>,</p>
-        <p>Vous avez demandé la réinitialisation de votre mot de passe.</p>
-        <p>Voici votre mot de passe temporaire :</p>
-        <div style='background:#f3f4f6; padding:1rem; border-radius:8px; font-size:1.4rem; font-weight:bold; letter-spacing:2px; text-align:center; color:#2563eb;'>
-            " . htmlspecialchars($motDePasseTemporaire) . "
-        </div>
-        <p style='margin-top:1.5rem;'>Connectez-vous avec ce mot de passe puis changez-le immédiatement depuis votre profil.</p>
-        <p style='color:#6b7280; font-size:0.85rem;'>Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</p>
-        <hr>
-        <p style='color:#6b7280; font-size:0.8rem;'>&copy; 2026 CESI Connect</p>
-    </body>
-    </html>
-    ";
-
-    // En-têtes pour un email HTML
-    $headers  = "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-    $headers .= "From: noreply@cesi-connect.fr\r\n";
-    $headers .= "Reply-To: noreply@cesi-connect.fr\r\n";
-
-    return mail($destinataire, $sujet, $message, $headers);
-}
 }
