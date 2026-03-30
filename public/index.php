@@ -56,12 +56,12 @@ switch ($route) {
     // --- Routes d'authentification (AuthController) ---
     case 'connexion':
         $controller = new AuthController();
-        $controller->showLoginForm();
+        $controller->Login();
         break;
 
     case 'inscription':
         $controller = new AuthController();
-        $controller->showRegisterForm();
+        $controller->Register();
         break;
 
     case 'deconnexion':
