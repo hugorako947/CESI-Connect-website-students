@@ -1,16 +1,22 @@
 <?php
 class Database {
+    // Tes identifiants Alwaysdata
     private $host = "mysql-daoud.alwaysdata.net";
     private $db_name = "daoud_web4all_bdd";
     private $username = "daoud";
     private $password = "Lezard83655";
+    
     public $conn;
+    
+    // Il manquait cette ligne pour que le Singleton (getInstance) fonctionne !
+    private static $instance = null;
 
      public function __construct() {
         $this->conn = null;
         try {
+            // CORRECTION ICI : On utilise bien $this->host et on enlève le port 3307 local !
             $this->conn = new PDO(
-                "mysql:host=127.0.0.1;port=3307;dbname=" . $this->db_name . ";charset=utf8mb4",
+                "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4",
                 $this->username,
                 $this->password
             );
