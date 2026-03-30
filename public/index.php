@@ -2,23 +2,26 @@
 
 session_start();
 
+// === CHARGEMENT DES CONTROLLERS ===
 require_once '../app/controller/HomeController.php';
 require_once '../app/controller/OfferController.php';
 require_once '../app/controller/EnterpriseController.php';
 require_once '../app/controller/AuthController.php';
 require_once '../app/controller/StudentController.php';
 require_once '../app/controller/ManagementController.php';
-require_once '../app/controller/OfferController.php';
 require_once '../app/controller/CandidatureController.php';
 
+// === RÉCUPÉRATION DE LA ROUTE ===
 $route = $_GET['route'] ?? 'accueil';
 
+// === ROUTAGE ===
 switch ($route) {
 
-    // --- Routes des pages générales (HomeController) ---
+    // ========== PAGES GÉNÉRALES (HomeController) ==========
+    
     case 'accueil':
-        $controller = new HomeController(); // Crée un objet "Spécialiste de l'accueil"
-        $controller->index();               // Demande à l'objet d'exécuter sa méthode "index"
+        $controller = new HomeController();
+        $controller->index();
         break;
 
     case 'mentions-legales':
@@ -31,37 +34,16 @@ switch ($route) {
         $controller->contact();
         break;
 
-    // --- Routes des offres (OfferController) ---
-    case 'offres':
-        $controller = new OfferController();
-        $controller->list();
-        break;
-
-    case 'details-offre':
-        $controller = new OfferController();
-        $controller->details();
-        break;
-        
-    case 'postuler':
-        $controller = new OfferController();
-        $controller->showApplyForm();
-        break;
-
-    // --- Routes des entreprises (EnterpriseController) ---
-    case 'details-entreprise':
-        $controller = new EnterpriseController();
-        $controller->details();
-        break;
-
-    // --- Routes d'authentification (AuthController) ---
+    // ========== AUTHENTIFICATION (AuthController) ==========
+    
     case 'connexion':
         $controller = new AuthController();
-        $controller->Login();
+        $controller->login();
         break;
 
     case 'inscription':
         $controller = new AuthController();
-        $controller->Register();
+        $controller->register();
         break;
 
     case 'deconnexion':
@@ -69,7 +51,49 @@ switch ($route) {
         $controller->logout();
         break;
 
-    // --- Routes de l'espace étudiant (StudentController) ---
+    // ========== OFFRES (OfferController) ==========
+    
+    case 'offres':
+        $controller = new OfferController();
+        $controller->list();
+        break;
+
+    case 'offre-details':
+        $controller = new OfferController();
+        $controller->details();
+        break;
+
+    case 'offres-recherche':
+        $controller = new OfferController();
+        $controller->search();
+        break;
+
+    // ========== CANDIDATURES (CandidatureController) ==========
+    
+    case 'candidater':
+        $controller = new CandidatureController();
+        $controller->create();
+        break;
+
+    case 'candidater-process':
+        $controller = new CandidatureController();
+        $controller->store();
+        break;
+
+    case 'mes-candidatures':
+        $controller = new CandidatureController();
+        $controller->index();
+        break;
+
+    // ========== ENTREPRISES (EnterpriseController) ==========
+    
+    case 'details-entreprise':
+        $controller = new EnterpriseController();
+        $controller->details();
+        break;
+
+    // ========== ESPACE ÉTUDIANT (StudentController) ==========
+    
     case 'profil':
         $controller = new StudentController();
         $controller->profile();
@@ -80,12 +104,8 @@ switch ($route) {
         $controller->wishlist();
         break;
 
-    case 'candidatures':
-        $controller = new StudentController();
-        $controller->applications();
-        break;
+    // ========== GESTION (ManagementController) ==========
     
-    // --- Routes de gestion (ManagementController) ---
     case 'gestion-entreprises':
         $controller = new ManagementController();
         $controller->listEntreprises();
@@ -106,55 +126,11 @@ switch ($route) {
         $controller->suiviPilote();
         break;
 
-    case 'password-forgotten':
-        $controller = new AuthController();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $controller->handleForgotPassword();
-        } else {
-            $controller->showForgotPasswordForm();
-        }
-        break;
+    // ========== PAGE 404 ==========
     
-    case 'connexion':
-        $controller = new AuthController();
-        $controller->login();
-        break;
-
-    case 'inscription':
-        $controller = new AuthController();
-        $controller->register();
-        break;
-
-    case 'deconnexion':
-        $controller = new AuthController();
-        $controller->logout();
-        break;
-    case 'offres':
-        $controller = new OfferController();
-        // Note: L'autre IA a peut-être renommé cette méthode en index() au lieu de list()
-        // Si ça fait une erreur, remplace list() par index()
-        $controller->list(); 
-        break;
-
-    case 'offre-details': // Route spécifiée par l'autre IA
-        $controller = new OfferController();
-        $controller->details();
-        break;
-    case 'candidater':
-        $controller = new CandidatureController();
-        // Gère l'affichage du formulaire ET l'upload (selon la méthode de l'autre IA)
-        // Vérifie juste dans son CandidatureController.php si la méthode s'appelle bien create() ou candidater()
-        $controller->create(); 
-        break;
-
-    case 'mes-candidatures':
-        $controller = new CandidatureController();
-        // Affiche l'historique de l'étudiant
-        $controller->index(); 
-        break;
-    // --- Cas par défaut : la route n'existe pas ---
     default:
-        http_response_code(404); // Informe le navigateur que la page n'existe pas
-        require_once '../app/views/404.php'; // Affiche notre page d'erreur
+        http_response_code(404);
+        require_once '../app/views/404.php';
         break;
 }
+?>
