@@ -6,7 +6,7 @@ class Database {
     private $password = "Lezard83655";
     public $conn;
 
-    public function getConnection() {
+     private function __construct() {
         $this->conn = null;
         try {
             $this->conn = new PDO(
@@ -18,6 +18,22 @@ class Database {
         } catch(PDOException $exception) {
             die("Erreur de connexion : " . $exception->getMessage());
         }
+    }
+
+    /**
+     * Récupérer l'instance unique de Database (Singleton)
+     */
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Récupérer la connexion PDO
+     */
+    public function getConnection() {
         return $this->conn;
     }
 }
