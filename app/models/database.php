@@ -6,7 +6,7 @@ class Database {
     private $password = "Lezard83655";
     public $conn;
 
-     private function __construct() {
+     public function __construct() {
         $this->conn = null;
         try {
             $this->conn = new PDO(
