@@ -1,10 +1,14 @@
 <?php
 // app/controller/HomeController.php
 
+require_once '../app/models/OfferManager.php';
+
 class HomeController {
     
     // Affiche la page d'accueil
     public function index() {
+        $offerManager = new OfferManager();
+        $latestOffers = $offerManager->getAllOffers(3, 0);
         require_once '../app/views/accueil.php'; 
     }
 

@@ -1,7 +1,7 @@
 <?php
 // app/controller/AuthController.php
 
-require_once '../app/model/UserManager.php';
+require_once '../app/models/UserManager.php';
 
 /**
  * AuthController - Gestion de l'authentification

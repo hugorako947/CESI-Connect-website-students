@@ -1,6 +1,9 @@
 <?php
 // app/controller/StudentController.php
 
+require_once '../app/controller/AuthController.php';
+require_once '../app/models/OfferManager.php';
+
 class StudentController {
 
 // Affiche la page de profil
@@ -11,8 +14,10 @@ require_once '../app/views/profil.php';
 
 // Affiche la wishlist de l'étudiant
 public function wishlist() {
-// TODO: Vérifier si l'utilisateur est bien connecté
-// TODO: Récupérer les offres de la wishlist depuis la BDD
+    AuthController::requireAuth();
+    $offerManager = new OfferManager();
+    $userId = (int) ($_SESSION['user_id'] ?? 0);
+    $wishlist_offers = $userId ? $offerManager->getWishlistOffers($userId) : [];
 require_once '../app/views/wishlist.php';
 }
 

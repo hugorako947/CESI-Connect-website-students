@@ -142,4 +142,24 @@ class OfferManager
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Récupérer les offres présentes dans la wishlist d'un utilisateur
+     */
+    public function getWishlistOffers($userId)
+    {
+        $query = "SELECT o.*, 
+                         e.nom AS entreprise_nom
+                  FROM wishlist w
+                  INNER JOIN offres o ON w.id_offre = o.id
+                  INNER JOIN entreprises e ON o.id_entreprise = e.id
+                  WHERE w.id_utilisateur = :user_id
+                  ORDER BY o.date_publication DESC";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

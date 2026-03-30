@@ -4,7 +4,13 @@
                 <h1>Connexion</h1>
                 <p>Accédez à votre espace étudiant ou pilote.</p>
 
-                <form action="dashboard.php" method="POST" class="auth-form">
+                <?php if (isset($erreur) && !empty($erreur)): ?>
+                    <div class="alert alert-error" role="alert">
+                        <?= htmlspecialchars($erreur) ?>
+                    </div>
+                <?php endif; ?>
+
+                <form action="index.php?route=connexion" method="POST" class="auth-form">
                     
                     <div class="form-group">
                         <label for="email">Adresse Email</label>
@@ -20,12 +26,7 @@
                         <a href="index.php?route=password-forgotten">Mot de passe oublié ?</a>
                     </div>
 
-                    <div class="form-group">
-                        <label for="captcha">Captcha Anti-Bot</label>
-                        <input type="captcha" id="captcha" name="captcha" placeholder="1+1=?" required>
-                    </div>
-
-                    <a href="index.php?route=suivi-etudiants-pilote" class="btn-submit">Se connecter</a>
+                    <button type="submit" class="btn-submit">Se connecter</button>
 
                     <div class="form-footer">
                         <p>Pas encore de compte ? <a href="index.php?route=inscription">S'inscrire</a></p>

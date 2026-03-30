@@ -48,7 +48,7 @@
                 
                         <div class="card-footer">
                             <span class="date"><?= date('d/m/Y', strtotime($offre['date_publication'])) ?></span>
-                            <a href="index.php?route=details-offre&id=<?= $offre['id'] ?>" class="btn-primary">Détails</a>
+                            <a href="index.php?route=offre-details&id=<?= $offre['id'] ?>" class="btn-primary">Détails</a>
                         </div>
                     </article>
                 <?php endforeach; ?>

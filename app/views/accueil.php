@@ -47,27 +47,29 @@
     </div>
     
     <div class="cards-container">
-        <article class="card">
-            <div class="card-header">
-                <h3>Développeur Web</h3>
-                <span class="tag">Stage</span>
-            </div>
-            <p class="company">TechCorp - Paris</p>
-            <p class="desc">Développement d'une application React...</p>
-            <!-- CORRECTION : Remplacement du "#" pour pointer vers le détail de l'offre (id=1 simulé) -->
-            <a href="index.php?route=details-offre&id=1" class="btn-details">Voir l'offre</a>
-        </article>
-
-        <article class="card">
-            <div class="card-header">
-                <h3>Admin Système</h3>
-                <span class="tag">Alternance</span>
-            </div>
-            <p class="company">DataSecure - Lyon</p>
-            <p class="desc">Gestion de parc informatique et sécurité...</p>
-            <!-- CORRECTION : Simulation de l'offre id=2 -->
-            <a href="index.php?route=details-offre&id=2" class="btn-details">Voir l'offre</a>
-        </article>
+        <?php if (!empty($latestOffers)): ?>
+            <?php foreach ($latestOffers as $offer): ?>
+                <article class="card">
+                    <div class="card-header">
+                        <h3><?= htmlspecialchars($offer['titre'] ?? '') ?></h3>
+                        <span class="tag">Offre</span>
+                    </div>
+                    <p class="company"><?= htmlspecialchars($offer['entreprise_nom'] ?? '') ?></p>
+                    <p class="desc">
+                        <?php
+                        $desc = $offer['description'] ?? '';
+                        $snippet = substr($desc, 0, 110);
+                        echo htmlspecialchars($snippet) . (strlen($desc) > 110 ? '...' : '');
+                        ?>
+                    </p>
+                    <a href="index.php?route=offre-details&id=<?= (int) ($offer['id'] ?? 0) ?>" class="btn-details">
+                        Voir l'offre
+                    </a>
+                </article>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>Aucune offre récente pour le moment.</p>
+        <?php endif; ?>
     </div>
 </section>
 

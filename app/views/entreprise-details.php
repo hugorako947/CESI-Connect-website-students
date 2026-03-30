@@ -1,6 +1,6 @@
 <?php include 'header.php'; ?>
 
-<!-- Les informations ici (nom, description, etc.) seront bientôt chargées par le Contrôleur -->
+<!-- Affiche les informations d'une entreprise et la liste de ses offres -->
 <div class="company-profile-layout">
 
     <!-- COLONNE PRINCIPALE -->
@@ -8,35 +8,52 @@
         <header class="company-header">
             <div class="company-logo-placeholder">T</div>
             <div class="company-title">
-                <h1>TechCorp</h1>
-                <p>Paris (75013) • Leader de la Green Tech</p>
+                <h1><?= htmlspecialchars($enterprise['nom'] ?? '') ?></h1>
+                <?php if (!empty($enterprise['description'])): ?>
+                    <p><?= htmlspecialchars(substr($enterprise['description'], 0, 60)) ?><?= (strlen($enterprise['description']) > 60 ? '...' : '') ?></p>
+                <?php endif; ?>
             </div>
         </header>
 
         <article class="company-description">
             <h2>À propos de nous</h2>
             <p>
-                TechCorp est une start-up innovante qui développe des solutions technologiques pour répondre aux défis écologiques. 
-                Rejoindre notre équipe, c'est participer à des projets qui ont un impact positif sur la planète.
-                Nous valorisons la créativité, l'autonomie et l'esprit d'équipe.
+                <?= nl2br(htmlspecialchars($enterprise['description'] ?? '')) ?>
             </p>
         </article>
 
         <section class="company-offers">
-            <h2>Offres de stage chez TechCorp</h2>
+            <h2>Offres chez <?= htmlspecialchars($enterprise['nom'] ?? '') ?></h2>
             <div class="cards-container vertical">
-                <!-- Ces cartes seront générées dynamiquement en PHP -->
-                <article class="card">
-                    <div class="card-header">
-                        <h3>Développeur Web Fullstack</h3>
-                        <span class="tag">Stage</span>
-                    </div>
-                    <p class="desc">Participez au développement de notre plateforme SaaS en React/Node.js...</p>
-                    <div class="card-footer">
-                        <span class="date">Publié il y a 2 jours</span>
-                        <a href="index.php?route=details-offre&id=1" class="btn-details">Voir les détails</a>
-                    </div>
-                </article>
+                <?php if (!empty($offers)): ?>
+                    <?php foreach ($offers as $offer): ?>
+                        <article class="card">
+                            <div class="card-header">
+                                <h3><?= htmlspecialchars($offer['titre'] ?? '') ?></h3>
+                                <span class="tag">Offre</span>
+                            </div>
+                            <p class="desc">
+                                <?php
+                                $desc = $offer['description'] ?? '';
+                                $snippet = substr($desc, 0, 120);
+                                echo htmlspecialchars($snippet) . (strlen($desc) > 120 ? '...' : '');
+                                ?>
+                            </p>
+                            <div class="card-footer">
+                                <span class="date">
+                                    <?php if (!empty($offer['date_publication'])): ?>
+                                        <?= date('d/m/Y', strtotime($offer['date_publication'])) ?>
+                                    <?php endif; ?>
+                                </span>
+                                <a href="index.php?route=offre-details&id=<?= (int) ($offer['id'] ?? 0) ?>" class="btn-details">
+                                    Voir les détails
+                                </a>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>Aucune offre pour cette entreprise pour le moment.</p>
+                <?php endif; ?>
             </div>
         </section>
     </section>
@@ -46,8 +63,12 @@
         <div class="sidebar-card">
             <h3>Contact</h3>
             <ul class="info-list">
-                <li><strong>Email :</strong> contact@techcorp.fr</li>
-                <li><strong>Téléphone :</strong> 01 23 45 67 89</li>
+                <?php if (!empty($enterprise['email_contact'])): ?>
+                    <li><strong>Email :</strong> <?= htmlspecialchars($enterprise['email_contact']) ?></li>
+                <?php endif; ?>
+                <?php if (!empty($enterprise['telephone'])): ?>
+                    <li><strong>Téléphone :</strong> <?= htmlspecialchars($enterprise['telephone']) ?></li>
+                <?php endif; ?>
             </ul>
         </div>
         <div class="sidebar-card">
