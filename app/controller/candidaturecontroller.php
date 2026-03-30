@@ -1,29 +1,24 @@
 <?php
+// app/controller/CandidatureController.php
 
-namespace App\Controller;
-
-use App\Model\Database;
-use App\Model\CandidatureManager;
-use App\Model\OfferManager;
+require_once '../app/model/CandidatureManager.php';
+require_once '../app/model/OfferManager.php';
 
 /**
  * CandidatureController - Gestion des candidatures
- * Responsable de l'affichage du formulaire et du traitement des candidatures
+ * Version adaptée pour Web4All
  */
-class CandidatureController
-{
-    private CandidatureManager $candidatureManager;
-    private OfferManager $offerManager;
-    private string $uploadDir;
+class CandidatureController {
+    private $candidatureManager;
+    private $offerManager;
+    private $uploadDir;
 
     /**
      * Constructeur - Initialise les managers et le dossier d'upload
      */
-    public function __construct()
-    {
-        $db = Database::getInstance()->getConnection();
-        $this->candidatureManager = new CandidatureManager($db);
-        $this->offerManager = new OfferManager($db);
+    public function __construct() {
+        $this->candidatureManager = new CandidatureManager();
+        $this->offerManager = new OfferManager();
         
         // Dossier d'upload HORS de public/ pour sécurité
         $this->uploadDir = dirname(__DIR__, 2) . '/uploads/candidatures/';
@@ -32,18 +27,12 @@ class CandidatureController
         if (!is_dir($this->uploadDir)) {
             mkdir($this->uploadDir, 0755, true);
         }
-
-        // Démarrer la session si nécessaire
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
     }
 
     /**
      * Afficher le formulaire de candidature
      */
-    public function create(): void
-    {
+    public function create() {
         // Vérifier que l'utilisateur est connecté
         AuthController::requireAuth();
 
@@ -51,7 +40,7 @@ class CandidatureController
         $offerId = filter_input(INPUT_GET, 'offre', FILTER_VALIDATE_INT);
 
         if (!$offerId) {
-            $_SESSION['errors'] = ["Offre invalide."];
+            $_SESSION['erreur'] = "Offre invalide.";
             header('Location: index.php?route=offres');
             exit;
         }
@@ -60,7 +49,7 @@ class CandidatureController
         $offer = $this->offerManager->getById($offerId);
 
         if (!$offer) {
-            $_SESSION['errors'] = ["Offre introuvable."];
+            $_SESSION['erreur'] = "Offre introuvable.";
             header('Location: index.php?route=offres');
             exit;
         }
@@ -70,22 +59,19 @@ class CandidatureController
         $hasApplied = $this->candidatureManager->hasApplied($userId, $offerId);
 
         if ($hasApplied) {
-            $_SESSION['errors'] = ["Vous avez déjà candidaté pour cette offre."];
+            $_SESSION['erreur'] = "Vous avez déjà candidaté pour cette offre.";
             header('Location: index.php?route=offre-details&id=' . $offerId);
             exit;
         }
 
         // Afficher le formulaire
-        require_once __DIR__ . '/../views/header.php';
-        require_once __DIR__ . '/../views/candidater.php';
-        require_once __DIR__ . '/../views/footer.php';
+        require_once '../app/views/candidater.php';
     }
 
     /**
      * Traiter la soumission du formulaire de candidature
      */
-    public function store(): void
-    {
+    public function store() {
         // Vérifier que l'utilisateur est connecté
         AuthController::requireAuth();
 
@@ -143,7 +129,7 @@ class CandidatureController
 
         // Si erreurs, retour au formulaire
         if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
+            $_SESSION['erreurs'] = $errors;
             header('Location: index.php?route=candidater&offre=' . $offerId);
             exit;
         }
@@ -162,7 +148,7 @@ class CandidatureController
             header('Location: index.php?route=mes-candidatures');
             exit;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // En cas d'erreur, supprimer les fichiers uploadés
             if ($cvPath && file_exists($this->uploadDir . $cvPath)) {
                 unlink($this->uploadDir . $cvPath);
@@ -171,7 +157,7 @@ class CandidatureController
                 unlink($this->uploadDir . $lmPath);
             }
 
-            $_SESSION['errors'] = ["Erreur lors de l'enregistrement de la candidature."];
+            $_SESSION['erreur'] = "Erreur lors de l'enregistrement de la candidature.";
             header('Location: index.php?route=candidater&offre=' . $offerId);
             exit;
         }
@@ -179,15 +165,8 @@ class CandidatureController
 
     /**
      * Valider et uploader un fichier de manière sécurisée
-     * 
-     * @param array $file Fichier depuis $_FILES
-     * @param string $type Type de fichier ('cv' ou 'lm')
-     * @param int $userId ID de l'utilisateur
-     * @param int $offerId ID de l'offre
-     * @return array Résultat avec 'success' et 'path' ou 'error'
      */
-    private function validateAndUploadFile(array $file, string $type, int $userId, int $offerId): array
-    {
+    private function validateAndUploadFile($file, $type, $userId, $offerId) {
         // Extensions autorisées
         $allowedExtensions = ['pdf', 'doc', 'docx'];
         
@@ -213,7 +192,7 @@ class CandidatureController
             ];
         }
 
-        // Vérifier le type MIME (sécurité supplémentaire)
+        // Vérifier le type MIME
         $allowedMimes = [
             'application/pdf',
             'application/msword',
@@ -240,7 +219,7 @@ class CandidatureController
         if (move_uploaded_file($file['tmp_name'], $filePath)) {
             return [
                 'success' => true,
-                'path' => $fileName // Stocker uniquement le nom, pas le chemin complet
+                'path' => $fileName
             ];
         } else {
             return [
@@ -253,16 +232,14 @@ class CandidatureController
     /**
      * Afficher l'historique des candidatures de l'utilisateur connecté
      */
-    public function myApplications(): void
-    {
+    public function index() {
         // Vérifier que l'utilisateur est connecté
         AuthController::requireAuth();
 
         $userId = $_SESSION['user_id'];
         $candidatures = $this->candidatureManager->getByUser($userId);
 
-        require_once __DIR__ . '/../views/header.php';
-        require_once __DIR__ . '/../views/mes-candidatures.php';
-        require_once __DIR__ . '/../views/footer.php';
+        require_once '../app/views/mes-candidatures.php';
     }
 }
+?>
