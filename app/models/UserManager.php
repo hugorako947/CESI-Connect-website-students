@@ -1,14 +1,13 @@
 <?php
 // app/model/UserManager.php
 
-require_once 'Database.php';
+require_once 'database.php';
 
 class UserManager {
     private $conn;
 
-    // Le constructeur initialise la connexion à la base de données
     public function __construct() {
-        $db = new Database();
+        $db = Database::getInstance();
         $this->conn = $db->getConnection();
     }
 
@@ -17,20 +16,39 @@ class UserManager {
      * Utilisé pour la connexion et pour vérifier si un email existe déjà.
      */
     public function getUserByEmail($email) {
-        // Requête préparée pour contrer les injections SQL
-        $query = "SELECT * FROM utilisateurs WHERE email = :email LIMIT 1";
+        $query = "SELECT u.*, r.nom AS role_nom 
+                  FROM utilisateurs u
+                  INNER JOIN roles r ON u.id_role = r.id
+                  WHERE u.email = :email 
+                  LIMIT 1";
         
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
         
-        // Retourne les données de l'utilisateur ou 'false' s'il n'existe pas
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Récupérer un utilisateur par son ID
+     */
+    public function getUserById($id) {
+        $query = "SELECT u.*, r.nom AS role_nom 
+                  FROM utilisateurs u
+                  INNER JOIN roles r ON u.id_role = r.id
+                  WHERE u.id = :id 
+                  LIMIT 1";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     /**
      * Insère un nouvel utilisateur dans la base de données
-     * Utilisé pour l'inscription. Par défaut, l'id_role est 3 (Étudiant).
+     * Par défaut, l'id_role est 3 (Étudiant).
      */
     public function createUser($nom, $prenom, $email, $mot_de_passe, $id_role = 3) {
         try {
@@ -48,8 +66,35 @@ class UserManager {
             return $stmt->execute();
 
         } catch(PDOException $e) {
-            // Si l'email existe déjà (contrainte UNIQUE dans la BDD), on capture l'erreur
             return false;
         }
     }
+
+    /**
+     * Authentifier un utilisateur (utilisé par AuthController)
+     */
+    public function authenticate($email, $password) {
+        $user = $this->getUserByEmail($email);
+        
+        if ($user && password_verify($password, $user['mot_de_passe'])) {
+            // Ne pas renvoyer le mot de passe
+            unset($user['mot_de_passe']);
+            return $user;
+        }
+        
+        return false;
+    }
+
+    /**
+     * Vérifier si un email existe déjà
+     */
+    public function emailExists($email) {
+        $query = "SELECT COUNT(*) FROM utilisateurs WHERE email = :email";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        
+        return $stmt->fetchColumn() > 0;
+    }
 }
+?>
