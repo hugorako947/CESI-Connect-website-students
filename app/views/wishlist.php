@@ -28,7 +28,7 @@
                     <div class="card-footer">
                         <a href="index.php?route=offre-details&id=<?= (int) ($offre['id'] ?? 0) ?>" class="btn-details">Voir les détails</a>
                         <!-- Lien pour retirer l'offre de la wishlist (route à implémenter côté contrôleur) -->
-                        <a href="index.php?route=wishlist-remove&id=<?= (int) ($offre['id'] ?? 0) ?>" class="btn-remove">Retirer</a>
+                        <a href="index.php?route=wishlist-remove&id=<?= (int) ($offre['id'] ?? 0) ?>&redirect=<?= urlencode('index.php?route=wishlist') ?>" class="btn-remove">Retirer</a>
                     </div>
                 </article>
             <?php endforeach; ?>

@@ -104,6 +104,16 @@ switch ($route) {
         $controller->wishlist();
         break;
 
+    case 'wishlist-add':
+        $controller = new StudentController();
+        $controller->addToWishlist();
+        break;
+
+    case 'wishlist-remove':
+        $controller = new StudentController();
+        $controller->removeFromWishlist();
+        break;
+
     // ========== GESTION (ManagementController) ==========
     
     case 'gestion-entreprises':

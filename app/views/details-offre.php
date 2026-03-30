@@ -1,3 +1,4 @@
+<?php include 'header.php'; ?>
 <!-- Vue de détails d'une offre de stage/alternance -->
 <section class="details-offre-section">
     <div class="container">
@@ -42,6 +43,22 @@
 
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="offre-actions">
+                    <?php if (!empty($isInWishlist)): ?>
+                        <a href="index.php?route=wishlist-remove&id=<?= (int) $offer['id'] ?>&redirect=<?= urlencode('index.php?route=offre-details&id=' . (int) $offer['id']) ?>"
+                           class="btn btn-outline"
+                           title="Retirer de ma wish-list"
+                           aria-label="Retirer de ma wish-list">
+                            ❤ Retirer de la wish-list
+                        </a>
+                    <?php else: ?>
+                        <a href="index.php?route=wishlist-add&id=<?= (int) $offer['id'] ?>&redirect=<?= urlencode('index.php?route=offre-details&id=' . (int) $offer['id']) ?>"
+                           class="btn btn-outline"
+                           title="Ajouter à ma wish-list"
+                           aria-label="Ajouter à ma wish-list">
+                            ♡ Ajouter à la wish-list
+                        </a>
+                    <?php endif; ?>
+
                     <?php if ($hasApplied): ?>
                         <span class="badge badge-success">
                             ✓ Vous avez déjà candidaté
@@ -55,7 +72,7 @@
                 </div>
             <?php else: ?>
                 <div class="offre-actions">
-                    <a href="index.php?route=login" class="btn btn-outline btn-large">
+                    <a href="index.php?route=connexion" class="btn btn-outline btn-large">
                         🔒 Connectez-vous pour candidater
                     </a>
                 </div>
@@ -133,3 +150,4 @@
         </div>
     </div>
 </section>
+<?php include 'footer.php'; ?>

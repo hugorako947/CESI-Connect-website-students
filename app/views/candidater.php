@@ -1,3 +1,4 @@
+<?php include 'header.php'; ?>
 <!-- Vue du formulaire de candidature -->
 <section class="candidature-section">
     <div class="container">
@@ -92,3 +93,4 @@
         </div>
     </div>
 </section>
+<?php include 'footer.php'; ?>

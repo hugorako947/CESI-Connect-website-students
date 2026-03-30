@@ -96,5 +96,34 @@ class UserManager {
         
         return $stmt->fetchColumn() > 0;
     }
+
+    /**
+     * Vérifier si un email est déjà utilisé par un autre utilisateur
+     */
+    public function emailExistsForOtherUser($email, $userId) {
+        $query = "SELECT COUNT(*) FROM utilisateurs WHERE email = :email AND id <> :user_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Mettre à jour les informations personnelles d'un utilisateur
+     */
+    public function updateProfile($userId, $nom, $prenom, $email) {
+        $query = "UPDATE utilisateurs
+                  SET nom = :nom, prenom = :prenom, email = :email
+                  WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
+        $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }
 ?>

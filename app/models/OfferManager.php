@@ -162,4 +162,55 @@ class OfferManager
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Récupérer les identifiants d'offres présentes dans la wishlist d'un utilisateur
+     */
+    public function getWishlistOfferIds($userId)
+    {
+        $query = "SELECT id_offre FROM wishlist WHERE id_utilisateur = :user_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return array_map('intval', $stmt->fetchAll(PDO::FETCH_COLUMN));
+    }
+
+    /**
+     * Vérifier si une offre est dans la wishlist de l'utilisateur
+     */
+    public function isInWishlist($userId, $offerId)
+    {
+        $query = "SELECT COUNT(*) FROM wishlist WHERE id_utilisateur = :user_id AND id_offre = :offer_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':offer_id', $offerId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Ajouter une offre à la wishlist
+     */
+    public function addToWishlist($userId, $offerId)
+    {
+        $query = "INSERT INTO wishlist (id_utilisateur, id_offre) VALUES (:user_id, :offer_id)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':offer_id', $offerId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    /**
+     * Retirer une offre de la wishlist
+     */
+    public function removeFromWishlist($userId, $offerId)
+    {
+        $query = "DELETE FROM wishlist WHERE id_utilisateur = :user_id AND id_offre = :offer_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':offer_id', $offerId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }

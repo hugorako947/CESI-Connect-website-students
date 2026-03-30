@@ -34,6 +34,11 @@ class OfferController {
         $offres = $this->offerManager->getAllOffers($perPage, $offset);
         $totalOffers = $this->offerManager->countAll();
         $totalPages = ceil($totalOffers / $perPage);
+        $wishlistOfferIds = [];
+
+        if (isset($_SESSION['user_id'])) {
+            $wishlistOfferIds = $this->offerManager->getWishlistOfferIds((int) $_SESSION['user_id']);
+        }
 
         // Afficher la vue
         require_once '../app/views/liste-offres.php';
@@ -65,11 +70,13 @@ class OfferController {
 
         // Vérifier si l'utilisateur a déjà candidaté (si connecté)
         $hasApplied = false;
+        $isInWishlist = false;
         if (isset($_SESSION['user_id'])) {
             $hasApplied = $this->candidatureManager->hasApplied(
                 $_SESSION['user_id'], 
                 $offerId
             );
+            $isInWishlist = $this->offerManager->isInWishlist((int) $_SESSION['user_id'], $offerId);
         }
 
         // Récupérer le nombre de candidatures pour cette offre
@@ -90,7 +97,12 @@ class OfferController {
             exit;
         }
 
-        $offers = $this->offerManager->search($keyword);
+        $offres = $this->offerManager->search($keyword);
+        $wishlistOfferIds = [];
+
+        if (isset($_SESSION['user_id'])) {
+            $wishlistOfferIds = $this->offerManager->getWishlistOfferIds((int) $_SESSION['user_id']);
+        }
 
         require_once '../app/views/liste-offres.php';
     }
