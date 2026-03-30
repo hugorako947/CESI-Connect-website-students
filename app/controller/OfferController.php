@@ -31,7 +31,7 @@ class OfferController {
         $offset = ($page - 1) * $perPage;
 
         // Récupérer les offres
-        $offers = $this->offerManager->getAllOffers($perPage, $offset);
+        $offres = $this->offerManager->getAllOffers($perPage, $offset);
         $totalOffers = $this->offerManager->countAll();
         $totalPages = ceil($totalOffers / $perPage);
 
