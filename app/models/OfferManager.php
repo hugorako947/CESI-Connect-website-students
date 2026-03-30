@@ -1,33 +1,21 @@
 <?php
+// app/model/OfferManager.php
 
-namespace App\Model;
+// On inclut notre fichier de base de données
+require_once 'Database.php';
 
-use PDO;
-
-/**
- * OfferManager - Gestion des offres de stage et d'alternance
- * Responsable des opérations CRUD sur les offres
- */
 class OfferManager
 {
-    private PDO $db;
+    private $db;
 
-    /**
-     * Constructeur - Injection de la connexion PDO
-     */
-    public function __construct(PDO $db)
+    // On harmonise le constructeur avec le reste de ton projet
+    public function __construct()
     {
-        $this->db = $db;
+        $database = new Database();
+        $this->db = $database->getConnection();
     }
 
-    /**
-     * Récupérer toutes les offres avec les informations de l'entreprise
-     * 
-     * @param int|null $limit Nombre maximum d'offres à retourner (null = toutes)
-     * @param int $offset Décalage pour la pagination (par défaut 0)
-     * @return array Liste des offres
-     */
-    public function getAllOffers(?int $limit = null, int $offset = 0): array
+    public function getAllOffers($limit = null, $offset = 0)
     {
         $query = "SELECT o.*, e.nom AS entreprise_nom, e.email_contact AS entreprise_email
                   FROM offres o
@@ -50,13 +38,7 @@ class OfferManager
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Récupérer une offre par son ID avec les détails de l'entreprise
-     * 
-     * @param int $id ID de l'offre
-     * @return array|false Données de l'offre si trouvée, false sinon
-     */
-    public function getById(int $id): array|false
+    public function getById($id)
     {
         $query = "SELECT o.*, 
                          e.nom AS entreprise_nom, 
@@ -75,13 +57,7 @@ class OfferManager
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Récupérer les offres d'une entreprise spécifique
-     * 
-     * @param int $entrepriseId ID de l'entreprise
-     * @return array Liste des offres de cette entreprise
-     */
-    public function getByEntreprise(int $entrepriseId): array
+    public function getByEntreprise($entrepriseId)
     {
         $query = "SELECT o.*, e.nom AS entreprise_nom
                   FROM offres o
@@ -96,13 +72,7 @@ class OfferManager
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Créer une nouvelle offre
-     * 
-     * @param array $data Données de l'offre
-     * @return int ID de l'offre créée
-     */
-    public function create(array $data): int
+    public function create($data)
     {
         $query = "INSERT INTO offres (titre, description, remuneration, id_entreprise, date_publication)
                   VALUES (:titre, :description, :remuneration, :id_entreprise, NOW())";
@@ -119,14 +89,7 @@ class OfferManager
         return (int) $this->db->lastInsertId();
     }
 
-    /**
-     * Mettre à jour une offre existante
-     * 
-     * @param int $id ID de l'offre à modifier
-     * @param array $data Nouvelles données
-     * @return bool True si mise à jour réussie
-     */
-    public function update(int $id, array $data): bool
+    public function update($id, $data)
     {
         $query = "UPDATE offres 
                   SET titre = :titre, 
@@ -144,13 +107,7 @@ class OfferManager
         return $stmt->execute();
     }
 
-    /**
-     * Supprimer une offre
-     * 
-     * @param int $id ID de l'offre à supprimer
-     * @return bool True si suppression réussie
-     */
-    public function delete(int $id): bool
+    public function delete($id)
     {
         $query = "DELETE FROM offres WHERE id = :id";
         
@@ -160,12 +117,7 @@ class OfferManager
         return $stmt->execute();
     }
 
-    /**
-     * Compter le nombre total d'offres (pour pagination)
-     * 
-     * @return int Nombre total d'offres
-     */
-    public function countAll(): int
+    public function countAll()
     {
         $query = "SELECT COUNT(*) FROM offres";
         $stmt = $this->db->query($query);
@@ -173,13 +125,7 @@ class OfferManager
         return (int) $stmt->fetchColumn();
     }
 
-    /**
-     * Rechercher des offres par mot-clé
-     * 
-     * @param string $keyword Mot-clé de recherche
-     * @return array Liste des offres correspondantes
-     */
-    public function search(string $keyword): array
+    public function search($keyword)
     {
         $query = "SELECT o.*, e.nom AS entreprise_nom
                   FROM offres o
