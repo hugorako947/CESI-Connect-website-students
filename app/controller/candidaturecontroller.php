@@ -1,8 +1,8 @@
 <?php
 // app/controller/CandidatureController.php
 
-require_once '../app/model/CandidatureManager.php';
-require_once '../app/model/OfferManager.php';
+require_once '../app/models/CandidatureManager.php';
+require_once '../app/models/OfferManager.php';
 
 /**
  * CandidatureController - Gestion des candidatures
