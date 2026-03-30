@@ -1,15 +1,19 @@
 <?php
 // app/controller/AuthController.php
 
-require_once '../app/models/UserManager.php';
+require_once '../app/model/UserManager.php';
 
+/**
+ * AuthController - Gestion de l'authentification
+ * Version adaptée pour Web4All
+ */
 class AuthController {
     
     /**
      * Gère l'affichage de la page de connexion ET le traitement du formulaire
      */
     public function login() {
-        // 1. Si l'utilisateur valide le formulaire (POST)
+        // Si l'utilisateur valide le formulaire (POST)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Nettoyage des champs
@@ -21,14 +25,19 @@ class AuthController {
                 $userManager = new UserManager();
                 $user = $userManager->getUserByEmail($email);
 
-                // Vérification du mot de passe haché (Sécurité STx 11)
+                // Vérification du mot de passe haché
                 if ($user && password_verify($password, $user['mot_de_passe'])) {
                     
                     // Succès : Création de la session utilisateur
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['user_nom'] = $user['nom'];
                     $_SESSION['user_prenom'] = $user['prenom'];
+                    $_SESSION['user_email'] = $user['email'];
                     $_SESSION['user_role'] = $user['id_role']; // 1=Admin, 2=Pilote, 3=Etudiant
+                    $_SESSION['user_role_nom'] = $user['role_nom'] ?? 'Étudiant';
+
+                    // Message de succès
+                    $_SESSION['success'] = "Connexion réussie ! Bienvenue " . $user['prenom'] . ".";
 
                     // Redirection vers l'accueil
                     header('Location: index.php?route=accueil');
@@ -42,7 +51,7 @@ class AuthController {
             }
         }
         
-        // 2. Affichage de la vue de connexion (avec les erreurs s'il y en a)
+        // Affichage de la vue de connexion
         require_once '../app/views/connexion.php';
     }
 
@@ -50,7 +59,7 @@ class AuthController {
      * Gère l'affichage de la page d'inscription ET la création du compte
      */
     public function register() {
-        // 1. Si l'utilisateur valide le formulaire (POST)
+        // Si l'utilisateur valide le formulaire (POST)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Nettoyage des champs
@@ -68,16 +77,17 @@ class AuthController {
                     
                     $userManager = new UserManager();
 
-                    // Vérifier si l'email n'existe pas déjà en base
+                    // Vérifier si l'email n'existe pas déjà
                     if (!$userManager->getUserByEmail($email)) {
                         
-                        // Hachage BCRYPT du mot de passe (Sécurité STx 11)
+                        // Hachage BCRYPT du mot de passe
                         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
                         // Insertion dans la base de données
                         if ($userManager->createUser($nom, $prenom, $email, $hashed_password)) {
-                            // Succès : on redirige vers la connexion avec un message de succès
-                            header('Location: index.php?route=connexion&success=inscription');
+                            // Succès : redirection vers la connexion
+                            $_SESSION['success'] = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
+                            header('Location: index.php?route=connexion');
                             exit();
                         } else {
                             $erreur = "Une erreur est survenue lors de l'inscription.";
@@ -93,7 +103,7 @@ class AuthController {
             }
         }
 
-        // 2. Affichage de la vue d'inscription (avec les erreurs s'il y en a)
+        // Affichage de la vue d'inscription
         require_once '../app/views/inscription.php';
     }
 
@@ -101,12 +111,65 @@ class AuthController {
      * Gère la déconnexion de l'utilisateur
      */
     public function logout() {
-        // On détruit toutes les données de session
+        // Détruire toutes les données de session
         session_unset();
         session_destroy();
         
-        // On redirige vers l'accueil
+        // Redirection vers l'accueil
         header('Location: index.php?route=accueil');
         exit();
     }
+
+    // ===== MÉTHODES STATIQUES POUR PROTÉGER LES ROUTES =====
+
+    /**
+     * Protéger une route - Vérifier que l'utilisateur est connecté
+     * Redirige vers la connexion si non authentifié
+     */
+    public static function requireAuth() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['erreur'] = "Vous devez être connecté pour accéder à cette page.";
+            header('Location: index.php?route=connexion');
+            exit();
+        }
+    }
+
+    /**
+     * Protéger une route avec vérification de rôle
+     * 
+     * @param int $requiredRole ID du rôle requis (1=Admin, 2=Pilote, 3=Étudiant)
+     */
+    public static function requireRole($requiredRole) {
+        self::requireAuth();
+
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== $requiredRole) {
+            $_SESSION['erreur'] = "Accès interdit. Droits insuffisants.";
+            header('Location: index.php?route=accueil');
+            exit();
+        }
+    }
+
+    /**
+     * Vérifier si l'utilisateur est authentifié (sans redirection)
+     * 
+     * @return bool True si connecté, false sinon
+     */
+    public static function isAuthenticated() {
+        return isset($_SESSION['user_id']);
+    }
+
+    /**
+     * Vérifier si l'utilisateur a un rôle spécifique (sans redirection)
+     * 
+     * @param int $roleId ID du rôle
+     * @return bool True si l'utilisateur a ce rôle
+     */
+    public static function hasRole($roleId) {
+        return isset($_SESSION['user_role']) && $_SESSION['user_role'] === $roleId;
+    }
 }
+?>
