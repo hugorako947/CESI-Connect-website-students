@@ -1,9 +1,9 @@
 <?php
 class Database {
-    private $host = "127.0.0.1:3307";
-    private $db_name = "web4all";
-    private $username = "root";
-    private $password = "";
+    private $host = "mysql-daoud.alwaysdata.net";
+    private $db_name = "daoud_web4all_bdd";
+    private $username = "daoud";
+    private $password = "Lezard83655";
     public $conn;
 
     public function getConnection() {
