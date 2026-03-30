@@ -1,8 +1,8 @@
 <?php
 // app/controller/OfferController.php
 
-require_once '../app/model/OfferManager.php';
-require_once '../app/model/CandidatureManager.php';
+require_once '../app/models/OfferManager.php';
+require_once '../app/models/CandidatureManager.php';
 
 /**
  * OfferController - Gestion des offres de stage et d'alternance
