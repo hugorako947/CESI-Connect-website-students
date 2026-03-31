@@ -98,7 +98,7 @@ class UserManager {
     }
 
     public function saveResetToken($email, $token) {
-        $query = "UPDATE utilisateurs SET reset_token = :token, reset_expires = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE email = :email";
+        $query = "UPDATE utilisateurs SET reset_token = :token, reset_expires = DATE_ADD(NOW(), INTERVAL 10 MINUTE) WHERE email = :email";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':token', $token);
         $stmt->bindParam(':email', $email);
