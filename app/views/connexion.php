@@ -2,7 +2,7 @@
         <section class="auth-container">
             <div class="auth-card">
                 <h1>Connexion</h1>
-                <p>Accédez à votre espace étudiant ou pilote.</p>
+                <p>Accédez à votre espace étudiant, administrateur ou pilote.</p>
 
                 <?php if (isset($erreur) && !empty($erreur)): ?>
                     <div class="alert alert-error" role="alert">
