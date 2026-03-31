@@ -143,6 +143,64 @@ class OfferManager
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+     public function searchWithFilters($params)
+    {
+        $query = "SELECT o.*, e.nom AS entreprise_nom
+                  FROM offres o
+                  INNER JOIN entreprises e ON o.id_entreprise = e.id
+                  WHERE 1=1";
+
+        $bindings = [];
+
+        if (!empty($params['q'])) {
+            $query .= " AND (o.titre LIKE :keyword OR o.description LIKE :keyword OR e.nom LIKE :keyword)";
+            $bindings[':keyword'] = '%' . $params['q'] . '%';
+        }
+
+        if (!empty($params['skill'])) {
+            $query .= " AND (o.titre LIKE :skill OR o.description LIKE :skill)";
+            $bindings[':skill'] = '%' . $params['skill'] . '%';
+        }
+
+        if (!empty($params['city'])) {
+            $query .= " AND (o.ville LIKE :city OR e.ville LIKE :city)"; // supposition du champ ville
+            $bindings[':city'] = '%' . $params['city'] . '%';
+        }
+
+        if (!empty($params['type'])) {
+            $types = (array) $params['type'];
+            $placeholders = [];
+            foreach ($types as $i => $type) {
+                $key = ':type' . $i;
+                $placeholders[] = $key;
+                $bindings[$key] = $type;
+            }
+            if (!empty($placeholders)) {
+                $query .= " AND o.type_contrat IN (" . implode(',', $placeholders) . ")";
+            }
+        }
+
+        if (!empty($params['min_money']) && is_numeric($params['min_money'])) {
+            $query .= " AND o.remuneration >= :min_money";
+            $bindings[':min_money'] = (int) $params['min_money'];
+        }
+
+        $query .= " ORDER BY o.date_publication DESC";
+
+        $stmt = $this->db->prepare($query);
+        foreach ($bindings as $key => $value) {
+            $paramType = PDO::PARAM_STR;
+            if ($key === ':min_money') {
+                $paramType = PDO::PARAM_INT;
+            }
+            $stmt->bindValue($key, $value, $paramType);
+        }
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /**
      * Récupérer les offres présentes dans la wishlist d'un utilisateur
      */
