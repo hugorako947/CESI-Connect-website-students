@@ -51,6 +51,16 @@ switch ($route) {
         $controller->logout();
         break;
 
+    case 'mot-de-passe-oublie':
+        $controller = new AuthController();
+        $controller->forgotPassword();
+        break;
+    
+    case 'reinitialiser-mot-de-passe':
+        $controller = new AuthController();
+        $controller->resetPassword();
+        break;
+
     // ========== OFFRES (OfferController) ==========
     
     case 'offres':
