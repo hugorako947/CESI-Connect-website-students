@@ -4,28 +4,34 @@
 
         <aside class="filters-sidebar" id="filterSidebar">
             <h2>Filtres</h2>
-            <form action="#" method="GET" class="filters-form">
+            <form action="index.php?route=offres-recherche" method="GET" class="filters-form">
+                <input type="hidden" name="route" value="offres-recherche" />
+                <div class="filter-group">
+                    <label for="f-keyword">Recherche</label>
+                    <input type="text" id="f-keyword" name="q" placeholder="Mot-clé" value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+                </div>
+
                 <div class="filter-group">
                     <label for="f-skill">Compétence</label>
-                    <input type="text" id="f-skill" name="skill" placeholder="Ex: React, PHP...">
+                    <input type="text" id="f-skill" name="skill" placeholder="Ex: React, PHP..." value="<?= htmlspecialchars($_GET['skill'] ?? '') ?>">
                 </div>
 
                 <div class="filter-group">
                     <label for="f-city">Ville</label>
-                    <input type="text" id="f-city" name="city" placeholder="Ex: Lyon...">
+                    <input type="text" id="f-city" name="city" placeholder="Ex: Lyon..." value="<?= htmlspecialchars($_GET['city'] ?? '') ?>">
                 </div>
 
                 <div class="filter-group">
                     <label>Type de contrat</label>
                     <div class="checkbox-group">
-                        <label><input type="checkbox" name="type" value="stage"> Stage</label>
-                        <label><input type="checkbox" name="type" value="alternance"> Alternance</label>
+                        <label><input type="checkbox" name="type[]" value="stage" <?= in_array('stage', (array) ($_GET['type'] ?? []), true) ? 'checked' : '' ?>> Stage</label>
+                        <label><input type="checkbox" name="type[]" value="alternance" <?= in_array('alternance', (array) ($_GET['type'] ?? []), true) ? 'checked' : '' ?>> Alternance</label>
                     </div>
                 </div>
 
                 <div class="filter-group">
                     <label for="f-remun">Rémunération min. (€)</label>
-                    <input type="number" id="f-remun" name="min_money" placeholder="500">
+                    <input type="number" id="f-remun" name="min_money" placeholder="500" value="<?= htmlspecialchars($_GET['min_money'] ?? '') ?>">
                 </div>
 
                 <button type="submit" class="btn-primary">Appliquer les filtres</button>
