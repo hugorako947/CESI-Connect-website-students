@@ -171,5 +171,55 @@ class AuthController {
     public static function hasRole($roleId) {
         return isset($_SESSION['user_role']) && $_SESSION['user_role'] === $roleId;
     }
+
+    // --- Dans app/controller/AuthController.php ---
+
+    public function forgotPassword() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'];
+            $userManager = new UserManager();
+            $user = $userManager->getUserByEmail($email);
+
+            if ($user) {
+                $token = bin2hex(random_bytes(32));
+                $userManager->saveResetToken($email, $token);
+
+                // 1. On prépare le lien
+                $resetLink = "https://daoud.alwaysdata.net/index.php?route=reinitialiser-mot-de-passe&token=" . $token;
+
+                // mail($email, $subject, $message); 
+
+                // 3. On passe le lien à la vue pour qu'il s'affiche dans le rectangle vert
+                $success = "Lien envoyé par mail : <a href='$resetLink'>$resetLink</a>";
+            } else {
+                $error = "Email non reconnu.";
+            }
+        }
+        require_once '../app/views/password-forgotten.php';
+    }
+    
+    public function resetPassword() {
+        $token = $_GET['token'] ?? $_POST['token'] ?? '';
+        $userManager = new UserManager();
+        $user = $userManager->getUserByToken($token);
+    
+        if (!$user) {
+            die("Lien invalide ou expiré.");
+        }
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $password = $_POST['password'];
+            $confirm = $_POST['confirm_password'];
+    
+            if ($password === $confirm) {
+                $userManager->updatePassword($user['id'], $password);
+                header('Location: index.php?route=connexion&success=Mot de passe mis à jour !');
+                exit();
+            } else {
+                $error = "Les mots de passe ne correspondent pas.";
+            }
+        }
+        require_once '../app/views/password-reset.php';
+    }
 }
 ?>
