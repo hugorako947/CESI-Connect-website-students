@@ -132,11 +132,13 @@ switch ($route) {
         break;
     
     case 'form-entreprise':
+        AuthController::requireRole(1);
         $controller = new ManagementController();
         $controller->entrepriseForm();
         break;
     
     case 'form-offre':
+        AuthController::requireRole(1);
         $controller = new ManagementController();
         $controller->offreForm();
         break;
