@@ -89,15 +89,25 @@ class OfferController {
     /**
      * Rechercher des offres par mot-clé
      */
-  public function search() {
+    public function search() {
         $filters = [];
         $filters['q'] = filter_input(INPUT_GET, 'q', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $filters['skill'] = filter_input(INPUT_GET, 'skill', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $filters['city'] = filter_input(INPUT_GET, 'city', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        // Checkboxes type[]
         $filters['type'] = isset($_GET['type']) ? (array) $_GET['type'] : [];
+
+        // min_money autorise 0
         $filters['min_money'] = filter_input(INPUT_GET, 'min_money', FILTER_VALIDATE_INT);
 
-        if (empty($filters['q']) && empty($filters['skill']) && empty($filters['city']) && empty($filters['type']) && empty($filters['min_money'])) {
+        $hasAnyFilter = !empty($filters['q'])
+            || !empty($filters['skill'])
+            || !empty($filters['city'])
+            || !empty($filters['type'])
+            || $filters['min_money'] !== false && $filters['min_money'] !== null;
+
+        if (!$hasAnyFilter) {
             header('Location: index.php?route=offres');
             exit;
         }
