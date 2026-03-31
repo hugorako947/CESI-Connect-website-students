@@ -89,15 +89,20 @@ class OfferController {
     /**
      * Rechercher des offres par mot-clé
      */
-    public function search() {
-        $keyword = filter_input(INPUT_GET, 'q', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+  public function search() {
+        $filters = [];
+        $filters['q'] = filter_input(INPUT_GET, 'q', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $filters['skill'] = filter_input(INPUT_GET, 'skill', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $filters['city'] = filter_input(INPUT_GET, 'city', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $filters['type'] = isset($_GET['type']) ? (array) $_GET['type'] : [];
+        $filters['min_money'] = filter_input(INPUT_GET, 'min_money', FILTER_VALIDATE_INT);
 
-        if (empty($keyword)) {
+        if (empty($filters['q']) && empty($filters['skill']) && empty($filters['city']) && empty($filters['type']) && empty($filters['min_money'])) {
             header('Location: index.php?route=offres');
             exit;
         }
 
-        $offres = $this->offerManager->search($keyword);
+        $offres = $this->offerManager->searchWithFilters($filters);
         $wishlistOfferIds = [];
 
         if (isset($_SESSION['user_id'])) {
