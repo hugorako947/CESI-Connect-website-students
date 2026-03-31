@@ -97,32 +97,28 @@ class UserManager {
         return $stmt->fetchColumn() > 0;
     }
 
-    /**
-     * Vérifier si un email est déjà utilisé par un autre utilisateur
-     */
-    public function emailExistsForOtherUser($email, $userId) {
-        $query = "SELECT COUNT(*) FROM utilisateurs WHERE email = :email AND id <> :user_id";
+    public function saveResetToken($email, $token) {
+        $query = "UPDATE utilisateurs SET reset_token = :token, reset_expires = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE email = :email";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-
-        return $stmt->fetchColumn() > 0;
+        $stmt->bindParam(':token', $token);
+        $stmt->bindParam(':email', $email);
+        return $stmt->execute();
     }
-
-    /**
-     * Mettre à jour les informations personnelles d'un utilisateur
-     */
-    public function updateProfile($userId, $nom, $prenom, $email) {
-        $query = "UPDATE utilisateurs
-                  SET nom = :nom, prenom = :prenom, email = :email
-                  WHERE id = :id";
+    
+    public function getUserByToken($token) {
+        $query = "SELECT * FROM utilisateurs WHERE reset_token = :token AND reset_expires > NOW() LIMIT 1";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
-        $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
-        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
-
+        $stmt->bindParam(':token', $token);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
+    public function updatePassword($userId, $newPassword) {
+        $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+        $query = "UPDATE utilisateurs SET mot_de_passe = :pass, reset_token = NULL, reset_expires = NULL WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':pass', $hashedPassword);
+        $stmt->bindParam(':id', $userId);
         return $stmt->execute();
     }
 }
