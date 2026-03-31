@@ -100,6 +100,25 @@
                 </div>
             <?php endif; ?>
 
+            <!-- Compétences -->
+            <?php if (!empty($offer['competences'])): ?>
+                <div class="offre-card">
+                    <h2>🛠️ Compétences requises</h2>
+                    <?php
+                        $competences = array_filter(array_map('trim', explode(',', $offer['competences'])));
+                    ?>
+                    <?php if (!empty($competences)): ?>
+                        <ul class="competences-list">
+                            <?php foreach ($competences as $competence): ?>
+                                <li><?= htmlspecialchars($competence) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <p><?= nl2br(htmlspecialchars($offer['competences'])) ?></p>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
             <!-- Informations sur l'entreprise -->
             <div class="entreprise-card">
                 <h2>🏢 À propos de l'entreprise</h2>
