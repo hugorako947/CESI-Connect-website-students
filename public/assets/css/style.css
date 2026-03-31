@@ -603,6 +603,14 @@ main{
   color: var(--muted);
   margin-top: .5rem;
 }
+.competences-list {
+  margin: 0.5rem 0 0 1rem;
+  padding-left: 1rem;
+  color: rgba(2,6,23,.72);
+}
+.competences-list li {
+  margin-bottom: 0.35rem;
+}
 .offre-actions{
   display:flex;
   gap: .65rem;
