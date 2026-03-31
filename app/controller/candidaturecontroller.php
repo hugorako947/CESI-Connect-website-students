@@ -144,6 +144,9 @@ class CandidatureController {
                 'statut' => 'En attente'
             ]);
 
+            // Retirer l'offre de la wish-list si elle y était
+            $this->offerManager->removeFromWishlist((int) $userId, (int) $offerId);
+
             $_SESSION['success'] = "Votre candidature a été envoyée avec succès !";
             header('Location: index.php?route=mes-candidatures');
             exit;
