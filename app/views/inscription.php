@@ -3,7 +3,7 @@
 <main class="auth-container">
     <div class="auth-card">
         <h1>Créer un compte Étudiant</h1>
-        <p>Rejoignez Web4All pour trouver votre prochain stage.</p>
+        <p>Rejoignez CESI Connect pour trouver votre prochain stage.</p>
 
         <!-- Affichage des messages d'erreur -->
         <?php if(isset($erreur)): ?>
@@ -16,17 +16,17 @@
         <form action="index.php?route=inscription" method="POST" class="auth-form">
             
             <div class="form-group">
-                <label for="nom">Nom</label>
-                <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($_POST['nom'] ?? '') ?>" required>
-            </div>
-
-            <div class="form-group">
                 <label for="prenom">Prénom</label>
                 <input type="text" id="prenom" name="prenom" value="<?= htmlspecialchars($_POST['prenom'] ?? '') ?>" required>
             </div>
 
             <div class="form-group">
-                <label for="email">Adresse Email</label>
+                <label for="nom">Nom</label>
+                <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($_POST['nom'] ?? '') ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
                 <input type="email" id="email" name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
             </div>
 
@@ -43,10 +43,15 @@
             <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">S'inscrire</button>
 
             <p style="margin-top: 15px; font-size: 0.9em; text-align: center;">
-                Déjà un compte ? <a href="index.php?route=connexion" style="color: var(--primary); font-weight: bold;">Se connecter</a>
+                Déjà un compte ? <a class="inscription-login-link" href="index.php?route=connexion" style="color: var(--primary);">Se connecter</a>
             </p>
         </form>
     </div>
 </main>
+
+<style>
+  .inscription-login-link { font-weight: 800; }
+  .inscription-login-link:hover { text-decoration: underline; }
+</style>
 
 <?php include 'footer.php'; ?>
