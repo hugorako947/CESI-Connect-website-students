@@ -13,7 +13,7 @@
                 <form action="index.php?route=connexion" method="POST" class="auth-form">
                     
                     <div class="form-group">
-                        <label for="email">Adresse Email</label>
+                        <label for="email">Email</label>
                         <input type="email" id="email" name="email" placeholder="exemple@viacesi.fr" required>
                     </div>
 
