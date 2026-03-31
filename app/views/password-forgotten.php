@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email'])) {
 
     $userManager = new UserManager();
     $user = $userManager->getUserByEmail($email);
-    
+
     if ($user) {
         $token = bin2hex(random_bytes(32));
         $userManager->saveResetToken($email, $token);
@@ -36,8 +36,8 @@ include 'header.php';
         <?php endif; ?>
 
         <?php if($error): ?>
-            <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
-                <?= $error ?>
+            <div class="alert alert-error" role="alert">
+                <?= htmlspecialchars($error) ?>
             </div>
         <?php endif; ?>
 
