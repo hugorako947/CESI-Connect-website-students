@@ -28,6 +28,7 @@ include 'header.php';
 <section class="auth-container">
     <div class="auth-card">
         <h1>Mot de passe oublié</h1>
+        <p class="auth-subtitle">Saisissez votre email pour recevoir un lien de réinitialisation.</p>
 
         <?php if($success): ?>
             <div class="alert alert-success">
