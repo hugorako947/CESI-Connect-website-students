@@ -143,7 +143,7 @@ class OfferManager
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function searchWithFilters($params)
+    public function searchWithFilters($params, $limit = null, $offset = 0)
     {
         $query = "SELECT o.*, e.nom AS entreprise_nom
                   FROM offres o
@@ -189,6 +189,9 @@ class OfferManager
         }
 
         $query .= " ORDER BY o.date_publication DESC";
+        if ($limit !== null) {
+            $query .= " LIMIT :limit OFFSET :offset";
+        }
 
         $stmt = $this->db->prepare($query);
         foreach ($bindings as $key => $value) {
@@ -198,10 +201,68 @@ class OfferManager
             }
             $stmt->bindValue($key, $value, $paramType);
         }
+        if ($limit !== null) {
+            $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
+        }
 
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countWithFilters($params)
+    {
+        $query = "SELECT COUNT(*)
+                  FROM offres o
+                  INNER JOIN entreprises e ON o.id_entreprise = e.id
+                  WHERE 1=1";
+
+        $bindings = [];
+
+        if (!empty($params['q'])) {
+            $query .= " AND (o.titre LIKE :keyword OR o.description LIKE :keyword OR e.nom LIKE :keyword)";
+            $bindings[':keyword'] = '%' . $params['q'] . '%';
+        }
+
+        if (!empty($params['skill'])) {
+            $query .= " AND (o.titre LIKE :skill OR o.description LIKE :skill)";
+            $bindings[':skill'] = '%' . $params['skill'] . '%';
+        }
+
+        if (!empty($params['city'])) {
+            $query .= " AND o.ville LIKE :city";
+            $bindings[':city'] = '%' . $params['city'] . '%';
+        }
+
+        if (!empty($params['type'])) {
+            $types = array_filter((array) $params['type'], function($type) {
+                return trim($type) !== '';
+            });
+            $placeholders = [];
+            foreach (array_values($types) as $i => $type) {
+                $key = ':type' . $i;
+                $placeholders[] = $key;
+                $bindings[$key] = $type;
+            }
+            if (!empty($placeholders)) {
+                $query .= " AND o.type_contrat IN (" . implode(',', $placeholders) . ")";
+            }
+        }
+
+        if (!empty($params['min_money']) && is_numeric($params['min_money'])) {
+            $query .= " AND o.remuneration >= :min_money";
+            $bindings[':min_money'] = (int) $params['min_money'];
+        }
+
+        $stmt = $this->db->prepare($query);
+        foreach ($bindings as $key => $value) {
+            $paramType = ($key === ':min_money') ? PDO::PARAM_INT : PDO::PARAM_STR;
+            $stmt->bindValue($key, $value, $paramType);
+        }
+        $stmt->execute();
+
+        return (int) $stmt->fetchColumn();
     }
 
     /**

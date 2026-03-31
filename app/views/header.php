@@ -7,25 +7,24 @@
     <title>CESI Connect</title>
 </head>
 <body>
-    <header class="main-header">
+    <nav class="nav">
         <div class="logo">
             <a href="index.php?route=accueil">CESI Connect</a>
         </div>
-        <nav class="main-nav">
-            <ul>
-                <li><a href="index.php?route=accueil">Accueil</a></li>
-                <li><a href="index.php?route=offres">Offres</a></li>
-                <li><a href="index.php?route=gestion-entreprises">Entreprises</a></li>
-                
-                <!-- GESTION DYNAMIQUE DU MENU -->
-                <?php if(isset($_SESSION['user_id'])): ?>
-                    <li><a href="index.php?route=profil">Mon Profil</a></li>
-                    <li><a href="index.php?route=deconnexion" class="btn-login">Déconnexion</a></li>
-                <?php else: ?>
-                    <li><a href="index.php?route=connexion" class="btn-login">Connexion</a></li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-    </header>
-    <!-- On ouvre la balise main ici, elle englobera toutes les vues -->
+        <div class="nav-links">
+            <a href="index.php?route=accueil">Accueil</a>
+            <a href="index.php?route=offres">Offres</a>
+            <a href="index.php?route=gestion-entreprises">Entreprises</a>
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <a href="index.php?route=profil">Mon profil</a>
+            <?php endif; ?>
+        </div>
+        <div class="nav-right">
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <a href="index.php?route=deconnexion" class="btn-primary">Déconnexion</a>
+            <?php else: ?>
+                <a href="index.php?route=connexion" class="btn-primary">Connexion</a>
+            <?php endif; ?>
+        </div>
+    </nav>
     <main>

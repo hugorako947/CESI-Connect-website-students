@@ -1,20 +1,12 @@
 </main> <!-- On ferme le main ouvert dans le header -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-col">
-                <h3>CESI Connect</h3>
-            </div>
-            <div class="footer-col">
-                <h4>Liens utiles</h4>
-                <ul>
-                    <li><a href="index.php?route=mentions-legales">Mentions légales</a></li>
-                    <li><a href="index.php?route=contact">Contact</a></li>
-                </ul>
-            </div>
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="index.php?route=accueil">Accueil</a>
+            <a href="index.php?route=mentions-legales">Mentions légales</a>
+            <a href="index.php?route=contact">Contact</a>
+            <a href="index.php?route=offres">Offres</a>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 CESI Connect - Tous droits réservés</p>
-        </div>
+        <div class="footer-copy">© 2026 CESI Connect — Tous droits réservés</div>
     </footer>
 <script src="assets/js/filters.js"></script>
 </body>

@@ -25,15 +25,39 @@ class OfferController {
      * (Nom de la méthode : "list" comme dans ton index.php)
      */
     public function list() {
-        // Pagination
-        $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT) ?: 1;
+        $page = max(1, (int) (filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT) ?: 1));
         $perPage = 10;
         $offset = ($page - 1) * $perPage;
 
-        // Récupérer les offres
-        $offres = $this->offerManager->getAllOffers($perPage, $offset);
-        $totalOffers = $this->offerManager->countAll();
-        $totalPages = ceil($totalOffers / $perPage);
+        $filters = [];
+        $filters['q'] = trim((string) (filter_input(INPUT_GET, 'q', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
+        $filters['skill'] = trim((string) (filter_input(INPUT_GET, 'skill', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
+        $filters['city'] = trim((string) (filter_input(INPUT_GET, 'city', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
+        $filters['type'] = isset($_GET['type']) ? (array) $_GET['type'] : [];
+        $filters['min_money'] = filter_input(INPUT_GET, 'min_money', FILTER_VALIDATE_INT);
+
+        $hasAnyFilter = $filters['q'] !== ''
+            || $filters['skill'] !== ''
+            || $filters['city'] !== ''
+            || !empty($filters['type'])
+            || ($filters['min_money'] !== false && $filters['min_money'] !== null);
+
+        if ($hasAnyFilter) {
+            $offres = $this->offerManager->searchWithFilters($filters, $perPage, $offset);
+            $totalOffers = $this->offerManager->countWithFilters($filters);
+        } else {
+            $offres = $this->offerManager->getAllOffers($perPage, $offset);
+            $totalOffers = $this->offerManager->countAll();
+        }
+
+        $totalPages = max(1, (int) ceil($totalOffers / $perPage));
+        if ($page > $totalPages) {
+            $page = $totalPages;
+        }
+
+        $queryParams = $_GET;
+        unset($queryParams['route'], $queryParams['page']);
+
         $wishlistOfferIds = [];
 
         if (isset($_SESSION['user_id'])) {
@@ -90,36 +114,11 @@ class OfferController {
      * Rechercher des offres par mot-clé
      */
     public function search() {
-        $filters = [];
-        $filters['q'] = filter_input(INPUT_GET, 'q', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $filters['skill'] = filter_input(INPUT_GET, 'skill', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $filters['city'] = filter_input(INPUT_GET, 'city', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-        // Checkboxes type[]
-        $filters['type'] = isset($_GET['type']) ? (array) $_GET['type'] : [];
-
-        // min_money autorise 0
-        $filters['min_money'] = filter_input(INPUT_GET, 'min_money', FILTER_VALIDATE_INT);
-
-        $hasAnyFilter = !empty($filters['q'])
-            || !empty($filters['skill'])
-            || !empty($filters['city'])
-            || !empty($filters['type'])
-            || $filters['min_money'] !== false && $filters['min_money'] !== null;
-
-        if (!$hasAnyFilter) {
-            header('Location: index.php?route=offres');
-            exit;
-        }
-
-        $offres = $this->offerManager->searchWithFilters($filters);
-        $wishlistOfferIds = [];
-
-        if (isset($_SESSION['user_id'])) {
-            $wishlistOfferIds = $this->offerManager->getWishlistOfferIds((int) $_SESSION['user_id']);
-        }
-
-        require_once '../app/views/liste-offres.php';
+        $query = $_GET;
+        $query['route'] = 'offres';
+        $url = 'index.php?' . http_build_query($query);
+        header('Location: ' . $url);
+        exit;
     }
 }
 ?>
