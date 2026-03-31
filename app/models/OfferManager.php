@@ -162,6 +162,11 @@ class OfferManager
             $bindings[':skill'] = '%' . $params['skill'] . '%';
         }
 
+        if (!empty($params['domain'])) {
+            $query .= " AND (o.titre LIKE :domain OR o.description LIKE :domain OR o.competences LIKE :domain)";
+            $bindings[':domain'] = '%' . $params['domain'] . '%';
+        }
+
         if (!empty($params['city'])) {
             // Ne dépend que du champ ville dans offres (pas sûr de l'existence de e.ville)
             $query .= " AND o.ville LIKE :city";
@@ -228,6 +233,11 @@ class OfferManager
         if (!empty($params['skill'])) {
             $query .= " AND (o.titre LIKE :skill OR o.description LIKE :skill)";
             $bindings[':skill'] = '%' . $params['skill'] . '%';
+        }
+
+        if (!empty($params['domain'])) {
+            $query .= " AND (o.titre LIKE :domain OR o.description LIKE :domain OR o.competences LIKE :domain)";
+            $bindings[':domain'] = '%' . $params['domain'] . '%';
         }
 
         if (!empty($params['city'])) {

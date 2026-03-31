@@ -1,48 +1,40 @@
 <?php include 'header.php'; ?>
 
-<section class="dashboard-container">
-    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+<section class="section">
+    <div class="section-header">
         <h1>Gestion des Entreprises</h1>
         <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 1): ?>
             <a href="index.php?route=form-entreprise" class="btn-primary">Ajouter une entreprise</a>
         <?php endif; ?>
     </div>
 
-    <div class="table-responsive">
-        <table class="table-candidatures" style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr style="text-align: left; border-bottom: 2px solid var(--border);">
-                    <th style="padding: 12px;">Nom</th>
-                    <th style="padding: 12px;">Email</th>
-                    <th style="padding: 12px;">Téléphone</th>
-                    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 1): ?>
-                        <th style="padding: 12px;">Actions</th>
-                    <?php endif; ?>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if(!empty($entreprises)): ?>
-                    <?php foreach($entreprises as $ent): ?>
-                        <tr style="border-bottom: 1px solid var(--border);">
-                            <td style="padding: 12px;"><?= htmlspecialchars($ent['nom']) ?></td>
-                            <td style="padding: 12px;"><?= htmlspecialchars($ent['email_contact']) ?></td>
-                            <td style="padding: 12px;"><?= htmlspecialchars($ent['telephone'] ?? 'N/A') ?></td>
-                            <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 1): ?>
-                                <td style="padding: 12px;">
-                                    <a href="index.php?route=form-entreprise&id=<?= $ent['id'] ?>" style="color: var(--primary);">Modifier</a> 
-                                    <span style="color: var(--border);">|</span>
-                                    <a href="index.php?route=delete-entreprise&id=<?= $ent['id'] ?>" style="color: #dc2626;" onclick="return confirm('Supprimer cette entreprise ?');">Supprimer</a>
-                                </td>
-                            <?php endif; ?>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="4" style="padding: 20px; text-align: center;">Aucune entreprise trouvée dans la base de données.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+    <div class="enterprise-grid">
+        <?php if (!empty($entreprises)): ?>
+            <?php foreach ($entreprises as $ent): ?>
+                <article class="enterprise-card">
+                    <div class="enterprise-card-head">
+                        <div class="enterprise-avatar"><?= strtoupper(substr((string) ($ent['nom'] ?? 'E'), 0, 2)) ?></div>
+                        <div>
+                            <h3><?= htmlspecialchars($ent['nom'] ?? '') ?></h3>
+                            <p><?= htmlspecialchars($ent['email_contact'] ?? 'Email non renseigné') ?></p>
+                        </div>
+                    </div>
+
+                    <div class="enterprise-card-meta">
+                        <span>☎ <?= htmlspecialchars($ent['telephone'] ?? 'N/A') ?></span>
+                    </div>
+
+                    <div class="enterprise-card-actions">
+                        <a href="index.php?route=details-entreprise&id=<?= (int) ($ent['id'] ?? 0) ?>" class="btn-outline">Voir la fiche</a>
+                        <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 1): ?>
+                            <a href="index.php?route=form-entreprise&id=<?= (int) ($ent['id'] ?? 0) ?>" class="btn-primary">Modifier</a>
+                        <?php endif; ?>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>Aucune entreprise trouvée dans la base de données.</p>
+        <?php endif; ?>
     </div>
 </section>
 

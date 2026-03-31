@@ -1,4 +1,33 @@
 <?php include 'header.php'; ?>
+<?php
+$inferDomain = function(array $offre): string {
+    $text = mb_strtolower(
+        trim(
+            (string) ($offre['titre'] ?? '') . ' ' .
+            (string) ($offre['description'] ?? '') . ' ' .
+            (string) ($offre['competences'] ?? '')
+        )
+    );
+    $map = [
+        'Informatique' => ['dev', 'informatique', 'web', 'software', 'data', 'php', 'java', 'python', 'cloud', 'ia'],
+        'Finance' => ['finance', 'audit', 'compta', 'contrôle de gestion', 'banque'],
+        'Marketing' => ['marketing', 'seo', 'communication', 'brand', 'social media'],
+        'Ingénierie' => ['ingénieur', 'industrie', 'mécanique', 'électronique', 'qualité'],
+        'Design' => ['design', 'ux', 'ui', 'graphique', 'maquette'],
+        'Commercial' => ['commercial', 'vente', 'business developer', 'prospection'],
+        'Ressources humaines' => ['rh', 'ressources humaines', 'recrutement', 'paie'],
+        'Juridique' => ['juridique', 'droit', 'compliance', 'rgpd'],
+    ];
+    foreach ($map as $domain => $keywords) {
+        foreach ($keywords as $keyword) {
+            if (mb_strpos($text, $keyword) !== false) {
+                return $domain;
+            }
+        }
+    }
+    return 'Général';
+};
+?>
 
 <section class="section">
     <div class="section-header">
@@ -20,6 +49,11 @@
             <div class="filter-group">
                 <label for="f-skill">Compétence</label>
                 <input type="text" id="f-skill" name="skill" placeholder="Ex: React, PHP..." value="<?= htmlspecialchars($_GET['skill'] ?? '') ?>">
+            </div>
+
+            <div class="filter-group">
+                <label for="f-domain">Domaine</label>
+                <input type="text" id="f-domain" name="domain" placeholder="Ex: Informatique, Finance..." value="<?= htmlspecialchars($_GET['domain'] ?? '') ?>">
             </div>
 
             <div class="filter-group">
@@ -53,6 +87,7 @@
                 }
             ?>
             <?php foreach ($offres as $offre): ?>
+                <?php $domainLabel = $inferDomain($offre); ?>
                 <article class="card">
                     <div class="card-header">
                         <h3><?= htmlspecialchars($offre['titre']) ?></h3>
@@ -60,6 +95,9 @@
                     </div>
                     <p class="company"><?= htmlspecialchars($offre['entreprise_nom'] ?? '') ?></p>
                     <p class="desc"><?= htmlspecialchars($offre['description']) ?></p>
+                    <p class="offer-domain">
+                        <span class="domain-badge">Domaine: <?= htmlspecialchars($domainLabel) ?></span>
+                    </p>
                     <div class="card-footer">
                         <span class="date"><?= date('d/m/Y', strtotime($offre['date_publication'])) ?></span>
                         <a href="index.php?route=offre-details&id=<?= (int) $offre['id'] ?>" class="btn-primary">Détails</a>

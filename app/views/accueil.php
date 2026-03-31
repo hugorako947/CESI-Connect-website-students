@@ -86,14 +86,14 @@
         <a href="index.php?route=offres">Parcourir les offres →</a>
     </div>
     <div class="cats-grid">
-        <div class="cat-card"><div class="cat-icon">💻</div><h4>Informatique</h4><p>Rechercher</p></div>
-        <div class="cat-card"><div class="cat-icon">📊</div><h4>Finance</h4><p>Rechercher</p></div>
-        <div class="cat-card"><div class="cat-icon">📣</div><h4>Marketing</h4><p>Rechercher</p></div>
-        <div class="cat-card"><div class="cat-icon">⚙️</div><h4>Ingénierie</h4><p>Rechercher</p></div>
-        <div class="cat-card"><div class="cat-icon">🎨</div><h4>Design</h4><p>Rechercher</p></div>
-        <div class="cat-card"><div class="cat-icon">🤝</div><h4>Commercial</h4><p>Rechercher</p></div>
-        <div class="cat-card"><div class="cat-icon">👥</div><h4>Ressources humaines</h4><p>Rechercher</p></div>
-        <div class="cat-card"><div class="cat-icon">⚖️</div><h4>Juridique</h4><p>Rechercher</p></div>
+        <a class="cat-card" href="index.php?route=offres&domain=Informatique"><div class="cat-icon">💻</div><h4>Informatique</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Finance"><div class="cat-icon">📊</div><h4>Finance</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Marketing"><div class="cat-icon">📣</div><h4>Marketing</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Ingénierie"><div class="cat-icon">⚙️</div><h4>Ingénierie</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Design"><div class="cat-icon">🎨</div><h4>Design</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Commerce"><div class="cat-icon">🤝</div><h4>Commercial</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Ressources humaines"><div class="cat-icon">👥</div><h4>Ressources humaines</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Juridique"><div class="cat-icon">⚖️</div><h4>Juridique</h4><p>Voir les offres</p></a>
     </div>
 </section>
 
@@ -103,14 +103,15 @@
         <a href="index.php?route=gestion-entreprises">Voir toutes les entreprises →</a>
     </div>
     <div class="partners-row">
-        <div class="partner">La Poste</div>
-        <div class="partner">Orange</div>
-        <div class="partner">BNP Paribas</div>
-        <div class="partner">Airbus</div>
-        <div class="partner">LVMH</div>
-        <div class="partner">ADP</div>
-        <div class="partner">Renault</div>
-        <div class="partner">Société Générale</div>
+        <?php if (!empty($partnerEnterprises)): ?>
+            <?php foreach (array_slice($partnerEnterprises, 0, 12) as $enterprise): ?>
+                <a class="partner" href="index.php?route=details-entreprise&id=<?= (int) ($enterprise['id'] ?? 0) ?>">
+                    <?= htmlspecialchars($enterprise['nom'] ?? 'Entreprise') ?>
+                </a>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <span class="partner">Aucune entreprise partenaire</span>
+        <?php endif; ?>
     </div>
 </section>
 

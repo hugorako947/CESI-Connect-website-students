@@ -2,13 +2,16 @@
 // app/controller/HomeController.php
 
 require_once '../app/models/OfferManager.php';
+require_once '../app/models/EnterpriseManager.php';
 
 class HomeController {
     
     // Affiche la page d'accueil
     public function index() {
         $offerManager = new OfferManager();
+        $enterpriseManager = new EnterpriseManager();
         $latestOffers = $offerManager->getAllOffers(3, 0);
+        $partnerEnterprises = $enterpriseManager->getAllEnterprises();
         require_once '../app/views/accueil.php'; 
     }
 
