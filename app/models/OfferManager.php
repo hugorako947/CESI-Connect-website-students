@@ -143,7 +143,7 @@ class OfferManager
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-     public function searchWithFilters($params)
+    public function searchWithFilters($params)
     {
         $query = "SELECT o.*, e.nom AS entreprise_nom
                   FROM offres o
@@ -163,14 +163,17 @@ class OfferManager
         }
 
         if (!empty($params['city'])) {
-            $query .= " AND (o.ville LIKE :city OR e.ville LIKE :city)"; // supposition du champ ville
+            // Ne dépend que du champ ville dans offres (pas sûr de l'existence de e.ville)
+            $query .= " AND o.ville LIKE :city";
             $bindings[':city'] = '%' . $params['city'] . '%';
         }
 
         if (!empty($params['type'])) {
-            $types = (array) $params['type'];
+            $types = array_filter((array) $params['type'], function($type) {
+                return trim($type) !== '';
+            });
             $placeholders = [];
-            foreach ($types as $i => $type) {
+            foreach (array_values($types) as $i => $type) {
                 $key = ':type' . $i;
                 $placeholders[] = $key;
                 $bindings[$key] = $type;
