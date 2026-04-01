@@ -90,7 +90,7 @@
 
         <!-- ══ PANNEAU 3 — MES ALERTES ══ -->
         <div id="panel-alertes" class="profil-panel" role="tabpanel" aria-labelledby="tab-alertes">
-            <h1>🔔 Mes alertes</h1>
+            <h1>Mes alertes</h1>
             <div style="text-align:center; padding:2rem;">
                 <p style="color:var(--muted); margin-bottom:1.5rem;">
                     Gérez vos alertes personnalisées pour recevoir des notifications sur les nouvelles offres.
@@ -118,9 +118,9 @@
                                     </span>
                                 </div>
                                 <div class="candidature-body">
-                                    <p><strong>🏢 Entreprise :</strong> <?= htmlspecialchars($candidature['entreprise_nom']) ?></p>
-                                    <p><strong>📅 Date :</strong> <?= date('d/m/Y à H:i', strtotime($candidature['date_candidature'])) ?></p>
-                                </div>
+                                    <p><strong> Entreprise :</strong> <?= htmlspecialchars($candidature['entreprise_nom']) ?></p>
+                                    <p><strong> Date :</strong> <?= date('d/m/Y à H:i', strtotime($candidature['date_candidature'])) ?></p>
+                                </div> 
                                 <div class="candidature-footer">
                                     <a href="index.php?route=offre-details&id=<?= (int) $candidature['id_offre'] ?>" class="btn btn-outline">
                                         Voir l'offre
