@@ -1,37 +1,5 @@
 <?php include 'header.php'; ?>
 
-<style>
-.profil-tabs-bar {
-    display: flex;
-    border-bottom: 2px solid #e5e7eb;
-    margin-bottom: 32px;
-    background: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-.profil-tab-btn {
-    flex: 1;
-    padding: 16px 24px;
-    background: none;
-    border: none;
-    border-bottom: 3px solid transparent;
-    margin-bottom: -2px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #6b7280;
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s;
-}
-.profil-tab-btn:first-child  { text-align: left;   padding-left: 0; }
-.profil-tab-btn:nth-child(2) { text-align: center; }
-.profil-tab-btn:last-child   { text-align: right;  padding-right: 0; }
-.profil-tab-btn:hover { color: #111827; }
-.profil-tab-btn.active { color: #4f46e5; border-bottom-color: #4f46e5; }
-.profil-panel        { display: none; }
-.profil-panel.active { display: block; }
-</style>
-
 <section class="mes-candidatures-section">
     <div class="container">
 
