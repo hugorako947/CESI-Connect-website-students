@@ -71,12 +71,8 @@
 
                 <!-- Boutons -->
                 <div class="form-actions">
-                    <a href="index.php?route=offre-details&id=<?= htmlspecialchars($offer['id']) ?>" class="btn btn-secondary">
-                        Annuler
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        🚀 Envoyer ma candidature
-                    </button>
+                    <a href="index.php?route=offre-details&id=<?= htmlspecialchars($offer['id']) ?>" class="btn btn-secondary">Annuler</a>
+                    <button type="submit" class="btn btn-primary">🚀 Envoyer</button>
                 </div>
             </form>
         </div>
