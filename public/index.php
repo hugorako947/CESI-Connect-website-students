@@ -95,11 +95,6 @@ switch ($route) {
         $controller->store();
         break;
 
-    case 'mes-candidatures':
-        $controller = new CandidatureController();
-        $controller->index();
-        break;
-
     // ========== ENTREPRISES (EnterpriseController) ==========
     
     case 'details-entreprise':
