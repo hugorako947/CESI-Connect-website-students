@@ -146,5 +146,34 @@ class UserManager {
         $stmt->execute();
         return $stmt->fetchColumn() > 0;
     }
+
+    public function deleteUser($userId) {
+        try {
+            $this->conn->beginTransaction();
+    
+            // 1. Nettoyage des tables avec les bons noms
+            $this->conn->prepare("DELETE FROM wishlist WHERE id_utilisateur = :id")->execute(['id' => $userId]);
+            $this->conn->prepare("DELETE FROM candidatures WHERE id_utilisateur = :id")->execute(['id' => $userId]);
+            
+            // On utilise ici le vrai nom de ta table : alertes_offres
+            $this->conn->prepare("DELETE FROM alertes_offres WHERE id_utilisateur = :id")->execute(['id' => $userId]);
+    
+            // 2. Suppression de l'utilisateur
+            $query = "DELETE FROM utilisateurs WHERE id = :id";
+            $stmtUser = $this->conn->prepare($query);
+            $stmtUser->bindParam(':id', $userId, PDO::PARAM_INT);
+            $stmtUser->execute();
+    
+            return $this->conn->commit();
+    
+        } catch(PDOException $e) {
+            if ($this->conn->inTransaction()) {
+                $this->conn->rollback();
+            }
+            // Une fois testé, tu peux supprimer le die() ci-dessous
+            // die("Erreur SQL : " . $e->getMessage()); 
+            return false;
+        }
+    }
 }
 ?>
