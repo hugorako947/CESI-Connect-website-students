@@ -959,3 +959,37 @@ textarea{min-height:110px;resize:vertical}
   filter: brightness(1.03);
   color: #fff;
 }
+
+/* ── Stats candidatures (profil.php — panneau Candidatures) ── */
+.candidatures-stats-bar {
+    display: flex;
+    gap: .65rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+}
+
+.cstat-pill {
+    font-size: .82rem;
+    font-weight: 750;
+    border-radius: 999px;
+    padding: .3rem .75rem;
+    border: 1px solid transparent;
+}
+
+.cstat-total {
+    color: var(--muted);
+    background: rgba(99,102,241,.08);
+    border-color: rgba(99,102,241,.16);
+}
+
+.cstat-attente {
+    color: #92400e;
+    background: rgba(245,158,11,.10);
+    border-color: rgba(245,158,11,.22);
+}
+
+.cstat-acceptee {
+    color: #166534;
+    background: rgba(22,163,74,.10);
+    border-color: rgba(22,163,74,.22);
+}
