@@ -924,3 +924,14 @@ textarea{min-height:110px;resize:vertical}
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.link-change-password {
+  font-weight: 850;
+  color: #2563eb;
+  text-decoration: none;
+  transition: text-decoration 0.2s ease;
+}
+
+.link-change-password:hover {
+  text-decoration: underline;
+}
