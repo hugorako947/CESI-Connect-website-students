@@ -5,6 +5,7 @@ require_once '../app/controller/AuthController.php';
 require_once '../app/models/OfferManager.php';
 require_once '../app/models/UserManager.php';
 require_once '../app/models/CandidatureManager.php';
+require_once '../app/models/AlertManager.php';
 
 class StudentController {
 
@@ -117,5 +118,200 @@ public function applications() {
 // TODO: Vérifier si l'utilisateur est bien connecté
 // TODO: Récupérer les candidatures de l'étudiant depuis la BDD
 require_once '../app/views/candidatures-envoyees.php';
+}
+
+// ========== GESTION DES ALERTES ==========
+
+/**
+ * Afficher la page de gestion des alertes
+ */
+public function alerts() {
+    AuthController::requireAuth();
+    
+    $userId = (int) ($_SESSION['user_id'] ?? 0);
+    $alertManager = new AlertManager();
+    
+    // Récupérer les alertes avec le nombre de nouvelles offres
+    $alerts = $alertManager->getAlertsWithCounts($userId);
+    
+    require_once '../app/views/mes-alertes.php';
+}
+
+/**
+ * Afficher le formulaire de création/modification d'alerte
+ */
+public function alertForm() {
+    AuthController::requireAuth();
+    
+    $userId = (int) ($_SESSION['user_id'] ?? 0);
+    $alertManager = new AlertManager();
+    $alert = null;
+    
+    // Mode édition
+    if (isset($_GET['id'])) {
+        $alertId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if ($alertId) {
+            $alert = $alertManager->getAlertById($alertId, $userId);
+            
+            if (!$alert) {
+                $_SESSION['erreur'] = "Alerte introuvable.";
+                header('Location: index.php?route=mes-alertes');
+                exit;
+            }
+        }
+    }
+    
+    require_once '../app/views/alerte-form.php';
+}
+
+/**
+ * Enregistrer une nouvelle alerte ou modifier une existante
+ */
+public function saveAlert() {
+    AuthController::requireAuth();
+    
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header('Location: index.php?route=mes-alertes');
+        exit;
+    }
+    
+    $userId = (int) ($_SESSION['user_id'] ?? 0);
+    $alertManager = new AlertManager();
+    
+    // Récupération des données du formulaire
+    $data = [
+        'nom_alerte' => trim($_POST['nom_alerte'] ?? ''),
+        'mot_cle' => trim($_POST['mot_cle'] ?? ''),
+        'ville' => trim($_POST['ville'] ?? ''),
+        'domaine' => trim($_POST['domaine'] ?? ''),
+        'type_contrat' => trim($_POST['type_contrat'] ?? ''),
+        'remuneration_min' => filter_input(INPUT_POST, 'remuneration_min', FILTER_VALIDATE_INT) ?: 0
+    ];
+    
+    // Validation
+    if (empty($data['nom_alerte'])) {
+        $_SESSION['erreur'] = "Le nom de l'alerte est obligatoire.";
+        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? 'index.php?route=alerte-form'));
+        exit;
+    }
+    
+    // Vérifier qu'au moins un critère est rempli
+    if (empty($data['mot_cle']) && empty($data['ville']) && empty($data['domaine']) && 
+        empty($data['type_contrat']) && $data['remuneration_min'] <= 0) {
+        $_SESSION['erreur'] = "Veuillez définir au moins un critère de recherche.";
+        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? 'index.php?route=alerte-form'));
+        exit;
+    }
+    
+    try {
+        $alertId = filter_input(INPUT_POST, 'alert_id', FILTER_VALIDATE_INT);
+        
+        if ($alertId) {
+            // Modification
+            $alertManager->updateAlert($alertId, $userId, $data);
+            $_SESSION['success'] = "Alerte modifiée avec succès !";
+        } else {
+            // Création
+            $alertManager->createAlert($userId, $data);
+            $_SESSION['success'] = "Alerte créée avec succès ! Vous serez notifié des nouvelles offres correspondantes.";
+        }
+        
+        header('Location: index.php?route=mes-alertes');
+        exit;
+        
+    } catch (Exception $e) {
+        $_SESSION['erreur'] = "Une erreur est survenue lors de l'enregistrement.";
+        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? 'index.php?route=alerte-form'));
+        exit;
+    }
+}
+
+/**
+ * Activer/Désactiver une alerte
+ */
+public function toggleAlert() {
+    AuthController::requireAuth();
+    
+    $alertId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    $userId = (int) ($_SESSION['user_id'] ?? 0);
+    
+    if (!$alertId) {
+        $_SESSION['erreur'] = "Alerte invalide.";
+        header('Location: index.php?route=mes-alertes');
+        exit;
+    }
+    
+    $alertManager = new AlertManager();
+    
+    if ($alertManager->toggleAlert($alertId, $userId)) {
+        $_SESSION['success'] = "Alerte mise à jour.";
+    } else {
+        $_SESSION['erreur'] = "Impossible de modifier l'alerte.";
+    }
+    
+    header('Location: index.php?route=mes-alertes');
+    exit;
+}
+
+/**
+ * Supprimer une alerte
+ */
+public function deleteAlert() {
+    AuthController::requireAuth();
+    
+    $alertId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    $userId = (int) ($_SESSION['user_id'] ?? 0);
+    
+    if (!$alertId) {
+        $_SESSION['erreur'] = "Alerte invalide.";
+        header('Location: index.php?route=mes-alertes');
+        exit;
+    }
+    
+    $alertManager = new AlertManager();
+    
+    if ($alertManager->deleteAlert($alertId, $userId)) {
+        $_SESSION['success'] = "Alerte supprimée avec succès.";
+    } else {
+        $_SESSION['erreur'] = "Impossible de supprimer l'alerte.";
+    }
+    
+    header('Location: index.php?route=mes-alertes');
+    exit;
+}
+
+/**
+ * Afficher les offres correspondant à une alerte
+ */
+public function alertOffers() {
+    AuthController::requireAuth();
+    
+    $alertId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    $userId = (int) ($_SESSION['user_id'] ?? 0);
+    
+    if (!$alertId) {
+        $_SESSION['erreur'] = "Alerte invalide.";
+        header('Location: index.php?route=mes-alertes');
+        exit;
+    }
+    
+    $alertManager = new AlertManager();
+    $offerManager = new OfferManager();
+    
+    $alert = $alertManager->getAlertById($alertId, $userId);
+    
+    if (!$alert) {
+        $_SESSION['erreur'] = "Alerte introuvable.";
+        header('Location: index.php?route=mes-alertes');
+        exit;
+    }
+    
+    // Récupérer les offres correspondantes
+    $offres = $alertManager->getMatchingOffers($alertId, $userId, 50);
+    
+    // Récupérer les IDs des offres en wishlist
+    $wishlistOfferIds = $offerManager->getWishlistOfferIds($userId);
+    
+    require_once '../app/views/alerte-offres.php';
 }
 }
