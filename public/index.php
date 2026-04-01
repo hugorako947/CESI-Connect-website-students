@@ -51,6 +51,11 @@ switch ($route) {
         $controller->logout();
         break;
 
+    case 'supprimer-compte':
+        $controller = new AuthController();
+        $controller->deleteAccount();
+        break;
+
     case 'mot-de-passe-oublie':
         $controller = new AuthController();
         $controller->forgotPassword();
