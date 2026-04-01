@@ -22,9 +22,13 @@
                     role="tab" aria-selected="false" aria-controls="panel-wishlist"
                     onclick="switchTab('wishlist')">Wish-list</button>
 
+            <button class="profil-tab-btn" id="tab-alertes"
+                    role="tab" aria-selected="false" aria-controls="panel-alertes"
+                    onclick="switchTab('alertes')">Mes alertes</button>
+
             <button class="profil-tab-btn" id="tab-candidatures"
                     role="tab" aria-selected="false" aria-controls="panel-candidatures"
-                    onclick="switchTab('candidatures')">Candidatures envoyées</button>
+                    onclick="switchTab('candidatures')">Candidatures</button>
         </nav>
 
         <!-- ══ PANNEAU 1 — DASHBOARD ══ -->
@@ -84,7 +88,20 @@
             </div>
         </div>
 
-        <!-- ══ PANNEAU 3 — CANDIDATURES ENVOYÉES ══ -->
+        <!-- ══ PANNEAU 3 — MES ALERTES ══ -->
+        <div id="panel-alertes" class="profil-panel" role="tabpanel" aria-labelledby="tab-alertes">
+            <h1>🔔 Mes alertes</h1>
+            <div style="text-align:center; padding:2rem;">
+                <p style="color:var(--muted); margin-bottom:1.5rem;">
+                    Gérez vos alertes personnalisées pour recevoir des notifications sur les nouvelles offres.
+                </p>
+                <a href="index.php?route=mes-alertes" class="btn btn-primary">
+                    Accéder à la gestion des alertes
+                </a>
+            </div>
+        </div>
+
+        <!-- ══ PANNEAU 4 — CANDIDATURES ENVOYÉES ══ -->
         <div id="panel-candidatures" class="profil-panel" role="tabpanel" aria-labelledby="tab-candidatures">
             <h1>Candidatures envoyées</h1>
             <div class="auth-card">
@@ -141,7 +158,7 @@ function switchTab(tab) {
 // Restaure l'onglet actif depuis l'URL après une redirection PHP
 (function () {
     const tab = new URLSearchParams(window.location.search).get('tab');
-    if (tab && ['dashboard', 'wishlist', 'candidatures'].includes(tab)) {
+    if (tab && ['dashboard', 'wishlist', 'alertes', 'candidatures'].includes(tab)) {
         switchTab(tab);
     }
 })();
