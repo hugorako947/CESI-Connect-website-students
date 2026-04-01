@@ -4,7 +4,6 @@
             <a href="index.php?route=accueil">Accueil</a>
             <a href="index.php?route=mentions-legales">Mentions légales</a>
             <a href="index.php?route=contact">Contact</a>
-            <a href="index.php?route=offres">Offres</a>
         </div>
         <div class="footer-copy">© 2026 CESI Connect — Tous droits réservés</div>
     </footer>
