@@ -1,3 +1,5 @@
+<?php include 'header.php'; ?>
+
 <!-- Vue de l'historique des candidatures de l'utilisateur -->
 <section class="mes-candidatures-section">
     <div class="container">
@@ -82,3 +84,5 @@
         <?php endif; ?>
     </div>
 </section>
+
+<?php include 'footer.php'; ?>
