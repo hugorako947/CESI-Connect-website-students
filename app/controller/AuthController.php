@@ -237,5 +237,33 @@ class AuthController {
         }
         require_once '../app/views/password-reset.php';
     }
+
+    public function deleteAccount() {
+        // Vérifie que l'utilisateur est bien connecté
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: index.php?route=connexion');
+            exit();
+        }
+    
+        $userId = $_SESSION['user_id'];
+        $userManager = new UserManager();
+    
+        // 1. Suppression dans la base de données
+        if ($userManager->deleteUser($userId)) {
+            // 2. Si succès, on vide la session (déconnexion)
+            $_SESSION = array();
+            session_destroy();
+    
+            // 3. Redirection vers l'accueil avec message de succès
+            // On ne peut plus utiliser $_SESSION ici car elle est détruite, 
+            // on passe donc par une variable GET ou on redémarre une session flash
+            header('Location: index.php?route=accueil&success=Compte supprimé avec succès.');
+            exit();
+        } else {
+            $_SESSION['erreur'] = "Erreur lors de la suppression du compte. Contactez un administrateur.";
+            header('Location: index.php?route=profil');
+            exit();
+        }
+    }
 }
 ?>
