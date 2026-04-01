@@ -55,11 +55,15 @@
                     <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
                 </form>
             </div>
-            <div class="form-footer" style="margin-top: 20px; text-align: left;">
+            <div class="form-footer" style="margin-top: 30px; text-align: left;">
                 <a href="index.php?route=reinitialiser-mot-de-passe" class="link-change-password">Changer de mot de passe</a>
             </div>
-            <div class="profil-actions" style="margin-top: 20px;">
-                <a href="index.php?route=deconnexion" class="btn-deconnexion">Supprimer mon compte</a>
+            <div class="profil-actions" style="margin-top: 30px;">
+                <a href="index.php?route=supprimer-compte" 
+                class="btn-deconnexion" 
+                onclick="return confirm('⚠️ ATTENTION : Cette action supprimera définitivement votre compte et toutes vos données. Confirmer ?')">
+                Supprimer mon compte
+                </a>
             </div>
         </div>
 
