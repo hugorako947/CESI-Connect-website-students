@@ -55,7 +55,10 @@
                     <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
                 </form>
             </div>
-            <div class="profil-actions">
+            <div class="form-footer" style="margin-top: 20px; text-align: left;">
+                <a href="index.php?route=reinitialiser-mot-de-passe" class="link-change-password">Changer de mot de passe</a>
+            </div>
+            <div class="profil-actions" style="margin-top: 20px;">
                 <a href="index.php?route=deconnexion" class="btn-deconnexion">Déconnexion</a>
             </div>
         </div>
