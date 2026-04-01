@@ -6,7 +6,7 @@
     <!-- COLONNE PRINCIPALE -->
     <section class="company-main-content">
         <header class="company-header">
-            <div class="company-logo-placeholder">T</div>
+            <div class="company-logo-placeholder"></div>
             <div class="company-title">
                 <h1><?= htmlspecialchars($enterprise['nom'] ?? '') ?></h1>
                 <?php if (!empty($enterprise['description'])): ?>
