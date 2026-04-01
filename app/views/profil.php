@@ -59,7 +59,7 @@
                 <a href="index.php?route=reinitialiser-mot-de-passe" class="link-change-password">Changer de mot de passe</a>
             </div>
             <div class="profil-actions" style="margin-top: 20px;">
-                <a href="index.php?route=deconnexion" class="btn-deconnexion">Déconnexion</a>
+                <a href="index.php?route=deconnexion" class="btn-deconnexion">Supprimer mon compte</a>
             </div>
         </div>
 
