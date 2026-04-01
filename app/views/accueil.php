@@ -20,7 +20,7 @@
         </div>
         <button type="submit" class="search-btn">Rechercher</button>
     </form>
-    <div class="tags-row">
+    <!--<div class="tags-row">
         <a class="tag" href="index.php?route=offres&q=Marketing">Marketing</a>
         <a class="tag" href="index.php?route=offres&q=Informatique">Informatique</a>
         <a class="tag" href="index.php?route=offres&q=Finance">Finance</a>
@@ -30,7 +30,7 @@
         <a class="tag" href="index.php?route=offres&q=Ingenierie">Ingénierie</a>
         <a class="tag" href="index.php?route=offres&q=Design">Design</a>
         <a class="tag" href="index.php?route=offres&q=Juridique">Juridique</a>
-    </div>
+    </div>-->
 </section>
 
 <section class="stats-bar">
@@ -94,6 +94,7 @@
         <a class="cat-card" href="index.php?route=offres&domain=Commerce"><div class="cat-icon">🤝</div><h4>Commercial</h4><p>Voir les offres</p></a>
         <a class="cat-card" href="index.php?route=offres&domain=Ressources humaines"><div class="cat-icon">👥</div><h4>Ressources humaines</h4><p>Voir les offres</p></a>
         <a class="cat-card" href="index.php?route=offres&domain=Juridique"><div class="cat-icon">⚖️</div><h4>Juridique</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Communication"><div class="cat-icon">🌐</div><h4>Communication</h4><p>Voir les offres</p></a>
     </div>
 </section>
 
