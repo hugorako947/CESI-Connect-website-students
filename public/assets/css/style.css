@@ -993,3 +993,35 @@ textarea{min-height:110px;resize:vertical}
     background: rgba(22,163,74,.10);
     border-color: rgba(22,163,74,.22);
 }
+
+/* Force le style "Header" sur le bouton recherche */
+.search-bar .btn-primary.search-btn-header-style {
+  /* Couleurs unies (identiques au header) */
+  background: #1A4FC4 !important; 
+  color: #fff !important;
+  border: none !important;
+  box-shadow: none !important;
+  
+  /* Taille réduite */
+  font-size: 13px !important;
+  padding: 6px 16px !important;
+  height: auto !important; /* Pour ne pas qu'il prenne toute la hauteur */
+  width: auto !important;  /* Pour ne pas qu'il soit trop large */
+  margin: auto 10px auto 5px; /* Centrage vertical dans la barre blanche */
+  
+  /* Forme */
+  border-radius: var(--border-radius-md) !important; /* 8px */
+  transition: background 0.2s ease !important;
+}
+
+/* Effet au survol identique */
+.search-bar .btn-primary.search-btn-header-style:hover {
+  background: #1540A0 !important;
+  transform: none !important; /* On retire l'animation de montée si elle gêne */
+}
+
+/* Ajustement du conteneur de la barre de recherche pour bien centrer le bouton */
+.search-bar {
+  align-items: center; /* Aligne verticalement l'input et le bouton */
+  padding-right: 5px;  /* Espace à droite du bouton */
+}
