@@ -3,7 +3,7 @@
 <section class="section">
     <div class="section-header" style="margin-bottom:1.5rem;">
         <div>
-            <h2>🎯 Offres pour : <?= htmlspecialchars($alert['nom_alerte']) ?></h2>
+            <h2> Offres pour : <?= htmlspecialchars($alert['nom_alerte']) ?></h2>
             <p style="color:var(--muted); margin-top:.35rem; font-size:.92rem;">
                 <?= count($offres) ?> offre<?= count($offres) > 1 ? 's' : '' ?> 
                 correspondant à vos critères depuis la création de l'alerte
@@ -23,22 +23,22 @@
             <?php endif; ?>
             
             <?php if (!empty($alert['ville'])): ?>
-                <span class="filter-tag">📍 <?= htmlspecialchars($alert['ville']) ?></span>
+                <span class="filter-tag"> <?= htmlspecialchars($alert['ville']) ?></span>
             <?php endif; ?>
             
             <?php if (!empty($alert['domaine'])): ?>
-                <span class="filter-tag">💼 <?= htmlspecialchars($alert['domaine']) ?></span>
+                <span class="filter-tag"> <?= htmlspecialchars($alert['domaine']) ?></span>
             <?php endif; ?>
             
             <?php if (!empty($alert['type_contrat'])): ?>
                 <span class="filter-tag">
-                    <?= $alert['type_contrat'] === 'stage' ? '📋' : '🎓' ?> 
+                    <?= $alert['type_contrat'] === 'stage' ?  ?> 
                     <?= ucfirst($alert['type_contrat']) ?>
                 </span>
             <?php endif; ?>
             
             <?php if (!empty($alert['remuneration_min']) && $alert['remuneration_min'] > 0): ?>
-                <span class="filter-tag">💰 Min. <?= number_format($alert['remuneration_min'], 0, ',', ' ') ?>€</span>
+                <span class="filter-tag"> Min. <?= number_format($alert['remuneration_min'], 0, ',', ' ') ?>€</span>
             <?php endif; ?>
         </div>
     </div>
