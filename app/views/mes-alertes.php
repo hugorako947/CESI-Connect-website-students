@@ -77,7 +77,7 @@
                                 
                                 <?php if (!empty($alert['type_contrat'])): ?>
                                     <span class="filter-tag">
-                                        <?= $alert['type_contrat'] === 'stage' ? ?> 
+                                        <?= $alert['type_contrat'] === 'stage'  ?> 
                                         <?= ucfirst($alert['type_contrat']) ?>
                                     </span>
                                 <?php endif; ?>
