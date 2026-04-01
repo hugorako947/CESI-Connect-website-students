@@ -124,6 +124,38 @@ switch ($route) {
         $controller->removeFromWishlist();
         break;
 
+    // ========== ALERTES (StudentController) ==========
+    
+    case 'mes-alertes':
+        $controller = new StudentController();
+        $controller->alerts();
+        break;
+
+    case 'alerte-form':
+        $controller = new StudentController();
+        $controller->alertForm();
+        break;
+
+    case 'alerte-save':
+        $controller = new StudentController();
+        $controller->saveAlert();
+        break;
+
+    case 'alerte-toggle':
+        $controller = new StudentController();
+        $controller->toggleAlert();
+        break;
+
+    case 'alerte-delete':
+        $controller = new StudentController();
+        $controller->deleteAlert();
+        break;
+
+    case 'alerte-offres':
+        $controller = new StudentController();
+        $controller->alertOffers();
+        break;
+
     // ========== GESTION (ManagementController) ==========
     
     case 'gestion-entreprises':
