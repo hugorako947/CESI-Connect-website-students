@@ -1,48 +1,44 @@
 <?php
-// On récupère la connexion via le Singleton de ton projet
+// On s'assure que la session est démarrée pour vérifier l'utilisateur connecté
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once __DIR__ . '/../models/database.php';
 date_default_timezone_set('Europe/Paris');
 
 try {
     $db = Database::getInstance()->getConnection();
 } catch (Exception $e) {
-    die("Erreur de connexion à la base de données.");
+    die("Erreur de connexion.");
 }
 
+// Initialisation des variables pour éviter les "Warning: Undefined variable"
 $token = $_GET['token'] ?? $_POST['token'] ?? null;
-$error = null;
-$success = null;
+$error = $error ?? null;   // Garde la valeur si le contrôleur l'a définie
+$success = $success ?? null; // Garde la valeur si le contrôleur l'a définie
+$user_id = null;
 
-// 1. Vérifier si le token est valide et non expiré
-// NOTE : On vérifie 'mot_de_passe' et non 'password' pour correspondre à ton UserManager
-$stmt = $db->prepare("SELECT id FROM utilisateurs WHERE reset_token = ? AND reset_expires > ?");
-$stmt->execute([$token, date('Y-m-d H:i:s')]);
-$user = $stmt->fetch();
-
-if (!$token || !$user) {
-    die("Ce lien est invalide ou a expiré. <a href='index.php?route=mot-de-passe-oublie'>Recommencer la procédure</a>");
-}
-
-// 2. Traitement du formulaire
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $password = $_POST['password'] ?? '';
-    $confirm = $_POST['confirm_password'] ?? '';
-
-    if (!empty($password) && $password === $confirm && strlen($password) >= 8) {
-        // Utilisation de PASSWORD_BCRYPT pour être raccord avec ton AuthController
-        $hash = password_hash($password, PASSWORD_BCRYPT);
-
-        // MISE À JOUR : On utilise 'mot_de_passe' (nom de colonne dans tes autres fichiers)
-        $update = $db->prepare("UPDATE utilisateurs SET mot_de_passe = ?, reset_token = NULL, reset_expires = NULL WHERE id = ?");
-        $update->execute([$hash, $user['id']]);
-
-        $success = "Votre mot de passe a été mis à jour avec succès !";
-    } else {
-        $error = "Les mots de passe ne correspondent pas ou sont trop courts (min. 8 caractères).";
+// --- VÉRIFICATION DE L'IDENTITÉ ---
+if ($token) {
+    // Mode "Mot de passe oublié" (via email)
+    $stmt = $db->prepare("SELECT id FROM utilisateurs WHERE reset_token = ? AND reset_expires > NOW()");
+    $stmt->execute([$token]);
+    $res = $stmt->fetch();
+    if ($res) {
+        $user_id = $res['id'];
     }
+} elseif (isset($_SESSION['user_id'])) {
+    // Mode "Changer mon mot de passe" (via le profil)
+    $user_id = $_SESSION['user_id'];
 }
 
-include 'header.php';
+// Si aucune méthode d'identification ne fonctionne, on bloque l'accès
+if (!$user_id) {
+    die("Accès refusé : lien invalide ou vous n'êtes pas connecté. <a href='index.php?route=connexion'>Retour</a>");
+}
+
+include 'header.php'; 
 ?>
 
 <section class="auth-container">
@@ -50,21 +46,27 @@ include 'header.php';
         <h1>Nouveau mot de passe</h1>
 
         <?php if($success): ?>
-            <div class="alert alert-success" style="color: green; margin-bottom: 20px;"><?= $success ?></div>
-            <a href="index.php?route=connexion" class="btn-submit" style="display:block; text-align:center; text-decoration:none;">Se connecter</a>
+            <div class="alert alert-success" style="color: #155724; background-color: #d4edda; border: 1px solid #c3e6cb; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                <?= $success ?>
+            </div>
+            <a href="index.php?route=<?= isset($_SESSION['user_id']) ? 'profil' : 'connexion' ?>" class="btn-submit" style="display:block; text-align:center; text-decoration:none;">Retour</a>
         <?php else: ?>
             <p class="auth-subtitle">Veuillez choisir un nouveau mot de passe sécurisé.</p>
             
             <?php if($error): ?>
-                <div class="alert alert-error" style="color: red; margin-bottom: 20px;"><?= $error ?></div>
+                <div class="alert alert-error" style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                    <?= htmlspecialchars($error) ?>
+                </div>
             <?php endif; ?>
 
-            <form action="" method="POST" class="auth-form">
-                <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
+            <form action="index.php?route=reinitialiser-mot-de-passe" method="POST" class="auth-form">
+                <?php if($token): ?>
+                    <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
+                <?php endif; ?>
                 
                 <div class="form-group">
-                    <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password" required placeholder="********">
+                    <label for="password">Nouveau mot de passe</label>
+                    <input type="password" id="password" name="password" required placeholder="********" minlength="8">
                 </div>
                 <div class="form-group">
                     <label for="confirm_password">Confirmez le mot de passe</label>
