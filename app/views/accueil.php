@@ -18,7 +18,7 @@
                 <option value="étranger">À l'étranger</option>
             </select>
         </div>
-        <button type="submit" class="search-btn">Rechercher</button>
+        <button type="submit" class="btn-primary search-btn-header-style">Rechercher</button>
     </form>
     <!--<div class="tags-row">
         <a class="tag" href="index.php?route=offres&q=Marketing">Marketing</a>
