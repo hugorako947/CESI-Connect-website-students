@@ -261,6 +261,27 @@
         <!-- ══ PANNEAU 4 — CANDIDATURES ENVOYÉES ══ -->
         <div id="panel-candidatures" class="profil-panel" role="tabpanel" aria-labelledby="tab-candidatures">
             <h1>🚀 Candidatures envoyées</h1>
+
+            <?php
+                $nbTotal     = count($candidatures);
+                $nbAttente   = count(array_filter($candidatures, fn($c) => $c['statut'] === 'En attente'));
+                $nbAcceptees = count(array_filter($candidatures, fn($c) => $c['statut'] === 'Acceptée'));
+            ?>
+
+            <?php if ($nbTotal > 0): ?>
+                <div class="candidatures-stats-bar">
+                    <span class="cstat-pill cstat-total">
+                        <?= $nbTotal ?> Candidature<?= $nbTotal > 1 ? 's' : '' ?>
+                    </span>
+                    <span class="cstat-pill cstat-attente">
+                        <?= $nbAttente ?> En attente<?= $nbAttente > 1 ? 's' : '' ?>
+                    </span>
+                    <span class="cstat-pill cstat-acceptee">
+                        <?= $nbAcceptees ?> Acceptée<?= $nbAcceptees > 1 ? 's' : '' ?>
+                    </span>
+                </div>
+            <?php endif; ?>
+
             <div class="auth-card">
                 <?php if (empty($candidatures)): ?>
                     <p>Vous n'avez pas encore postulé.</p>
@@ -275,8 +296,9 @@
                                     </span>
                                 </div>
                                 <div class="candidature-body">
-                                    <p><strong> Entreprise :</strong> <?= htmlspecialchars($candidature['entreprise_nom']) ?></p>
-                                    <p><strong> Date :</strong> <?= date('d/m/Y à H:i', strtotime($candidature['date_candidature'])) ?></p>
+                                    <p><strong>🏢 Entreprise :</strong> <?= htmlspecialchars($candidature['entreprise_nom']) ?></p>
+                                    <p><strong>📅 Date de candidature :</strong> <?= date('d/m/Y à H:i', strtotime($candidature['date_candidature'])) ?></p>
+                                    <p><strong>📎 Documents envoyés :<br>✓ CV<br>✓ Lettre de motivation</strong></p>
                                 </div> 
                                 <div class="candidature-footer">
                                     <a href="index.php?route=offre-details&id=<?= (int) $candidature['id_offre'] ?>" class="btn btn-outline">
