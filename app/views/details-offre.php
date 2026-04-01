@@ -66,7 +66,7 @@
                     <?php else: ?>
                         <a href="index.php?route=candidater&offre=<?= htmlspecialchars($offer['id']) ?>" 
                            class="btn btn-primary btn-large">
-                            📄 Candidater maintenant
+                           Candidater
                         </a>
                     <?php endif; ?>
                 </div>
@@ -148,16 +148,6 @@
                     <?php endif; ?>
                 </div>
             </div>
-
-            <!-- Bouton de candidature en bas (mobile) -->
-            <?php if (isset($_SESSION['user_id']) && !$hasApplied): ?>
-                <div class="candidature-footer">
-                    <a href="index.php?route=candidater&offre=<?= htmlspecialchars($offer['id']) ?>" 
-                       class="btn btn-primary btn-block btn-large">
-                        📄 Postuler à cette offre
-                    </a>
-                </div>
-            <?php endif; ?>
 
             <!-- Bouton retour -->
             <div class="navigation-footer">
