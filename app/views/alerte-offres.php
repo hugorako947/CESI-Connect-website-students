@@ -48,7 +48,7 @@
         <div class="empty-state">
             <div class="empty-icon">📭</div>
             <h2>Aucune nouvelle offre pour le moment</h2>
-            <p>Nous vous notifierons dès qu'une nouvelle offre correspondant à vos critères sera publiée.</p>
+            <p>Nous vous notifierons quand il y aura une nouvelle offre correspondant à vos critères sera publiée.</p>
             <a href="index.php?route=mes-alertes" class="btn btn-primary" style="margin-top:1rem;">
                 Retour aux alertes
             </a>
