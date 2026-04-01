@@ -148,7 +148,7 @@ class CandidatureController {
             $this->offerManager->removeFromWishlist((int) $userId, (int) $offerId);
 
             $_SESSION['success'] = "Votre candidature a été envoyée avec succès !";
-            header('Location: index.php?route=mes-candidatures');
+            header('Location: index.php?route=profil&tab=candidatures');
             exit;
 
         } catch (Exception $e) {
@@ -232,17 +232,5 @@ class CandidatureController {
         }
     }
 
-    /**
-     * Afficher l'historique des candidatures de l'utilisateur connecté
-     */
-    public function index() {
-        // Vérifier que l'utilisateur est connecté
-        AuthController::requireAuth();
-
-        $userId = $_SESSION['user_id'];
-        $candidatures = $this->candidatureManager->getByUser($userId);
-
-        require_once '../app/views/mes-candidatures.php';
-    }
 }
 ?>
