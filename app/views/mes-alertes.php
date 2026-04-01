@@ -4,7 +4,7 @@
     <div class="container">
         <div class="page-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
             <div>
-                <h1>🔔 Mes alertes</h1>
+                <h1> Mes alertes</h1>
                 <p style="color:var(--muted); margin-top:0.5rem;">
                     Créez des alertes personnalisées et soyez notifié des nouvelles offres correspondant à vos critères.
                 </p>
@@ -27,7 +27,7 @@
         <?php if (empty($alerts)): ?>
             <!-- État vide -->
             <div class="empty-state">
-                <div class="empty-icon">🔕</div>
+                <div class="empty-icon"> </div>
                 <h2>Aucune alerte configurée</h2>
                 <p>Créez votre première alerte pour recevoir des notifications sur les nouvelles offres qui correspondent à vos critères.</p>
                 <a href="index.php?route=alerte-form" class="btn btn-primary" style="margin-top:1rem;">
@@ -56,7 +56,7 @@
                             
                             <?php if ($alert['nouvelles_offres'] > 0): ?>
                                 <span class="statut" style="background: linear-gradient(135deg, #2563eb, #7c3aed); color:#fff; padding:.35rem .85rem; border-radius:999px; font-size:.82rem; font-weight:900;">
-                                    🎯 <?= $alert['nouvelles_offres'] ?> nouvelle<?= $alert['nouvelles_offres'] > 1 ? 's' : '' ?> offre<?= $alert['nouvelles_offres'] > 1 ? 's' : '' ?>
+                                     <?= $alert['nouvelles_offres'] ?> nouvelle<?= $alert['nouvelles_offres'] > 1 ? 's' : '' ?> offre<?= $alert['nouvelles_offres'] > 1 ? 's' : '' ?>
                                 </span>
                             <?php endif; ?>
                         </div>
@@ -68,22 +68,22 @@
                                 <?php endif; ?>
                                 
                                 <?php if (!empty($alert['ville'])): ?>
-                                    <span class="filter-tag">📍 <?= htmlspecialchars($alert['ville']) ?></span>
+                                    <span class="filter-tag"> <?= htmlspecialchars($alert['ville']) ?></span>
                                 <?php endif; ?>
                                 
                                 <?php if (!empty($alert['domaine'])): ?>
-                                    <span class="filter-tag">💼 <?= htmlspecialchars($alert['domaine']) ?></span>
+                                    <span class="filter-tag"> <?= htmlspecialchars($alert['domaine']) ?></span>
                                 <?php endif; ?>
                                 
                                 <?php if (!empty($alert['type_contrat'])): ?>
                                     <span class="filter-tag">
-                                        <?= $alert['type_contrat'] === 'stage' ? '📋' : '🎓' ?> 
+                                        <?= $alert['type_contrat'] === 'stage' ? ?> 
                                         <?= ucfirst($alert['type_contrat']) ?>
                                     </span>
                                 <?php endif; ?>
                                 
                                 <?php if (!empty($alert['remuneration_min']) && $alert['remuneration_min'] > 0): ?>
-                                    <span class="filter-tag">💰 Min. <?= number_format($alert['remuneration_min'], 0, ',', ' ') ?>€</span>
+                                    <span class="filter-tag"> Min. <?= number_format($alert['remuneration_min'], 0, ',', ' ') ?>€</span>
                                 <?php endif; ?>
                             </div>
                             
@@ -100,7 +100,7 @@
                             <?php endif; ?>
                             
                             <a href="index.php?route=alerte-form&id=<?= (int) $alert['id'] ?>" class="btn btn-outline">
-                                ✏️ Modifier
+                                 Modifier
                             </a>
                             
                             <a href="index.php?route=alerte-toggle&id=<?= (int) $alert['id'] ?>" 
@@ -113,7 +113,7 @@
                                class="btn btn-outline"
                                style="border-color:rgba(239,68,68,.30); color:rgba(239,68,68,.95);"
                                onclick="return confirm('Supprimer définitivement cette alerte ?')">
-                                🗑️ Supprimer
+                                 Supprimer
                             </a>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
 
             <!-- Statistiques -->
             <div class="stats-card" style="margin-top:2rem;">
-                <h3>📊 Statistiques</h3>
+                <h3> Statistiques</h3>
                 <div class="stats-grid">
                     <div class="stat-item">
                         <div class="stat-number"><?= count($alerts) ?></div>
