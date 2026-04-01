@@ -4,7 +4,7 @@
     <div class="container" style="max-width:780px;">
         
         <div class="page-header" style="text-align:center; margin-bottom:2rem;">
-            <h1><?= isset($alert) ? '✏️ Modifier l\'alerte' : '➕ Créer une alerte' ?></h1>
+            <h1><?= isset($alert) ? ' Modifier l\'alerte' : '➕ Créer une alerte' ?></h1>
             <p style="color:var(--muted); margin-top:0.5rem;">
                 Définissez vos critères de recherche et recevez des notifications pour les nouvelles offres correspondantes.
             </p>
@@ -27,7 +27,7 @@
                 <!-- Nom de l'alerte -->
                 <div class="form-group">
                     <label for="nom_alerte">
-                        <span class="label-icon">📝</span>
+                        <span class="label-icon"></span>
                         Nom de l'alerte *
                     </label>
                     <input 
@@ -43,7 +43,7 @@
 
                 <hr style="border:0; border-top:1px solid rgba(99,102,241,.14); margin:1.5rem 0;">
 
-                <h3 style="font-weight:900; margin-bottom:1rem;">🎯 Critères de recherche</h3>
+                <h3 style="font-weight:900; margin-bottom:1rem;"> Critères de recherche</h3>
                 <p style="color:var(--muted); font-size:.92rem; margin-bottom:1.25rem;">
                     Remplissez au moins un critère. Laissez vide pour ne pas filtrer sur ce critère.
                 </p>
@@ -67,7 +67,7 @@
                 <!-- Ville -->
                 <div class="form-group">
                     <label for="ville">
-                        <span class="label-icon">📍</span>
+                        <span class="label-icon"></span>
                         Ville
                     </label>
                     <input 
@@ -82,7 +82,7 @@
                 <!-- Domaine -->
                 <div class="form-group">
                     <label for="domaine">
-                        <span class="label-icon">💼</span>
+                        <span class="label-icon"></span>
                         Domaine
                     </label>
                     <input 
@@ -97,7 +97,7 @@
                 <!-- Type de contrat -->
                 <div class="form-group">
                     <label for="type_contrat">
-                        <span class="label-icon">📋</span>
+                        <span class="label-icon"></span>
                         Type de contrat
                     </label>
                     <select id="type_contrat" name="type_contrat" style="width:100%; padding:.85rem .95rem; border-radius:14px; border:1px solid rgba(99,102,241,.16); background:rgba(255,255,255,.75);">
@@ -110,7 +110,7 @@
                 <!-- Rémunération minimale -->
                 <div class="form-group">
                     <label for="remuneration_min">
-                        <span class="label-icon">💰</span>
+                        <span class="label-icon"></span>
                         Rémunération minimale (€)
                     </label>
                     <input 
@@ -131,7 +131,7 @@
                         Annuler
                     </a>
                     <button type="submit" class="btn btn-primary">
-                        <?= isset($alert) ? '💾 Enregistrer les modifications' : '✨ Créer l\'alerte' ?>
+                        <?= isset($alert) ? ' Enregistrer les modifications' : ' Créer l\'alerte' ?>
                     </button>
                 </div>
             </form>
@@ -139,12 +139,12 @@
 
         <!-- Conseils -->
         <div class="conseils-card" style="margin-top:1.5rem;">
-            <h3>💡 Conseils pour vos alertes</h3>
+            <h3> Conseils pour vos alertes</h3>
             <ul>
-                <li>✅ Créez plusieurs alertes avec des critères différents pour ne rater aucune opportunité</li>
-                <li>✅ Utilisez des mots-clés précis pour des résultats plus pertinents</li>
-                <li>✅ Vous pouvez activer/désactiver vos alertes temporairement sans les supprimer</li>
-                <li>✅ Vérifiez régulièrement vos alertes pour voir les nouvelles offres</li>
+                <li> Créez plusieurs alertes avec des critères différents pour ne rater aucune opportunité</li>
+                <li> Utilisez des mots-clés précis pour des résultats plus pertinents</li>
+                <li> Vous pouvez activer/désactiver vos alertes temporairement sans les supprimer</li>
+                <li> Vérifiez régulièrement vos alertes pour voir les nouvelles offres</li>
             </ul>
         </div>
 
