@@ -48,6 +48,9 @@ public function profile() {
     $wishlist_offers = $offerManager->getWishlistOffers($userId);
     $candidatures = $candidatureManager->getByUser($userId);
 
+    $alertManager = new AlertManager();
+    $alerts = $alertManager->getAlertsWithCounts($userId);
+
     require_once '../app/views/profil.php';
 }
 
