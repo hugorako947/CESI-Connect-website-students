@@ -33,7 +33,7 @@
 
         <!-- ══ PANNEAU 1 — DASHBOARD ══ -->
         <div id="panel-dashboard" class="profil-panel active" role="tabpanel" aria-labelledby="tab-dashboard">
-            <h1>Mon dashboard</h1>
+            <h1>📒 Mon dashboard</h1>
             <div class="auth-card" style="margin-bottom: 24px;">
                 <h2>Mes informations personnelles</h2>
                 <form action="index.php?route=profil" method="POST" class="auth-form">
@@ -69,7 +69,7 @@
 
         <!-- ══ PANNEAU 2 — WISH-LIST ══ -->
         <div id="panel-wishlist" class="profil-panel" role="tabpanel" aria-labelledby="tab-wishlist">
-            <h1>Ma wish-list</h1>
+            <h1>❤️ Ma wish-list</h1>
             <div class="auth-card">
                 <?php if (empty($wishlist_offers)): ?>
                     <p>Vous n'avez aucune offre en favori pour le moment.</p>
@@ -99,7 +99,7 @@
         <div id="panel-alertes" class="profil-panel" role="tabpanel" aria-labelledby="tab-alertes">
             <div class="page-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
                 <div>
-                    <h1>Mes alertes</h1>
+                    <h1>🔔 Mes alertes</h1>
                     <p style="color:var(--muted); margin-top:0.5rem;">
                         Créez des alertes personnalisées et soyez notifié des nouvelles offres correspondant à vos critères.
                     </p>
@@ -260,7 +260,7 @@
 
         <!-- ══ PANNEAU 4 — CANDIDATURES ENVOYÉES ══ -->
         <div id="panel-candidatures" class="profil-panel" role="tabpanel" aria-labelledby="tab-candidatures">
-            <h1>Candidatures envoyées</h1>
+            <h1>🚀 Candidatures envoyées</h1>
             <div class="auth-card">
                 <?php if (empty($candidatures)): ?>
                     <p>Vous n'avez pas encore postulé.</p>
