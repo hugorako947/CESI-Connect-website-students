@@ -199,24 +199,40 @@ class AuthController {
     }
     
     public function resetPassword() {
-        $token = $_GET['token'] ?? $_POST['token'] ?? '';
         $userManager = new UserManager();
-        $user = $userManager->getUserByToken($token);
+        $token = $_GET['token'] ?? $_POST['token'] ?? null;
+        $user = null;
     
+        if ($token) {
+            // Mode Récupération : vérifie le token en BDD
+            $user = $userManager->getUserByToken($token);
+        } elseif (isset($_SESSION['user_id'])) {
+            // Mode Connecté : récupère l'utilisateur par sa session
+            $user = $userManager->getUserById($_SESSION['user_id']);
+        }
+    
+        // Si pas de token valide ET pas connecté -> Dehors
         if (!$user) {
-            die("Lien invalide ou expiré.");
+            header('Location: index.php?route=connexion');
+            exit();
         }
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $password = $_POST['password'];
-            $confirm = $_POST['confirm_password'];
+            $password = $_POST['password'] ?? '';
+            $confirm = $_POST['confirm_password'] ?? '';
     
-            if ($password === $confirm) {
+            if (!empty($password) && $password === $confirm && strlen($password) >= 8) {
                 $userManager->updatePassword($user['id'], $password);
-                header('Location: index.php?route=connexion&success=Mot de passe mis à jour !');
+                
+                if ($token) {
+                    header('Location: index.php?route=connexion&success=Mot de passe mis à jour !');
+                } else {
+                    $_SESSION['success'] = "Votre mot de passe a été modifié avec succès.";
+                    header('Location: index.php?route=profil');
+                }
                 exit();
             } else {
-                $error = "Les mots de passe ne correspondent pas.";
+                $error = "Les mots de passe doivent être identiques et faire au moins 8 caractères.";
             }
         }
         require_once '../app/views/password-reset.php';
