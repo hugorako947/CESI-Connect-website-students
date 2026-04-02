@@ -38,7 +38,7 @@ class AuthController {
                     header('Location: index.php?route=accueil');
                     exit();
                 } else {
-                    $erreur = "Email ou mot de passe incorrect.";
+                    $erreur = "Email ou mot de passe non reconnu.";
                 }
             } else {
                 $erreur = "Veuillez remplir tous les champs.";
