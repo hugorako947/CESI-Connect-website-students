@@ -42,7 +42,7 @@
         </nav>
 
         <div id="panel-dashboard" class="profil-panel active" role="tabpanel" aria-labelledby="tab-dashboard" style="display:block;">
-            <h1><?= $isPilote ? '👤 Mon dashboard' : '📒 Mon dashboard' ?></h1>
+            <h1>👤 Mon dashboard</h1>
 
             <div class="auth-card" style="margin-bottom: 24px; margin-top: 24px;">
                 <h2>Mes informations personnelles</h2>
