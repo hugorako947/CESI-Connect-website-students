@@ -17,7 +17,7 @@
             <?php if ($isPilote): ?>
                 <button class="profil-tab-btn active" id="tab-dashboard"
                         role="tab" aria-selected="true" aria-controls="panel-dashboard"
-                        onclick="switchTab('dashboard')">Mon dashboard</button>
+                        onclick="switchTab('dashboard')">Informations</button>
 
                 <button class="profil-tab-btn" id="tab-pilote"
                         role="tab" aria-selected="false" aria-controls="panel-pilote"
@@ -25,7 +25,7 @@
             <?php else: ?>
                 <button class="profil-tab-btn active" id="tab-dashboard"
                         role="tab" aria-selected="true" aria-controls="panel-dashboard"
-                        onclick="switchTab('dashboard')">Dashboard</button>
+                        onclick="switchTab('dashboard')">Informations</button>
 
                 <button class="profil-tab-btn" id="tab-wishlist"
                         role="tab" aria-selected="false" aria-controls="panel-wishlist"
@@ -42,10 +42,9 @@
         </nav>
 
         <div id="panel-dashboard" class="profil-panel active" role="tabpanel" aria-labelledby="tab-dashboard" style="display:block;">
-            <h1>👤 Mon dashboard</h1>
+            <h1>👤 Mes informations personnelles</h1>
 
             <div class="auth-card" style="margin-bottom: 24px; margin-top: 24px;">
-                <h2>Mes informations personnelles</h2>
                 <form action="index.php?route=profil" method="POST" class="auth-form">
                     <div class="form-group">
                         <label for="prenom">Prénom</label>
