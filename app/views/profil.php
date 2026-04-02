@@ -1,4 +1,5 @@
 <?php include 'header.php'; ?>
+<?php $isPilote = isset($_SESSION['user_role']) && (int) $_SESSION['user_role'] === 2; ?>
 
 <section class="mes-candidatures-section">
     <div class="container">
@@ -12,29 +13,38 @@
             <?php unset($_SESSION['erreur']); ?>
         <?php endif; ?>
 
-        <!-- ── Barre d'onglets ── -->
         <nav class="profil-tabs-bar" role="tablist">
-            <button class="profil-tab-btn active" id="tab-dashboard"
-                    role="tab" aria-selected="true" aria-controls="panel-dashboard"
-                    onclick="switchTab('dashboard')">Dashboard</button>
+            <?php if ($isPilote): ?>
+                <button class="profil-tab-btn active" id="tab-dashboard"
+                        role="tab" aria-selected="true" aria-controls="panel-dashboard"
+                        onclick="switchTab('dashboard')">Mon dashboard</button>
 
-            <button class="profil-tab-btn" id="tab-wishlist"
-                    role="tab" aria-selected="false" aria-controls="panel-wishlist"
-                    onclick="switchTab('wishlist')">Wish-list</button>
+                <button class="profil-tab-btn" id="tab-pilote"
+                        role="tab" aria-selected="false" aria-controls="panel-pilote"
+                        onclick="switchTab('pilote')">Dashboard Pilote</button>
+            <?php else: ?>
+                <button class="profil-tab-btn active" id="tab-dashboard"
+                        role="tab" aria-selected="true" aria-controls="panel-dashboard"
+                        onclick="switchTab('dashboard')">Dashboard</button>
 
-            <button class="profil-tab-btn" id="tab-alertes"
-                    role="tab" aria-selected="false" aria-controls="panel-alertes"
-                    onclick="switchTab('alertes')">Mes alertes</button>
+                <button class="profil-tab-btn" id="tab-wishlist"
+                        role="tab" aria-selected="false" aria-controls="panel-wishlist"
+                        onclick="switchTab('wishlist')">Wish-list</button>
 
-            <button class="profil-tab-btn" id="tab-candidatures"
-                    role="tab" aria-selected="false" aria-controls="panel-candidatures"
-                    onclick="switchTab('candidatures')">Candidatures</button>
+                <button class="profil-tab-btn" id="tab-alertes"
+                        role="tab" aria-selected="false" aria-controls="panel-alertes"
+                        onclick="switchTab('alertes')">Mes alertes</button>
+
+                <button class="profil-tab-btn" id="tab-candidatures"
+                        role="tab" aria-selected="false" aria-controls="panel-candidatures"
+                        onclick="switchTab('candidatures')">Candidatures</button>
+            <?php endif; ?>
         </nav>
 
-        <!-- ══ PANNEAU 1 — DASHBOARD ══ -->
-        <div id="panel-dashboard" class="profil-panel active" role="tabpanel" aria-labelledby="tab-dashboard">
-            <h1>📒 Mon dashboard</h1>
-            <div class="auth-card" style="margin-bottom: 24px;">
+        <div id="panel-dashboard" class="profil-panel active" role="tabpanel" aria-labelledby="tab-dashboard" style="display:block;">
+            <h1><?= $isPilote ? '👤 Mon dashboard' : '📒 Mon dashboard' ?></h1>
+
+            <div class="auth-card" style="margin-bottom: 24px; margin-top: 24px;">
                 <h2>Mes informations personnelles</h2>
                 <form action="index.php?route=profil" method="POST" class="auth-form">
                     <div class="form-group">
@@ -59,15 +69,56 @@
                 <a href="index.php?route=reinitialiser-mot-de-passe" class="link-change-password">Changer de mot de passe</a>
             </div>
             <div class="profil-actions" style="margin-top: 30px;">
-                <a href="index.php?route=supprimer-compte" 
-                class="btn-deconnexion" 
+                <a href="index.php?route=supprimer-compte"
+                class="btn-deconnexion"
                 onclick="return confirm('⚠️ ATTENTION : Cette action supprimera définitivement votre compte et toutes vos données. Confirmer ?')">
                 Supprimer mon compte
                 </a>
             </div>
         </div>
 
-        <!-- ══ PANNEAU 2 — WISH-LIST ══ -->
+        <?php if ($isPilote): ?>
+        <div id="panel-pilote" class="profil-panel" role="tabpanel" aria-labelledby="tab-pilote">
+            <div class="page-header" style="margin-bottom:2rem;">
+                <div>
+                    <h1>📊 Dashboard Pilote</h1>
+                    <p style="color:var(--muted); margin-top:0.5rem;">
+                        Accédez ici à votre espace de suivi pilote. Ce tableau de bord n'est plus affiché dans la navigation principale.
+                    </p>
+                </div>
+            </div>
+
+            <div class="stats" style="margin-bottom:2rem; justify-content:flex-start;">
+                <div class="stat-item">
+                    <span class="number"><?= (int) ($pilotStats['nb_etudiants'] ?? 0) ?></span>
+                    <span class="label">Étudiant<?= ((int) ($pilotStats['nb_etudiants'] ?? 0)) > 1 ? 's' : '' ?> suivi<?= ((int) ($pilotStats['nb_etudiants'] ?? 0)) > 1 ? 's' : '' ?></span>
+                </div>
+                <div class="stat-item">
+                    <span class="number"><?= (int) ($pilotStats['nb_candidatures_total'] ?? 0) ?></span>
+                    <span class="label">Candidature<?= ((int) ($pilotStats['nb_candidatures_total'] ?? 0)) > 1 ? 's' : '' ?> total<?= ((int) ($pilotStats['nb_candidatures_total'] ?? 0)) > 1 ? 'es' : 'e' ?></span>
+                </div>
+                <div class="stat-item">
+                    <span class="number"><?= (int) ($pilotStats['nb_en_attente'] ?? 0) ?></span>
+                    <span class="label">En attente</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number"><?= (int) ($pilotStats['nb_acceptees'] ?? 0) ?></span>
+                    <span class="label">Acceptée<?= ((int) ($pilotStats['nb_acceptees'] ?? 0)) > 1 ? 's' : '' ?></span>
+                </div>
+            </div>
+
+            <div class="auth-card" style="text-align:left; margin-bottom:1.5rem;">
+                <h2 style="margin-bottom:1rem;">Accès au suivi pilote</h2>
+                <p style="color:var(--muted); margin-bottom:1.25rem;">
+                    Ouvrez votre espace de pilotage pour consulter la liste des étudiants, leurs candidatures, leurs wish-lists et les statistiques globales.
+                </p>
+                <div style="display:flex; gap:.75rem; flex-wrap:wrap;">
+                    <a href="index.php?route=pilote-dashboard" class="btn btn-primary">Ouvrir le dashboard pilote</a>
+                    <a href="index.php?route=pilote-statistiques" class="btn btn-outline">Voir les statistiques globales</a>
+                </div>
+            </div>
+        </div>
+        <?php else: ?>
         <div id="panel-wishlist" class="profil-panel" role="tabpanel" aria-labelledby="tab-wishlist">
             <h1>❤️ Ma wish-list</h1>
             <div class="auth-card">
@@ -95,7 +146,6 @@
             </div>
         </div>
 
-        <!-- ══ PANNEAU 3 — MES ALERTES ══ -->
         <div id="panel-alertes" class="profil-panel" role="tabpanel" aria-labelledby="tab-alertes">
             <div class="page-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
                 <div>
@@ -258,7 +308,6 @@
             </style>
         </div>
 
-        <!-- ══ PANNEAU 4 — CANDIDATURES ENVOYÉES ══ -->
         <div id="panel-candidatures" class="profil-panel" role="tabpanel" aria-labelledby="tab-candidatures">
             <h1>🚀 Candidatures envoyées</h1>
 
@@ -299,7 +348,7 @@
                                     <p><strong>🏢 Entreprise :</strong> <?= htmlspecialchars($candidature['entreprise_nom']) ?></p>
                                     <p><strong>📅 Date de candidature :</strong> <?= date('d/m/Y à H:i', strtotime($candidature['date_candidature'])) ?></p>
                                     <p><strong>📎 Documents envoyés :<br>✓ CV<br>✓ Lettre de motivation</strong></p>
-                                </div> 
+                                </div>
                                 <div class="candidature-footer">
                                     <a href="index.php?route=offre-details&id=<?= (int) $candidature['id_offre'] ?>" class="btn btn-outline">
                                         Voir l'offre
@@ -311,6 +360,7 @@
                 <?php endif; ?>
             </div>
         </div>
+        <?php endif; ?>
 
     </div>
 </section>
@@ -323,21 +373,35 @@ function switchTab(tab) {
     });
     document.querySelectorAll('.profil-panel').forEach(panel => {
         panel.classList.remove('active');
+        panel.style.display = 'none';
     });
-    document.getElementById('tab-' + tab).classList.add('active');
-    document.getElementById('tab-' + tab).setAttribute('aria-selected', 'true');
-    document.getElementById('panel-' + tab).classList.add('active');
 
-    // Mémorise l'onglet dans l'URL sans rechargement
+    const activeTab = document.getElementById('tab-' + tab);
+    const activePanel = document.getElementById('panel-' + tab);
+
+    if (!activeTab || !activePanel) {
+        return;
+    }
+
+    activeTab.classList.add('active');
+    activeTab.setAttribute('aria-selected', 'true');
+    activePanel.classList.add('active');
+    activePanel.style.display = 'block';
+
     const url = new URL(window.location);
     url.searchParams.set('tab', tab);
     history.replaceState(null, '', url);
 }
 
-// Restaure l'onglet actif depuis l'URL après une redirection PHP
 (function () {
+    document.querySelectorAll('.profil-panel').forEach((panel, index) => {
+        panel.style.display = index === 0 ? 'block' : 'none';
+    });
+
+    const allowedTabs = <?= json_encode($isPilote ? ['dashboard', 'pilote'] : ['dashboard', 'wishlist', 'alertes', 'candidatures']) ?>;
     const tab = new URLSearchParams(window.location.search).get('tab');
-    if (tab && ['dashboard', 'wishlist', 'alertes', 'candidatures'].includes(tab)) {
+
+    if (tab && allowedTabs.includes(tab)) {
         switchTab(tab);
     }
 })();
