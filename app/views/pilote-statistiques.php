@@ -12,12 +12,8 @@
                 </p>
             </div>
             <div class="page-header-actions">
-                <a href="index.php?route=profil&tab=pilot" class="btn btn-outline btn-page-action">
-                    ← Retour au profil
-                </a>
-                <a href="index.php?route=pilote-dashboard" class="btn btn-outline btn-page-action">
-                    Retour au dashboard
-                </a>
+                <a href="index.php?route=profil&tab=pilot" class="btn btn-outline btn-page-action">← Quitter</a>
+                <a href="index.php?route=pilote-dashboard" class="btn btn-outline btn-page-action">Dashboard Pilote</a>
             </div>
         </div>
 
