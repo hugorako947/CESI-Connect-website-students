@@ -202,6 +202,26 @@ switch ($route) {
 
     // ========== PAGE 404 ==========
     
+    // ========== ESPACE ADMIN (AdminController) ==========
+
+    case 'admin-delete-user':
+        require_once '../app/controller/AdminController.php';
+        $controller = new AdminController();
+        $controller->deleteUser();
+        break;
+
+    case 'admin-delete-offer':
+        require_once '../app/controller/AdminController.php';
+        $controller = new AdminController();
+        $controller->deleteOffer();
+        break;
+
+    case 'admin-delete-enterprise':
+        require_once '../app/controller/AdminController.php';
+        $controller = new AdminController();
+        $controller->deleteEnterprise();
+        break;
+
     default:
         http_response_code(404);
         require_once '../app/views/404.php';
