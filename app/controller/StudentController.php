@@ -45,26 +45,38 @@ public function profile() {
     }
 
     $user = $userManager->getUserById($userId);
-    $isPilote = isset($user['id_role']) && (int) $user['id_role'] === 2;
+    $role = (int) ($user['id_role'] ?? 0);
+    $isPilote = $role === 2;
+    $isAdmin  = $role === 1;
 
     $wishlist_offers = [];
-    $candidatures = [];
-    $alerts = [];
-    $pilotStats = [];
+    $candidatures    = [];
+    $alerts          = [];
+    $pilotStats      = [];
+    $adminData       = [];
 
     if ($isPilote) {
         $pilotStats = [
-            'nb_etudiants' => $userManager->countStudents(),
+            'nb_etudiants'         => $userManager->countStudents(),
             'nb_candidatures_total' => $candidatureManager->countAll(),
-            'nb_en_attente' => $candidatureManager->countByStatus('En attente'),
-            'nb_acceptees' => $candidatureManager->countByStatus('Acceptée')
+            'nb_en_attente'        => $candidatureManager->countByStatus('En attente'),
+            'nb_acceptees'         => $candidatureManager->countByStatus('Acceptée'),
         ];
     } else {
+        // Étudiant ET Admin ont wishlist, alertes, candidatures
         $wishlist_offers = $offerManager->getWishlistOffers($userId);
-        $candidatures = $candidatureManager->getByUser($userId);
+        $candidatures    = $candidatureManager->getByUser($userId);
 
         $alertManager = new AlertManager();
         $alerts = $alertManager->getAlertsWithCounts($userId);
+
+        if ($isAdmin) {
+            // Charger les données du dashboard admin
+            require_once '../app/controller/AdminController.php';
+            $adminController = new AdminController();
+            $search = trim($_GET['admin_search'] ?? '');
+            $adminData = $adminController->getDashboardData($search);
+        }
     }
 
     require_once '../app/views/profil.php';
