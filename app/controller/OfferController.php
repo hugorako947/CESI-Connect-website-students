@@ -33,14 +33,14 @@ class OfferController {
         $filters['q'] = trim((string) (filter_input(INPUT_GET, 'q', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
         $filters['skill'] = trim((string) (filter_input(INPUT_GET, 'skill', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
         $filters['city'] = trim((string) (filter_input(INPUT_GET, 'city', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
-        $filters['domain'] = trim((string) (filter_input(INPUT_GET, 'domain', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
+        $filters['domaine'] = trim((string) (filter_input(INPUT_GET, 'domaine', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
         $filters['type'] = isset($_GET['type']) ? (array) $_GET['type'] : [];
         $filters['min_money'] = filter_input(INPUT_GET, 'min_money', FILTER_VALIDATE_INT);
 
         $hasAnyFilter = $filters['q'] !== ''
             || $filters['skill'] !== ''
             || $filters['city'] !== ''
-            || $filters['domain'] !== ''
+            || $filters['domaine'] !== ''
             || !empty($filters['type'])
             || ($filters['min_money'] !== false && $filters['min_money'] !== null);
 
