@@ -200,5 +200,41 @@ class UserManager {
         $stmt = $this->conn->query($query);
         return (int) $stmt->fetchColumn();
     }
+
+    /**
+     * Compter les utilisateurs par rôle (admin dashboard)
+     */
+    public function countByRole($roleId) {
+        $query = "SELECT COUNT(*) FROM utilisateurs WHERE id_role = :role";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':role', $roleId, PDO::PARAM_INT);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * Récupérer tous les utilisateurs avec recherche globale (admin)
+     */
+    public function searchAll($search = '') {
+        $query = "SELECT u.*, r.nom AS role_nom
+                  FROM utilisateurs u
+                  INNER JOIN roles r ON u.id_role = r.id";
+
+        if (!empty($search)) {
+            $query .= " WHERE u.nom LIKE :s OR u.prenom LIKE :s OR u.email LIKE :s OR r.nom LIKE :s";
+        }
+
+        $query .= " ORDER BY u.id_role ASC, u.nom ASC";
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!empty($search)) {
+            $term = '%' . $search . '%';
+            $stmt->bindParam(':s', $term, PDO::PARAM_STR);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
