@@ -162,5 +162,44 @@ class CandidatureManager {
         
         return (int) $stmt->fetchColumn();
     }
+
+    /**
+     * Compter le nombre total de candidatures
+     */
+    public function countAll() {
+        $query = "SELECT COUNT(*) FROM candidatures";
+        $stmt = $this->conn->query($query);
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * Compter le nombre de candidatures par statut
+     */
+    public function countByStatus($statut) {
+        $query = "SELECT COUNT(*) FROM candidatures WHERE statut = :statut";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':statut', $statut, PDO::PARAM_STR);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * Récupérer les offres les plus populaires (avec le plus de candidatures)
+     */
+    public function getTopOffers($limit = 10) {
+        $query = "SELECT o.id, o.titre, e.nom AS entreprise_nom, COUNT(c.id) AS nb_candidatures
+                  FROM candidatures c
+                  INNER JOIN offres o ON c.id_offre = o.id
+                  INNER JOIN entreprises e ON o.id_entreprise = e.id
+                  GROUP BY o.id, o.titre, e.nom
+                  ORDER BY nb_candidatures DESC
+                  LIMIT :limit";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
