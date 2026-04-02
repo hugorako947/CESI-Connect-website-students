@@ -1449,3 +1449,194 @@ textarea{min-height:110px;resize:vertical}
   color: rgba(255, 255, 255, 0.95) !important;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
 }
+
+/* ==========================================================
+   DASHBOARD ADMINISTRATEUR (Aurora Glass Edition)
+   ========================================================== */
+
+/* Spécificité pour l'onglet Admin (Gris/Bleu comme les autres) */
+.profil-tab-admin { 
+  font-weight: 800 !important; 
+}
+
+/* En-tête du Dashboard Admin */
+.admin-header { 
+  display: flex; 
+  align-items: flex-start; 
+  justify-content: space-between; 
+  flex-wrap: wrap; 
+  gap: 1rem; 
+  margin-bottom: 2rem; 
+  padding-top: 1.5rem; 
+}
+
+.admin-header h1 { 
+  font-weight: 950; 
+  letter-spacing: -.01em; 
+}
+
+/* Grille de Statistiques Admin */
+.admin-stats-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); 
+  gap: 1rem; 
+  margin-bottom: 2rem; 
+}
+
+/* --- STATISTIQUES ADMIN HARMONISÉES (BLANCHES ET INERTES) --- */
+.admin-stat-card { 
+  background: rgba(255, 255, 255, 0.74) !important; /* Fond blanc comme Pilote */
+  border: 1px solid rgba(99, 102, 241, 0.16) !important;
+  border-radius: var(--r-lg); 
+  padding: 1.4rem 1rem; 
+  text-align: center; 
+  transition: none !important; /* Suppression des animations */
+  box-shadow: var(--shadow-sm);
+  cursor: default; /* Curseur normal */
+}
+
+/* Désactivation totale de l'effet au survol */
+.admin-stat-card:hover { 
+  transform: none !important; 
+  box-shadow: var(--shadow-sm) !important; 
+}
+
+.admin-stat-icon  { font-size: 2rem; margin-bottom: .5rem; }
+.admin-stat-value { font-size: 2.2rem; font-weight: 950; margin-bottom: .3rem; }
+.admin-stat-label { font-size: .85rem; font-weight: 700; }
+
+/* Couleurs appliquées uniquement au texte pour le rappel visuel */
+.admin-stat-blue   { color: var(--primary); }
+.admin-stat-purple { color: var(--primary2); }
+.admin-stat-red    { color: var(--danger); }
+.admin-stat-green  { color: var(--success); }
+.admin-stat-orange { color: #ea580c; }
+.admin-stat-teal   { color: #0d9488; }
+
+/* Barre de Recherche Admin */
+.admin-search-bar { 
+  margin-bottom: 2rem; 
+  background: rgba(255,255,255,.74); 
+  border: 1px solid rgba(99,102,241,.16); 
+  border-radius: var(--r-lg); 
+  padding: 1.25rem 1.5rem; 
+  box-shadow: var(--shadow-sm); 
+}
+
+.admin-search-form { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; }
+.admin-search-input-wrap { position: relative; flex: 1; min-width: 240px; }
+.admin-search-icon { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); font-size: 1rem; pointer-events: none; }
+
+.admin-search-input { 
+  width: 100%; 
+  padding: .85rem .95rem .85rem 2.6rem; 
+  border-radius: 14px; 
+  border: 1px solid rgba(99,102,241,0.16); 
+  background: rgba(255,255,255,0.80); 
+  font-size: .97rem; 
+  outline: none; 
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.admin-search-input:focus { 
+  border-color: rgba(124,58,237,.35); 
+  box-shadow: 0 0 0 4px rgba(124,58,237,.12); 
+}
+
+.admin-search-info { margin-top: .75rem; font-size: .88rem; color: var(--muted); }
+
+/* Sections des Tableaux Admin */
+.admin-table-section { 
+  margin-bottom: 2.5rem; 
+  background: rgba(255,255,255,.74); 
+  border: 1px solid rgba(99,102,241,.16); 
+  border-radius: var(--r-lg); 
+  padding: 1.5rem; 
+  box-shadow: var(--shadow-sm); 
+}
+
+.admin-table-header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  margin-bottom: 1.25rem; 
+  flex-wrap: wrap; 
+  gap: .5rem; 
+}
+
+.admin-table-header h2 { 
+  font-weight: 900; 
+  font-size: 1.1rem; 
+  display: flex; 
+  align-items: center; 
+  gap: .5rem; 
+}
+
+/* Badges et Éléments de lignes */
+.admin-count-badge { 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  min-width: 28px; 
+  padding: .15rem .5rem; 
+  border-radius: 999px; 
+  font-size: .78rem; 
+  font-weight: 900; 
+  background: rgba(124,58,237,.12); 
+  color: rgba(124,58,237,.95); 
+  border: 1px solid rgba(124,58,237,.22); 
+}
+
+.admin-role-badge { 
+  display: inline-flex; 
+  align-items: center; 
+  padding: .25rem .65rem; 
+  border-radius: 999px; 
+  font-size: .8rem; 
+  font-weight: 900; 
+  border: 1px solid transparent; 
+}
+
+.admin-role-1 { background: rgba(239,68,68,.10);  color: rgba(220,38,38,.95);  border-color: rgba(239,68,68,.22); }
+.admin-role-2 { background: rgba(124,58,237,.10); color: rgba(109,40,217,.95); border-color: rgba(124,58,237,.22); }
+.admin-role-3 { background: rgba(37,99,235,.10);  color: rgba(29,78,216,.95);  border-color: rgba(37,99,235,.22); }
+
+.admin-type-badge { 
+  display: inline-flex; 
+  align-items: center; 
+  padding: .22rem .6rem; 
+  border-radius: 999px; 
+  font-size: .78rem; 
+  font-weight: 800; 
+  border: 1px solid transparent; 
+}
+
+.admin-type-stage      { background: rgba(22,163,74,.10); color: rgba(22,163,74,.95); border-color: rgba(22,163,74,.22); }
+.admin-type-alternance { background: rgba(234,88,12,.10); color: rgba(194,65,12,.95); border-color: rgba(234,88,12,.22); }
+
+/* Boutons de suppression spécifiques Admin */
+.btn-danger { 
+  background: linear-gradient(135deg, rgba(239,68,68,0.95), rgba(185,28,28,0.95)) !important; 
+  color: #fff !important; 
+  border-color: transparent !important; 
+  box-shadow: 0 8px 20px rgba(239,68,68,.20) !important; 
+}
+
+.btn-danger:hover { 
+  transform: translateY(-2px) !important; 
+  box-shadow: 0 14px 35px rgba(239,68,68,.28) !important; 
+  filter: brightness(1.04) !important; 
+}
+
+.admin-row-self { background: rgba(37,99,235,.04); }
+.admin-self-tag { 
+  display: inline-block; 
+  margin-left: .4rem; 
+  font-size: .72rem; 
+  font-weight: 900; 
+  padding: .1rem .45rem; 
+  border-radius: 999px; 
+  background: rgba(37,99,235,.12); 
+  color: rgba(37,99,235,0.95); 
+  border: 1px solid rgba(37,99,235,0.22); 
+}
