@@ -12,12 +12,8 @@
                 </p>
             </div>
             <div class="page-header-actions">
-                <a href="index.php?route=profil&tab=pilot" class="btn btn-outline btn-page-action">
-                    ← Retour au profil
-                </a>
-                <a href="index.php?route=pilote-statistiques" class="btn btn-outline btn-page-action">
-                    Statistiques globales
-                </a>
+                <a href="index.php?route=profil&tab=pilot" class="btn btn-outline btn-page-action">← Quitter</a>
+                <a href="index.php?route=pilote-statistiques" class="btn btn-outline btn-page-action">Statistiques globales</a>
             </div>
         </div>
 
