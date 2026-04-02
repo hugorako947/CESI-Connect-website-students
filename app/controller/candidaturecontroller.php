@@ -36,6 +36,13 @@ class CandidatureController {
         // Vérifier que l'utilisateur est connecté
         AuthController::requireAuth();
 
+        // Bloquer les pilotes (rôle 2)
+        if (isset($_SESSION['user_role']) && (int) $_SESSION['user_role'] === 2) {
+            $_SESSION['erreur'] = "Les pilotes ne peuvent pas candidater à une offre.";
+            header('Location: index.php?route=offres');
+            exit;
+        }
+
         // Récupérer l'ID de l'offre
         $offerId = filter_input(INPUT_GET, 'offre', FILTER_VALIDATE_INT);
 
@@ -74,6 +81,13 @@ class CandidatureController {
     public function store() {
         // Vérifier que l'utilisateur est connecté
         AuthController::requireAuth();
+
+        // Bloquer les pilotes (rôle 2)
+        if (isset($_SESSION['user_role']) && (int) $_SESSION['user_role'] === 2) {
+            $_SESSION['erreur'] = "Les pilotes ne peuvent pas candidater à une offre.";
+            header('Location: index.php?route=offres');
+            exit;
+        }
 
         // Vérifier que c'est une requête POST
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
