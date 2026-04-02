@@ -45,11 +45,27 @@ public function profile() {
     }
 
     $user = $userManager->getUserById($userId);
-    $wishlist_offers = $offerManager->getWishlistOffers($userId);
-    $candidatures = $candidatureManager->getByUser($userId);
+    $isPilote = isset($user['id_role']) && (int) $user['id_role'] === 2;
 
-    $alertManager = new AlertManager();
-    $alerts = $alertManager->getAlertsWithCounts($userId);
+    $wishlist_offers = [];
+    $candidatures = [];
+    $alerts = [];
+    $pilotStats = [];
+
+    if ($isPilote) {
+        $pilotStats = [
+            'nb_etudiants' => $userManager->countStudents(),
+            'nb_candidatures_total' => $candidatureManager->countAll(),
+            'nb_en_attente' => $candidatureManager->countByStatus('En attente'),
+            'nb_acceptees' => $candidatureManager->countByStatus('Acceptée')
+        ];
+    } else {
+        $wishlist_offers = $offerManager->getWishlistOffers($userId);
+        $candidatures = $candidatureManager->getByUser($userId);
+
+        $alertManager = new AlertManager();
+        $alerts = $alertManager->getAlertsWithCounts($userId);
+    }
 
     require_once '../app/views/profil.php';
 }
