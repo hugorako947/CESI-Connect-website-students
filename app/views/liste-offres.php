@@ -101,13 +101,15 @@ $inferDomain = function(array $offre): string {
                     <div class="card-footer">
                         <span class="date"><?= date('d/m/Y', strtotime($offre['date_publication'])) ?></span>
                         <a href="index.php?route=offre-details&id=<?= (int) $offre['id'] ?>" class="btn-primary">Détails</a>
-                        <?php if (isset($_SESSION['user_id'])): ?>
+                        <?php if (isset($_SESSION['user_id']) && (int) ($_SESSION['user_role'] ?? 0) !== 2): ?>
                             <?php $isFavorite = in_array((int) $offre['id'], $wishlistOfferIds ?? [], true); ?>
                             <?php if ($isFavorite): ?>
                                 <a href="index.php?route=wishlist-remove&id=<?= (int) $offre['id'] ?>&redirect=<?= urlencode($redirectBase) ?>" class="btn-details" title="Retirer de ma wish-list" aria-label="Retirer de ma wish-list">❤</a>
                             <?php else: ?>
                                 <a href="index.php?route=wishlist-add&id=<?= (int) $offre['id'] ?>&redirect=<?= urlencode($redirectBase) ?>" class="btn-details" title="Ajouter à ma wish-list" aria-label="Ajouter à ma wish-list">♡</a>
                             <?php endif; ?>
+                        <?php elseif (isset($_SESSION['user_id']) && (int) ($_SESSION['user_role'] ?? 0) === 2): ?>
+                            <span class="btn-details btn-locked" title="Réservé aux étudiants" style="cursor:default; opacity:.6;">🔒</span>
                         <?php endif; ?>
                     </div>
                 </article>
