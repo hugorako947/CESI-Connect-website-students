@@ -13,36 +13,30 @@ class AuthController {
      * Gère l'affichage de la page de connexion ET le traitement du formulaire
      */
     public function login() {
-        // Si l'utilisateur valide le formulaire (POST)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
-            // Nettoyage des champs
             $email = trim($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
 
-            if (!empty($email) && !empty($password)) {
-                
+            // --- AJOUT : Vérification du domaine CESI ---
+            if (!preg_match('/@(viacesi\.fr|cesi\.fr)$/i', $email)) {
+                $erreur = "Accès refusé. Seuls les emails @viacesi.fr ou @cesi.fr sont autorisés.";
+            } 
+            // --- FIN AJOUT ---
+            elseif (!empty($email) && !empty($password)) {
                 $userManager = new UserManager();
                 $user = $userManager->getUserByEmail($email);
 
-                // Vérification du mot de passe haché
                 if ($user && password_verify($password, $user['mot_de_passe'])) {
-                    
-                    // Succès : Création de la session utilisateur
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['user_nom'] = $user['nom'];
                     $_SESSION['user_prenom'] = $user['prenom'];
                     $_SESSION['user_email'] = $user['email'];
-                    $_SESSION['user_role'] = $user['id_role']; // 1=Admin, 2=Pilote, 3=Etudiant
+                    $_SESSION['user_role'] = $user['id_role'];
                     $_SESSION['user_role_nom'] = $user['role_nom'] ?? 'Étudiant';
 
-                    // Message de succès
                     $_SESSION['success'] = "Connexion réussie ! Bienvenue " . $user['prenom'] . ".";
-
-                    // Redirection vers l'accueil
                     header('Location: index.php?route=accueil');
                     exit();
-                    
                 } else {
                     $erreur = "Email ou mot de passe incorrect.";
                 }
@@ -50,8 +44,6 @@ class AuthController {
                 $erreur = "Veuillez remplir tous les champs.";
             }
         }
-        
-        // Affichage de la vue de connexion
         require_once '../app/views/connexion.php';
     }
 
@@ -59,33 +51,24 @@ class AuthController {
      * Gère l'affichage de la page d'inscription ET la création du compte
      */
     public function register() {
-        // Si l'utilisateur valide le formulaire (POST)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
-            // Nettoyage des champs
             $nom = trim($_POST['nom'] ?? '');
             $prenom = trim($_POST['prenom'] ?? '');
             $email = trim($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
             $password_confirm = $_POST['password_confirm'] ?? '';
 
-            // Vérifier que tout est rempli
-            if (!empty($nom) && !empty($prenom) && !empty($email) && !empty($password)) {
-                
-                // Vérifier que les mots de passe correspondent
+            // --- AJOUT : Vérification du domaine CESI ---
+            if (!preg_match('/@(viacesi\.fr|cesi\.fr)$/i', $email)) {
+                $erreur = "Inscription impossible. Utilisez votre adresse @viacesi.fr ou @cesi.fr.";
+            } 
+            // --- FIN AJOUT ---
+            elseif (!empty($nom) && !empty($prenom) && !empty($email) && !empty($password)) {
                 if ($password === $password_confirm) {
-                    
                     $userManager = new UserManager();
-
-                    // Vérifier si l'email n'existe pas déjà
                     if (!$userManager->getUserByEmail($email)) {
-                        
-                        // Hachage BCRYPT du mot de passe
                         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-
-                        // Insertion dans la base de données
                         if ($userManager->createUser($nom, $prenom, $email, $hashed_password)) {
-                            // Succès : redirection vers la connexion
                             $_SESSION['success'] = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
                             header('Location: index.php?route=connexion');
                             exit();
@@ -102,8 +85,6 @@ class AuthController {
                 $erreur = "Veuillez remplir tous les champs obligatoires.";
             }
         }
-
-        // Affichage de la vue d'inscription
         require_once '../app/views/inscription.php';
     }
 
