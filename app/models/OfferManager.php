@@ -345,4 +345,42 @@ class OfferManager
         $stmt->bindParam(':offer_id', $offerId, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    /**
+     * Compter les offres par type de contrat (admin dashboard)
+     */
+    public function countByType($type)
+    {
+        $query = "SELECT COUNT(*) FROM offres WHERE type_contrat = :type";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':type', $type, PDO::PARAM_STR);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * Recherche admin : toutes les offres avec filtre optionnel
+     */
+    public function searchAdmin($search = '')
+    {
+        $query = "SELECT o.*, e.nom AS entreprise_nom
+                  FROM offres o
+                  INNER JOIN entreprises e ON o.id_entreprise = e.id";
+
+        if (!empty($search)) {
+            $query .= " WHERE o.titre LIKE :s OR o.description LIKE :s OR e.nom LIKE :s OR o.type_contrat LIKE :s";
+        }
+
+        $query .= " ORDER BY o.date_publication DESC";
+
+        $stmt = $this->db->prepare($query);
+
+        if (!empty($search)) {
+            $term = '%' . $search . '%';
+            $stmt->bindValue(':s', $term, PDO::PARAM_STR);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
