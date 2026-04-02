@@ -175,5 +175,30 @@ class UserManager {
             return false;
         }
     }
+
+    /**
+     * Récupérer tous les étudiants (rôle 3)
+     */
+    public function getAllStudents() {
+        $query = "SELECT u.*, r.nom AS role_nom 
+                  FROM utilisateurs u
+                  INNER JOIN roles r ON u.id_role = r.id
+                  WHERE u.id_role = 3
+                  ORDER BY u.nom ASC, u.prenom ASC";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Compter le nombre total d'étudiants
+     */
+    public function countStudents() {
+        $query = "SELECT COUNT(*) FROM utilisateurs WHERE id_role = 3";
+        $stmt = $this->conn->query($query);
+        return (int) $stmt->fetchColumn();
+    }
 }
 ?>
