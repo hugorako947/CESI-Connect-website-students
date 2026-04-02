@@ -1,7 +1,6 @@
 </main> <!-- On ferme le main ouvert dans le header -->
     <footer class="footer">
         <div class="footer-links">
-            <a href="index.php?route=accueil">Accueil</a>
             <a href="index.php?route=mentions-legales">Mentions légales</a>
             <a href="index.php?route=contact">Contact</a>
         </div>
