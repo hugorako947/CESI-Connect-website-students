@@ -42,32 +42,40 @@
             </div>
 
             <?php if (isset($_SESSION['user_id'])): ?>
+                <?php $isPilote = isset($_SESSION['user_role']) && (int) $_SESSION['user_role'] === 2; ?>
                 <div class="offre-actions">
-                    <?php if (!empty($isInWishlist)): ?>
-                        <a href="index.php?route=wishlist-remove&id=<?= (int) $offer['id'] ?>&redirect=<?= urlencode('index.php?route=offre-details&id=' . (int) $offer['id']) ?>"
-                           class="btn btn-outline"
-                           title="Retirer de ma wish-list"
-                           aria-label="Retirer de ma wish-list">
-                            ❤ Retirer de la wish-list
-                        </a>
-                    <?php else: ?>
-                        <a href="index.php?route=wishlist-add&id=<?= (int) $offer['id'] ?>&redirect=<?= urlencode('index.php?route=offre-details&id=' . (int) $offer['id']) ?>"
-                           class="btn btn-outline"
-                           title="Ajouter à ma wish-list"
-                           aria-label="Ajouter à ma wish-list">
-                            ♡ Ajouter à la wish-list
-                        </a>
-                    <?php endif; ?>
-
-                    <?php if ($hasApplied): ?>
-                        <span class="badge badge-success">
-                            ✓ Vous avez déjà candidaté
+                    <?php if ($isPilote): ?>
+                        <!-- Les pilotes peuvent consulter mais pas candidater -->
+                        <span class="btn btn-outline btn-large btn-locked" title="Réservé aux étudiants">
+                            🔒 Vous ne pouvez pas candidater
                         </span>
                     <?php else: ?>
-                        <a href="index.php?route=candidater&offre=<?= htmlspecialchars($offer['id']) ?>" 
-                           class="btn btn-primary btn-large">
-                           Candidater
-                        </a>
+                        <?php if (!empty($isInWishlist)): ?>
+                            <a href="index.php?route=wishlist-remove&id=<?= (int) $offer['id'] ?>&redirect=<?= urlencode('index.php?route=offre-details&id=' . (int) $offer['id']) ?>"
+                               class="btn btn-outline"
+                               title="Retirer de ma wish-list"
+                               aria-label="Retirer de ma wish-list">
+                                ❤ Retirer de la wish-list
+                            </a>
+                        <?php else: ?>
+                            <a href="index.php?route=wishlist-add&id=<?= (int) $offer['id'] ?>&redirect=<?= urlencode('index.php?route=offre-details&id=' . (int) $offer['id']) ?>"
+                               class="btn btn-outline"
+                               title="Ajouter à ma wish-list"
+                               aria-label="Ajouter à ma wish-list">
+                                ♡ Ajouter à la wish-list
+                            </a>
+                        <?php endif; ?>
+
+                        <?php if ($hasApplied): ?>
+                            <span class="badge badge-success">
+                                ✓ Vous avez déjà candidaté
+                            </span>
+                        <?php else: ?>
+                            <a href="index.php?route=candidater&offre=<?= htmlspecialchars($offer['id']) ?>" 
+                               class="btn btn-primary btn-large">
+                               Candidater
+                            </a>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
             <?php else: ?>
