@@ -29,7 +29,7 @@
                 <button class="profil-tab-btn" id="tab-wishlist" role="tab" aria-selected="false" aria-controls="panel-wishlist" onclick="switchTab('wishlist')">Wish-list</button>
                 <button class="profil-tab-btn" id="tab-alertes" role="tab" aria-selected="false" aria-controls="panel-alertes" onclick="switchTab('alertes')">Mes alertes</button>
                 <button class="profil-tab-btn" id="tab-candidatures" role="tab" aria-selected="false" aria-controls="panel-candidatures" onclick="switchTab('candidatures')">Candidatures</button>
-                <button class="profil-tab-btn profil-tab-admin" id="tab-admin" role="tab" aria-selected="false" aria-controls="panel-admin" onclick="switchTab('admin')">&#9881;&#65039; Dashboard Admin</button>
+                <button class="profil-tab-btn profil-tab-admin" id="tab-admin" role="tab" aria-selected="false" aria-controls="panel-admin" onclick="switchTab('admin')">Dashboard Admin</button>
 
             <?php else: ?>
                 <button class="profil-tab-btn active" id="tab-dashboard" role="tab" aria-selected="true" aria-controls="panel-dashboard" onclick="switchTab('dashboard')">Informations</button>
