@@ -180,6 +180,26 @@ switch ($route) {
         $controller->suiviPilote();
         break;
 
+    // ========== ESPACE PILOTE (PiloteController) ==========
+    
+    case 'pilote-dashboard':
+        require_once '../app/controller/PiloteController.php';
+        $controller = new PiloteController();
+        $controller->dashboard();
+        break;
+
+    case 'pilote-etudiant':
+        require_once '../app/controller/PiloteController.php';
+        $controller = new PiloteController();
+        $controller->etudiantDetail();
+        break;
+
+    case 'pilote-statistiques':
+        require_once '../app/controller/PiloteController.php';
+        $controller = new PiloteController();
+        $controller->statistiques();
+        break;
+
     // ========== PAGE 404 ==========
     
     default:
