@@ -2,7 +2,7 @@
 
 <main class="auth-container">
     <div class="auth-card">
-        <h1>Créer un compte Étudiant</h1>
+        <h1>Créer un compte</h1>
         <p>Rejoignez CESI Connect pour trouver votre prochain stage.</p>
 
         <!-- Affichage des messages d'erreur -->
