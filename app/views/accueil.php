@@ -9,14 +9,19 @@
             <input type="text" name="q" placeholder="Métier, compétence, entreprise...">
         </div>
         <div class="search-loc">
-            <select name="city">
-                <option value="">Toutes les villes</option>
-                <option value="Île-de-France">Île-de-France</option>
-                <option value="lyon">Lyon</option>
-                <option value="marseille">Marseille</option>
-                <option value="bordeaux">Bordeaux</option>
-                <option value="étranger">À l'étranger</option>
-            </select>
+             
+                <label for="f-city"></label>
+                <select id="f-city" name="city" style="width:100%;padding:.75rem .85rem;border-radius:var(--border-radius-md);border:1px solid var(--color-border-secondary);background:#fff;font:inherit;color:var(--color-text-primary);">
+                    <option value="">Toutes les villes</option>
+                    <?php
+                    $villes = ['Bordeaux','Caen','Chartres','Courbevoie','Défense','Grenoble','Herblay','La Defense','Lille','Lyon','Marseille','Metz','Montpellier','Mulhouse','Nantes','Niort','Orleans','Paris','Poissy','Pontoise','Rennes','Rouen','Saint Etienne','Toulouse'];
+                    foreach ($villes as $v):
+                        $sel = (isset($_GET['city']) && $_GET['city'] === $v) ? 'selected' : '';
+                    ?>
+                        <option value="<?= htmlspecialchars($v) ?>" <?= $sel ?>><?= htmlspecialchars($v) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
         </div>
         <button type="submit" class="btn-primary search-btn-custom">Rechercher</button>
     </form>
