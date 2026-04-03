@@ -16,27 +16,27 @@
         <form action="index.php?route=inscription" method="POST" class="auth-form">
             
             <div class="form-group">
-                <label for="prenom">Prénom</label>
+                <label for="prenom">Prénom *</label>
                 <input type="text" id="prenom" name="prenom" value="<?= htmlspecialchars($_POST['prenom'] ?? '') ?>" required>
             </div>
 
             <div class="form-group">
-                <label for="nom">Nom</label>
+                <label for="nom">Nom *</label>
                 <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($_POST['nom'] ?? '') ?>" required>
             </div>
 
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">Email *</label>
                 <input type="email" id="email" name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
             </div>
 
             <div class="form-group">
-                <label for="password">Mot de passe</label>
+                <label for="password">Mot de passe *</label>
                 <input type="password" id="password" name="password" required minlength="6">
             </div>
 
             <div class="form-group">
-                <label for="password_confirm">Confirmer le mot de passe</label>
+                <label for="password_confirm">Confirmer le mot de passe *</label>
                 <input type="password" id="password_confirm" name="password_confirm" required minlength="6">
             </div>
 
