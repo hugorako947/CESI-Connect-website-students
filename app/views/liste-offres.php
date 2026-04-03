@@ -38,7 +38,16 @@
 
             <div class="filter-group">
                 <label for="f-city">Ville</label>
-                <input type="text" id="f-city" name="city" placeholder="Ex: Lyon..." value="<?= htmlspecialchars($_GET['city'] ?? '') ?>">
+                <select id="f-city" name="city" style="width:100%;padding:.75rem .85rem;border-radius:var(--border-radius-md);border:1px solid var(--color-border-secondary);background:#fff;font:inherit;color:var(--color-text-primary);">
+                    <option value="">Toutes les villes</option>
+                    <?php
+                    $villes = ['Bordeaux','Caen','Chartres','Courbevoie','Défense','Grenoble','Herblay','La Defense','Lille','Lyon','Marseille','Metz','Montpellier','Mulhouse','Nantes','Niort','Orleans','Paris','Poissy','Pontoise','Rennes','Rouen','Saint Etienne','Toulouse'];
+                    foreach ($villes as $v):
+                        $sel = (isset($_GET['city']) && $_GET['city'] === $v) ? 'selected' : '';
+                    ?>
+                        <option value="<?= htmlspecialchars($v) ?>" <?= $sel ?>><?= htmlspecialchars($v) ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
 
             <div class="filter-group">
