@@ -19,8 +19,8 @@ class AlertManager {
      */
     public function createAlert($userId, $data) {
         $query = "INSERT INTO alertes_offres 
-                  (id_utilisateur, nom_alerte, mot_cle, ville, domaine, type_contrat, remuneration_min, actif, date_creation)
-                  VALUES (:user_id, :nom, :mot_cle, :ville, :domaine, :type_contrat, :remuneration_min, 1, NOW())";
+                  (id_utilisateur, nom_alerte, mot_cle, ville, domaine, type_contrat, remuneration_min, duree_contrat, niveau_etude, teletravail, actif, date_creation)
+                  VALUES (:user_id, :nom, :mot_cle, :ville, :domaine, :type_contrat, :remuneration_min, :duree_contrat, :niveau_etude, :teletravail, 1, NOW())";
         
         $stmt = $this->db->prepare($query);
         
@@ -31,6 +31,10 @@ class AlertManager {
         $stmt->bindParam(':domaine', $data['domaine'], PDO::PARAM_STR);
         $stmt->bindParam(':type_contrat', $data['type_contrat'], PDO::PARAM_STR);
         $stmt->bindParam(':remuneration_min', $data['remuneration_min'], PDO::PARAM_INT);
+        $stmt->bindParam(':duree_contrat', $data['duree_contrat'], PDO::PARAM_STR);
+        $stmt->bindParam(':niveau_etude', $data['niveau_etude'], PDO::PARAM_STR);
+        $teletravail = ($data['teletravail'] !== '') ? (int) $data['teletravail'] : null;
+        $stmt->bindValue(':teletravail', $teletravail, $teletravail === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
         
         $stmt->execute();
         
@@ -78,7 +82,10 @@ class AlertManager {
                       ville = :ville,
                       domaine = :domaine,
                       type_contrat = :type_contrat,
-                      remuneration_min = :remuneration_min
+                      remuneration_min = :remuneration_min,
+                      duree_contrat = :duree_contrat,
+                      niveau_etude = :niveau_etude,
+                      teletravail = :teletravail
                   WHERE id = :alert_id AND id_utilisateur = :user_id";
         
         $stmt = $this->db->prepare($query);
@@ -89,6 +96,10 @@ class AlertManager {
         $stmt->bindParam(':domaine', $data['domaine'], PDO::PARAM_STR);
         $stmt->bindParam(':type_contrat', $data['type_contrat'], PDO::PARAM_STR);
         $stmt->bindParam(':remuneration_min', $data['remuneration_min'], PDO::PARAM_INT);
+        $stmt->bindParam(':duree_contrat', $data['duree_contrat'], PDO::PARAM_STR);
+        $stmt->bindParam(':niveau_etude', $data['niveau_etude'], PDO::PARAM_STR);
+        $teletravail = ($data['teletravail'] !== '') ? (int) $data['teletravail'] : null;
+        $stmt->bindValue(':teletravail', $teletravail, $teletravail === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
         $stmt->bindParam(':alert_id', $alertId, PDO::PARAM_INT);
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
         
@@ -152,19 +163,19 @@ class AlertManager {
 
         // Filtrer par ville
         if (!empty($alert['ville'])) {
-            $query .= " AND o.ville LIKE :ville";
+            $query .= " AND o.Ville LIKE :ville";
             $bindings[':ville'] = '%' . $alert['ville'] . '%';
         }
 
-        // Filtrer par domaine
+        // Filtrer par domaine (colonne exacte)
         if (!empty($alert['domaine'])) {
-            $query .= " AND (o.titre LIKE :domaine OR o.description LIKE :domaine OR o.competences LIKE :domaine)";
-            $bindings[':domaine'] = '%' . $alert['domaine'] . '%';
+            $query .= " AND LOWER(o.domaine) = LOWER(:domaine)";
+            $bindings[':domaine'] = $alert['domaine'];
         }
 
         // Filtrer par type de contrat
         if (!empty($alert['type_contrat'])) {
-            $query .= " AND o.type_contrat = :type_contrat";
+            $query .= " AND o.Type_contrat = :type_contrat";
             $bindings[':type_contrat'] = $alert['type_contrat'];
         }
 
@@ -172,6 +183,24 @@ class AlertManager {
         if (!empty($alert['remuneration_min']) && $alert['remuneration_min'] > 0) {
             $query .= " AND o.remuneration >= :remuneration_min";
             $bindings[':remuneration_min'] = (int) $alert['remuneration_min'];
+        }
+
+        // Filtrer par durée de contrat
+        if (!empty($alert['duree_contrat'])) {
+            $query .= " AND LOWER(o.`Durée_contrat`) = LOWER(:duree_contrat)";
+            $bindings[':duree_contrat'] = $alert['duree_contrat'];
+        }
+
+        // Filtrer par niveau d'étude
+        if (!empty($alert['niveau_etude'])) {
+            $query .= " AND LOWER(o.Niveau_etude) = LOWER(:niveau_etude)";
+            $bindings[':niveau_etude'] = $alert['niveau_etude'];
+        }
+
+        // Filtrer par télétravail
+        if (isset($alert['teletravail']) && $alert['teletravail'] !== null && $alert['teletravail'] !== '') {
+            $query .= " AND o.Teletravail = :teletravail";
+            $bindings[':teletravail'] = (int) $alert['teletravail'];
         }
 
         // Récupérer uniquement les offres récentes (publiées après la création de l'alerte)
@@ -217,23 +246,38 @@ class AlertManager {
         }
 
         if (!empty($alert['ville'])) {
-            $query .= " AND o.ville LIKE :ville";
+            $query .= " AND o.Ville LIKE :ville";
             $bindings[':ville'] = '%' . $alert['ville'] . '%';
         }
 
         if (!empty($alert['domaine'])) {
-            $query .= " AND (o.titre LIKE :domaine OR o.description LIKE :domaine OR o.competences LIKE :domaine)";
-            $bindings[':domaine'] = '%' . $alert['domaine'] . '%';
+            $query .= " AND LOWER(o.domaine) = LOWER(:domaine)";
+            $bindings[':domaine'] = $alert['domaine'];
         }
 
         if (!empty($alert['type_contrat'])) {
-            $query .= " AND o.type_contrat = :type_contrat";
+            $query .= " AND o.Type_contrat = :type_contrat";
             $bindings[':type_contrat'] = $alert['type_contrat'];
         }
 
         if (!empty($alert['remuneration_min']) && $alert['remuneration_min'] > 0) {
             $query .= " AND o.remuneration >= :remuneration_min";
             $bindings[':remuneration_min'] = (int) $alert['remuneration_min'];
+        }
+
+        if (!empty($alert['duree_contrat'])) {
+            $query .= " AND LOWER(o.`Durée_contrat`) = LOWER(:duree_contrat)";
+            $bindings[':duree_contrat'] = $alert['duree_contrat'];
+        }
+
+        if (!empty($alert['niveau_etude'])) {
+            $query .= " AND LOWER(o.Niveau_etude) = LOWER(:niveau_etude)";
+            $bindings[':niveau_etude'] = $alert['niveau_etude'];
+        }
+
+        if (isset($alert['teletravail']) && $alert['teletravail'] !== null && $alert['teletravail'] !== '') {
+            $query .= " AND o.Teletravail = :teletravail";
+            $bindings[':teletravail'] = (int) $alert['teletravail'];
         }
 
         $stmt = $this->db->prepare($query);
