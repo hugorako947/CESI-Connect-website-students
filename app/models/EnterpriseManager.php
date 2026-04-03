@@ -29,6 +29,36 @@ class EnterpriseManager {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Créer une nouvelle entreprise
+    public function create($data)
+    {
+        $query = "INSERT INTO entreprises (nom, description, email_contact, telephone)
+                  VALUES (:nom, :description, :email_contact, :telephone)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':nom',           $data['nom'],           PDO::PARAM_STR);
+        $stmt->bindParam(':description',   $data['description'],   PDO::PARAM_STR);
+        $stmt->bindParam(':email_contact', $data['email_contact'], PDO::PARAM_STR);
+        $stmt->bindParam(':telephone',     $data['telephone'],     PDO::PARAM_STR);
+        $stmt->execute();
+        return (int) $this->db->lastInsertId();
+    }
+
+    // Modifier une entreprise existante
+    public function update($id, $data)
+    {
+        $query = "UPDATE entreprises
+                  SET nom = :nom, description = :description,
+                      email_contact = :email_contact, telephone = :telephone
+                  WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':nom',           $data['nom'],           PDO::PARAM_STR);
+        $stmt->bindParam(':description',   $data['description'],   PDO::PARAM_STR);
+        $stmt->bindParam(':email_contact', $data['email_contact'], PDO::PARAM_STR);
+        $stmt->bindParam(':telephone',     $data['telephone'],     PDO::PARAM_STR);
+        $stmt->bindParam(':id',            $id,                    PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
     // Supprimer une entreprise et ses offres associées
     public function delete($id)
     {
