@@ -82,35 +82,87 @@
                 <!-- Domaine -->
                 <div class="form-group">
                     <label for="domaine">
-                        <span class="label-icon"></span>
+                        <span class="label-icon">🏷</span>
                         Domaine
                     </label>
-                    <input 
-                        type="text" 
-                        id="domaine" 
-                        name="domaine" 
-                        placeholder="Ex: Informatique, Finance, Marketing..."
-                        value="<?= htmlspecialchars($alert['domaine'] ?? '') ?>"
-                    >
+                    <select id="domaine" name="domaine" style="width:100%; padding:.85rem .95rem; border-radius:14px; border:1px solid rgba(99,102,241,.16); background:rgba(255,255,255,.75); font:inherit;">
+                        <option value="">Tous les domaines</option>
+                        <?php
+                        $domaines = ['Assurance','Automobile','Banque','Commerce','Conseil','Education','Energie','Environnement','Finance','Industrie','Informatique','Media','Santé','Securite','Services','Telecom'];
+                        foreach ($domaines as $d):
+                            $sel = (isset($alert) && $alert['domaine'] === $d) ? 'selected' : '';
+                        ?>
+                            <option value="<?= htmlspecialchars($d) ?>" <?= $sel ?>><?= htmlspecialchars($d) ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
 
                 <!-- Type de contrat -->
                 <div class="form-group">
                     <label for="type_contrat">
-                        <span class="label-icon"></span>
+                        <span class="label-icon">📄</span>
                         Type de contrat
                     </label>
-                    <select id="type_contrat" name="type_contrat" style="width:100%; padding:.85rem .95rem; border-radius:14px; border:1px solid rgba(99,102,241,.16); background:rgba(255,255,255,.75);">
+                    <select id="type_contrat" name="type_contrat" style="width:100%; padding:.85rem .95rem; border-radius:14px; border:1px solid rgba(99,102,241,.16); background:rgba(255,255,255,.75); font:inherit;">
                         <option value="">Tous les types</option>
                         <option value="stage" <?= isset($alert) && $alert['type_contrat'] === 'stage' ? 'selected' : '' ?>>Stage</option>
                         <option value="alternance" <?= isset($alert) && $alert['type_contrat'] === 'alternance' ? 'selected' : '' ?>>Alternance</option>
                     </select>
                 </div>
 
+                <!-- Durée du contrat -->
+                <div class="form-group">
+                    <label for="duree_contrat">
+                        <span class="label-icon">⏱</span>
+                        Durée du contrat
+                    </label>
+                    <select id="duree_contrat" name="duree_contrat" style="width:100%; padding:.85rem .95rem; border-radius:14px; border:1px solid rgba(99,102,241,.16); background:rgba(255,255,255,.75); font:inherit;">
+                        <option value="">Toutes les durées</option>
+                        <?php
+                        $durees = ['1 mois','2 mois','3 mois','4 mois','5 mois','6 mois','1 an','2 ans','3 ans'];
+                        foreach ($durees as $dur):
+                            $sel = (isset($alert) && ($alert['duree_contrat'] ?? '') === $dur) ? 'selected' : '';
+                        ?>
+                            <option value="<?= htmlspecialchars($dur) ?>" <?= $sel ?>><?= htmlspecialchars($dur) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <!-- Niveau d'étude -->
+                <div class="form-group">
+                    <label for="niveau_etude">
+                        <span class="label-icon">🎓</span>
+                        Niveau d'étude
+                    </label>
+                    <select id="niveau_etude" name="niveau_etude" style="width:100%; padding:.85rem .95rem; border-radius:14px; border:1px solid rgba(99,102,241,.16); background:rgba(255,255,255,.75); font:inherit;">
+                        <option value="">Tous les niveaux</option>
+                        <?php
+                        $niveaux = ['Bac','Bac+2','Bac+3','Bac+4','Bac+5','Bac+8'];
+                        foreach ($niveaux as $niv):
+                            $sel = (isset($alert) && ($alert['niveau_etude'] ?? '') === $niv) ? 'selected' : '';
+                        ?>
+                            <option value="<?= htmlspecialchars($niv) ?>" <?= $sel ?>><?= htmlspecialchars($niv) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <!-- Télétravail -->
+                <div class="form-group">
+                    <label for="teletravail">
+                        <span class="label-icon">💻</span>
+                        Télétravail
+                    </label>
+                    <select id="teletravail" name="teletravail" style="width:100%; padding:.85rem .95rem; border-radius:14px; border:1px solid rgba(99,102,241,.16); background:rgba(255,255,255,.75); font:inherit;">
+                        <option value="">Indifférent</option>
+                        <option value="1" <?= (isset($alert) && isset($alert['teletravail']) && $alert['teletravail'] == 1) ? 'selected' : '' ?>>Oui</option>
+                        <option value="0" <?= (isset($alert) && isset($alert['teletravail']) && $alert['teletravail'] == 0 && $alert['teletravail'] !== '') ? 'selected' : '' ?>>Non</option>
+                    </select>
+                </div>
+
                 <!-- Rémunération minimale -->
                 <div class="form-group">
                     <label for="remuneration_min">
-                        <span class="label-icon"></span>
+                        <span class="label-icon">💶</span>
                         Rémunération minimale (€)
                     </label>
                     <input 
