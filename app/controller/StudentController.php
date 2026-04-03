@@ -216,7 +216,10 @@ public function saveAlert() {
         'ville' => trim($_POST['ville'] ?? ''),
         'domaine' => trim($_POST['domaine'] ?? ''),
         'type_contrat' => trim($_POST['type_contrat'] ?? ''),
-        'remuneration_min' => filter_input(INPUT_POST, 'remuneration_min', FILTER_VALIDATE_INT) ?: 0
+        'remuneration_min' => filter_input(INPUT_POST, 'remuneration_min', FILTER_VALIDATE_INT) ?: 0,
+        'duree_contrat' => trim($_POST['duree_contrat'] ?? ''),
+        'niveau_etude' => trim($_POST['niveau_etude'] ?? ''),
+        'teletravail' => isset($_POST['teletravail']) ? trim($_POST['teletravail']) : '',
     ];
     
     // Validation
@@ -228,7 +231,8 @@ public function saveAlert() {
     
     // Vérifier qu'au moins un critère est rempli
     if (empty($data['mot_cle']) && empty($data['ville']) && empty($data['domaine']) && 
-        empty($data['type_contrat']) && $data['remuneration_min'] <= 0) {
+        empty($data['type_contrat']) && $data['remuneration_min'] <= 0 &&
+        empty($data['duree_contrat']) && empty($data['niveau_etude']) && $data['teletravail'] === '') {
         $_SESSION['erreur'] = "Veuillez définir au moins un critère de recherche.";
         header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? 'index.php?route=alerte-form'));
         exit;
