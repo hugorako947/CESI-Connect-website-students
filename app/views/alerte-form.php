@@ -67,16 +67,19 @@
                 <!-- Ville -->
                 <div class="form-group">
                     <label for="ville">
-                        <span class="label-icon"></span>
+                        <span class="label-icon">📍</span>
                         Ville
                     </label>
-                    <input 
-                        type="text" 
-                        id="ville" 
-                        name="ville" 
-                        placeholder="Ex: Lyon, Paris, Marseille..."
-                        value="<?= htmlspecialchars($alert['ville'] ?? '') ?>"
-                    >
+                    <select id="ville" name="ville" style="width:100%; padding:.85rem .95rem; border-radius:14px; border:1px solid rgba(99,102,241,.16); background:rgba(255,255,255,.75); font:inherit;">
+                        <option value="">Toutes les villes</option>
+                        <?php
+                        $villes = ['Bordeaux','Caen','Chartres','Courbevoie','Défense','Grenoble','Herblay','La Defense','Lille','Lyon','Marseille','Metz','Montpellier','Mulhouse','Nantes','Niort','Orleans','Paris','Poissy','Pontoise','Rennes','Rouen','Saint Etienne','Toulouse'];
+                        foreach ($villes as $v):
+                            $sel = (isset($alert) && ($alert['ville'] ?? '') === $v) ? 'selected' : '';
+                        ?>
+                            <option value="<?= htmlspecialchars($v) ?>" <?= $sel ?>><?= htmlspecialchars($v) ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
 
                 <!-- Domaine -->
