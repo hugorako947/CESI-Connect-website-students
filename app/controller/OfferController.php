@@ -33,16 +33,22 @@ class OfferController {
         $filters['q'] = trim((string) (filter_input(INPUT_GET, 'q', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
         $filters['skill'] = trim((string) (filter_input(INPUT_GET, 'skill', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
         $filters['city'] = trim((string) (filter_input(INPUT_GET, 'city', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
-        $filters['domaine'] = trim((string) (filter_input(INPUT_GET, 'domaine', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
+        $filters['domain'] = trim((string) (filter_input(INPUT_GET, 'domain', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
         $filters['type'] = isset($_GET['type']) ? (array) $_GET['type'] : [];
         $filters['min_money'] = filter_input(INPUT_GET, 'min_money', FILTER_VALIDATE_INT);
+        $filters['duree'] = trim((string) (filter_input(INPUT_GET, 'duree', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
+        $filters['niveau'] = trim((string) (filter_input(INPUT_GET, 'niveau', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''));
+        $filters['teletravail'] = isset($_GET['teletravail']) ? trim($_GET['teletravail']) : '';
 
         $hasAnyFilter = $filters['q'] !== ''
             || $filters['skill'] !== ''
             || $filters['city'] !== ''
-            || $filters['domaine'] !== ''
+            || $filters['domain'] !== ''
             || !empty($filters['type'])
-            || ($filters['min_money'] !== false && $filters['min_money'] !== null);
+            || ($filters['min_money'] !== false && $filters['min_money'] !== null)
+            || $filters['duree'] !== ''
+            || $filters['niveau'] !== ''
+            || $filters['teletravail'] !== '';
 
         if ($hasAnyFilter) {
             $offres = $this->offerManager->searchWithFilters($filters, $perPage, $offset);
