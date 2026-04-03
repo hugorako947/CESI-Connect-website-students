@@ -86,15 +86,22 @@
         <a href="index.php?route=offres">Parcourir les offres →</a>
     </div>
     <div class="cats-grid">
-        <a class="cat-card" href="index.php?route=offres&domain=Informatique"><div class="cat-icon">💻</div><h4>Informatique</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Assurance"><div class="cat-icon">🛡️</div><h4>Assurance</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Automobile"><div class="cat-icon">🚗</div><h4>Automobile</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Banque"><div class="cat-icon">🏦</div><h4>Banque</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Commerce"><div class="cat-icon">🤝</div><h4>Commerce</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Conseil"><div class="cat-icon">💼</div><h4>Conseil</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Education"><div class="cat-icon">📚</div><h4>Education</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Energie"><div class="cat-icon">⚡</div><h4>Energie</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Environnement"><div class="cat-icon">🌿</div><h4>Environnement</h4><p>Voir les offres</p></a>
         <a class="cat-card" href="index.php?route=offres&domain=Finance"><div class="cat-icon">📊</div><h4>Finance</h4><p>Voir les offres</p></a>
-        <a class="cat-card" href="index.php?route=offres&domain=Marketing"><div class="cat-icon">📣</div><h4>Marketing</h4><p>Voir les offres</p></a>
-        <a class="cat-card" href="index.php?route=offres&domain=Ingénierie"><div class="cat-icon">⚙️</div><h4>Ingénierie</h4><p>Voir les offres</p></a>
-        <a class="cat-card" href="index.php?route=offres&domain=Design"><div class="cat-icon">🎨</div><h4>Design</h4><p>Voir les offres</p></a>
-        <a class="cat-card" href="index.php?route=offres&domain=Commerce"><div class="cat-icon">🤝</div><h4>Commercial</h4><p>Voir les offres</p></a>
-        <a class="cat-card" href="index.php?route=offres&domain=Ressources humaines"><div class="cat-icon">👥</div><h4>Ressources humaines</h4><p>Voir les offres</p></a>
-        <a class="cat-card" href="index.php?route=offres&domain=Juridique"><div class="cat-icon">⚖️</div><h4>Juridique</h4><p>Voir les offres</p></a>
-        <a class="cat-card" href="index.php?route=offres&domain=Communication"><div class="cat-icon">🌐</div><h4>Communication</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Industrie"><div class="cat-icon">🏭</div><h4>Industrie</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Informatique"><div class="cat-icon">💻</div><h4>Informatique</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Media"><div class="cat-icon">📺</div><h4>Media</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Santé"><div class="cat-icon">🏥</div><h4>Santé</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Securite"><div class="cat-icon">🔒</div><h4>Sécurité</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Services"><div class="cat-icon">🌐</div><h4>Services</h4><p>Voir les offres</p></a>
+        <a class="cat-card" href="index.php?route=offres&domain=Telecom"><div class="cat-icon">📡</div><h4>Telecom</h4><p>Voir les offres</p></a>
     </div>
 </section>
 
