@@ -1,10 +1,26 @@
 <?php include 'header.php'; ?>
 
 <section class="section">
-    <div class="section-header">
-        <h1>Gestion des Entreprises</h1>
-        <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 1): ?>
-            <a href="index.php?route=form-entreprise" class="btn-primary">Ajouter une entreprise</a>
+    <!-- Messages de succès / erreur -->
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+    <?php if (isset($_SESSION['erreur'])): ?>
+        <div class="alert alert-error"><?= htmlspecialchars($_SESSION['erreur']) ?></div>
+        <?php unset($_SESSION['erreur']); ?>
+    <?php endif; ?>
+
+    <div class="section-header" style="align-items:center; margin-bottom:1.5rem;">
+        <h1 style="font-weight:950; font-size:1.6rem;">Entreprises partenaires</h1>
+        <?php if (isset($_SESSION['user_role']) && (int)$_SESSION['user_role'] === 1): ?>
+            <a href="index.php?route=form-entreprise"
+               class="btn btn-primary"
+               style="padding:.75rem 1.35rem; font-size:1rem; font-weight:900; border-radius:14px;
+                      background:linear-gradient(135deg,#2563eb,#7c3aed); color:#fff;
+                      box-shadow:0 12px 28px rgba(37,99,235,.25); white-space:nowrap;">
+                ➕ Ajouter une entreprise
+            </a>
         <?php endif; ?>
     </div>
 
