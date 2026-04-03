@@ -163,13 +163,12 @@ class OfferManager
         }
 
         if (!empty($params['domain'])) {
-            $query .= " AND (o.titre LIKE :domain OR o.description LIKE :domain OR o.competences LIKE :domain)";
-            $bindings[':domain'] = '%' . $params['domain'] . '%';
+            $query .= " AND LOWER(o.domaine) = LOWER(:domain)";
+            $bindings[':domain'] = $params['domain'];
         }
 
         if (!empty($params['city'])) {
-            // Ne dépend que du champ ville dans offres (pas sûr de l'existence de e.ville)
-            $query .= " AND o.ville LIKE :city";
+            $query .= " AND o.Ville LIKE :city";
             $bindings[':city'] = '%' . $params['city'] . '%';
         }
 
@@ -184,13 +183,28 @@ class OfferManager
                 $bindings[$key] = $type;
             }
             if (!empty($placeholders)) {
-                $query .= " AND o.type_contrat IN (" . implode(',', $placeholders) . ")";
+                $query .= " AND o.Type_contrat IN (" . implode(',', $placeholders) . ")";
             }
         }
 
         if (!empty($params['min_money']) && is_numeric($params['min_money'])) {
             $query .= " AND o.remuneration >= :min_money";
             $bindings[':min_money'] = (int) $params['min_money'];
+        }
+
+        if (!empty($params['duree'])) {
+            $query .= " AND LOWER(o.`Durée_contrat`) = LOWER(:duree)";
+            $bindings[':duree'] = $params['duree'];
+        }
+
+        if (!empty($params['niveau'])) {
+            $query .= " AND LOWER(o.Niveau_etude) = LOWER(:niveau)";
+            $bindings[':niveau'] = $params['niveau'];
+        }
+
+        if (isset($params['teletravail']) && $params['teletravail'] !== '') {
+            $query .= " AND o.Teletravail = :teletravail";
+            $bindings[':teletravail'] = $params['teletravail'];
         }
 
         $query .= " ORDER BY o.date_publication DESC";
@@ -236,12 +250,12 @@ class OfferManager
         }
 
         if (!empty($params['domain'])) {
-            $query .= " AND (o.titre LIKE :domain OR o.description LIKE :domain OR o.competences LIKE :domain)";
-            $bindings[':domain'] = '%' . $params['domain'] . '%';
+            $query .= " AND LOWER(o.domaine) = LOWER(:domain)";
+            $bindings[':domain'] = $params['domain'];
         }
 
         if (!empty($params['city'])) {
-            $query .= " AND o.ville LIKE :city";
+            $query .= " AND o.Ville LIKE :city";
             $bindings[':city'] = '%' . $params['city'] . '%';
         }
 
@@ -256,13 +270,28 @@ class OfferManager
                 $bindings[$key] = $type;
             }
             if (!empty($placeholders)) {
-                $query .= " AND o.type_contrat IN (" . implode(',', $placeholders) . ")";
+                $query .= " AND o.Type_contrat IN (" . implode(',', $placeholders) . ")";
             }
         }
 
         if (!empty($params['min_money']) && is_numeric($params['min_money'])) {
             $query .= " AND o.remuneration >= :min_money";
             $bindings[':min_money'] = (int) $params['min_money'];
+        }
+
+        if (!empty($params['duree'])) {
+            $query .= " AND LOWER(o.`Durée_contrat`) = LOWER(:duree)";
+            $bindings[':duree'] = $params['duree'];
+        }
+
+        if (!empty($params['niveau'])) {
+            $query .= " AND LOWER(o.Niveau_etude) = LOWER(:niveau)";
+            $bindings[':niveau'] = $params['niveau'];
+        }
+
+        if (isset($params['teletravail']) && $params['teletravail'] !== '') {
+            $query .= " AND o.Teletravail = :teletravail";
+            $bindings[':teletravail'] = $params['teletravail'];
         }
 
         $stmt = $this->db->prepare($query);
