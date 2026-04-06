@@ -89,8 +89,8 @@
                 <h2 style="margin-bottom:1rem;">Accès au suivi pilote</h2>
                 <p style="color:var(--muted); margin-bottom:1.25rem;">Ouvrez votre espace de pilotage pour consulter la liste des étudiants, leurs candidatures, leurs wish-lists et les statistiques globales.</p>
                 <div style="display:flex; gap:.75rem; flex-wrap:wrap;">
-                    <a href="index.php?route=pilote-dashboard" class="btn btn-primary">Ouvrir le dashboard pilote</a>
-                    <a href="index.php?route=pilote-statistiques" class="btn btn-outline">Voir les statistiques globales</a>
+                    <a href="index.php?route=pilote-dashboard" class="btn btn-primary">Statistiques détaillées</a>
+                    <a href="index.php?route=pilote-statistiques" class="btn btn-outline">Statistiques globales</a>
                 </div>
             </div>
         </div>
