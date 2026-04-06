@@ -6,14 +6,14 @@
         <!-- En-tête -->
         <div class="page-header page-header-spaced">
             <div>
-                <h1> Statistiques globales</h1>
+                <h1>Statistiques globales</h1>
                 <p class="page-subtitle">
                     Vue d'ensemble de l'activité des étudiants sur la plateforme.
                 </p>
             </div>
             <div class="page-header-actions">
-                <a href="index.php?route=profil&tab=pilot" class="btn btn-outline btn-page-action">← Quitter</a>
-                <a href="index.php?route=pilote-dashboard" class="btn btn-outline btn-page-action">Dashboard Pilote</a>
+                <a href="index.php?route=profil&tab=pilote" class="btn btn-outline btn-page-action">← Quitter</a>
+                <a href="index.php?route=pilote-dashboard" class="btn btn-outline btn-page-action">Statistiques détaillées</a>
             </div>
         </div>
 
