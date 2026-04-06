@@ -14,6 +14,7 @@
 
         <!-- Le formulaire envoie les données en POST vers la route inscription -->
         <form action="index.php?route=inscription" method="POST" class="auth-form">
+            <label for="prenom">* Champs obligatoires</label>
             
             <div class="form-group">
                 <label for="prenom">Prénom *</label>
