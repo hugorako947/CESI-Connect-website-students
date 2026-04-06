@@ -6,13 +6,13 @@
         <!-- En-tête du dashboard -->
         <div class="page-header page-header-spaced">
             <div>
-                <h1> Dashboard Pilote</h1>
+                <h1>Statistiques détaillées</h1>
                 <p class="page-subtitle">
                     Suivez l'activité de vos étudiants : candidatures, wishlists et statistiques.
                 </p>
             </div>
             <div class="page-header-actions">
-                <a href="index.php?route=profil&tab=pilot" class="btn btn-outline btn-page-action">← Quitter</a>
+                <a href="index.php?route=profil&tab=pilote" class="btn btn-outline btn-page-action">← Quitter</a>
                 <a href="index.php?route=pilote-statistiques" class="btn btn-outline btn-page-action">Statistiques globales</a>
             </div>
         </div>
