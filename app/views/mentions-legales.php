@@ -33,7 +33,7 @@
 
         <section>
             <h2 class="section-card-title"><span style="color:var(--primary);">4.</span> Propriété intellectuelle</h2>
-            <p>L'ensemble du contenu de ce site (structure, design, textes, logos) est la propriété exclusive du projet Web4All.</p>
+            <p>L'ensemble du contenu de ce site (structure, design, textes, logos) est la propriété exclusive du projet <strong>CESI Connect</strong>.</p>
         </section>
     </div>
 </main>
